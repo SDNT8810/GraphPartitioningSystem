@@ -1,0 +1,80 @@
+graph:
+  num_nodes: 10  # Smaller graph for faster tests
+  edge_probability: 0.3
+  weight_range: [0.1, 1.0]
+
+partition:
+  num_partitions: 2
+  balance_weight: 0.5
+  cut_size_weight: 0.3
+  conductance_weight: 0.2
+  use_laplacian: true
+  min_partition_size: 3  # Smaller for test graph
+  max_partition_size: 7  # Smaller for test graph
+  balance_threshold: 0.8
+  conductance_threshold: 0.3
+  use_hybrid_strategy: true
+  strategy_weights: [0.4, 0.3, 0.3]
+
+agent:
+  # Training parameters
+  learning_rate: 0.001
+  epsilon: 0.1
+  epsilon_start: 1.0
+  epsilon_end: 0.01
+  epsilon_decay: 0.995
+  gamma: 0.99
+  weight_decay: 0.0
+  memory_size: 1000  # Smaller for testing
+  batch_size: 32    # Smaller for testing
+  target_update: 50  # More frequent for testing
+  local_update_interval: 5
+  communication_interval: 25
+  max_grad_norm: 1.0
+  num_episodes: 10  # Fewer episodes for testing
+  max_steps: 10     # Fewer steps for testing
+  device: 'cpu'
+  # Neural network dimensions
+  feature_dim: 34  # Base feature dimension (24 base + 2 partition sizes + 2 densities + 6 graph metrics)
+  state_dim: 32   # Desired state dimension after encoding
+  hidden_dim: 64  # Hidden layer dimension
+  action_dim: 2   # Output action dimension
+
+gnn:
+  hidden_channels: 32  # Smaller for testing
+  num_layers: 2       # Fewer layers for testing
+  num_heads: 2        # Fewer heads for testing
+  dropout: 0.1
+  use_attention: true
+  attention_dropout: 0.1
+  quantize: true
+  quantization_bits: 8
+  learning_rate: 0.001
+
+monitoring:
+  track_communication: true
+  track_computation: true
+  track_memory: true
+  sampling_interval: 50   # More frequent for testing
+  log_interval: 100      # More frequent for testing
+  save_metrics: true
+  metrics_path: "metrics"
+
+recovery:
+  checkpoint_interval: 100  # More frequent for testing
+  max_checkpoints: 3       # Fewer checkpoints for testing
+  failure_detection_interval: 50
+  recovery_timeout: 500
+  replication_factor: 2
+
+system:
+  num_nodes: 10           # Smaller for testing
+  edge_probability: 0.3
+  weight_range: [0.1, 1.0]
+  num_episodes: 10        # Fewer for testing
+  max_steps: 10           # Fewer for testing
+  log_interval: 5         # More frequent for testing
+
+test:
+  num_runs: 2  # Fewer runs for faster testing
+  

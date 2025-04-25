@@ -1,0 +1,1001 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+
+\usepackage{pdfpages} % For including external PDF files
+
+\title{ch1-2. April 2025}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Introduction}
+
+The exponential growth of industrial Internet of Things (IIoT) and distributed systems has created unprecedented challenges in managing multi-source data streams. In modern industrial environments, thousands of sensors, actuators, and computing devices continuously generate massive volumes of heterogeneous data that must be processed efficiently to extract actionable insights. Traditional approaches to data management in these environments often rely on centralized architectures or static partitioning schemes, which struggle to adapt to the dynamic nature of industrial data streams.
+
+Industrial systems are characterized by several unique challenges that make data management particularly complex. First, data generation patterns can change rapidly in response to production schedules, equipment conditions, and external factors such as weather or market demands. Second, computational resources are often distributed unevenly across the network, with some nodes experiencing temporary overloads while others remain underutilized. Third, network conditions can fluctuate due to interference, congestion, or hardware failures, affecting the reliability and latency of data transmission.
+
+Current solutions for distributed data management typically fall into two categories: centralized approaches that collect and process data at a central location, and static partitioning approaches that divide the data processing tasks according to predetermined rules. Centralized approaches suffer from scalability limitations, single points of failure, and high communication overhead as data volumes increase. Static partitioning approaches, while more distributed, lack the flexibility to adapt to changing conditions and often result in suboptimal resource utilization over time.
+
+Graph-based representations have emerged as a powerful tool for modeling distributed systems, where nodes represent data sources or processing units, and edges represent communication links or data dependencies. Traditional graph partitioning algorithms aim to divide these graphs into subgraphs that minimize communication costs while balancing computational load. However, these algorithms typically require global knowledge of the graph structure and are executed as offline processes, making them ill-suited for dynamic environments where the graph structure evolves continuously.
+\\
+\\
+
+\section{Problem Statement}
+
+This thesis addresses the fundamental challenge of autonomous data management in distributed industrial multi-source data stream systems. Specifically, we focus on the problem of dynamic graph partitioning in environments characterized by:
+
+\begin{itemize}
+    \item \textbf{Dynamic Data Generation}: Data sources produce streams at varying rates and with changing characteristics over time, requiring adaptive processing strategies.
+    
+    \item \textbf{Fluctuating Computational Loads}: Processing nodes experience varying computational loads due to changing data volumes, processing requirements, and concurrent tasks.
+    
+    \item \textbf{Complex Network Constraints}: Communication links have limited bandwidth, variable latency, and potential for temporary failures, affecting the optimal distribution of data processing tasks.
+    
+    \item \textbf{Heterogeneous Hardware}: Processing nodes have different computational capabilities, memory capacities, and energy constraints, requiring workload assignments that account for these differences.
+\end{itemize}
+
+The key research questions addressed in this thesis include:
+
+\begin{enumerate}
+    \item How can we design a graph partitioning framework that enables autonomous decision-making at the node level without requiring global knowledge or centralized control?
+    
+    \item How can attention-based graph neural networks be integrated with reinforcement learning to enable nodes to make intelligent partitioning decisions based on local observations?
+    
+    \item How can Bell's equation be adapted from its origins in quantum mechanics to provide a mathematical foundation for measuring correlations between different partitions and guiding decision-making processes?
+    
+    \item What optimization techniques can be employed to enhance the efficiency of the proposed approach in resource-constrained industrial environments?
+    
+    \item How does the proposed self-partitioning graph approach compare to traditional methods in terms of performance, adaptability, and resilience?
+\end{enumerate}
+
+The primary objective of this thesis is to develop a novel approach to distributed data management through self-partitioning graphs that embed intelligence at the node level. Unlike traditional approaches that rely on centralized decision-making or static partitioning rules, our approach aims to enable nodes to autonomously adjust their partitioning decisions based on local observations and reinforcement learning, while collectively optimizing for global objectives such as communication cost, load balance, and response time.\\
+\\
+
+
+\section{Significance and Contributions}
+
+The significance of this research lies in its potential to transform how distributed industrial systems manage and process data streams. By enabling autonomous, adaptive partitioning at the node level, the proposed approach can:
+
+\begin{itemize}
+    \item \textbf{Enhance Scalability}: Eliminate centralized bottlenecks and enable the system to scale to thousands or millions of nodes without requiring proportional increases in coordination overhead.
+    
+    \item \textbf{Improve Adaptability}: Enable rapid adaptation to changing data patterns, computational loads, and network conditions without requiring manual reconfiguration or global optimization.
+    
+    \item \textbf{Increase Resilience}: Maintain system functionality even in the face of node failures, network disruptions, or unexpected changes in data characteristics.
+    
+    \item \textbf{Optimize Resource Utilization}: Balance computational load across available resources while minimizing communication overhead, leading to more efficient use of limited resources.
+    
+    \item \textbf{Reduce Energy Consumption}: Minimize unnecessary data transmission and processing, potentially reducing the energy footprint of distributed industrial systems.
+\end{itemize}
+
+The key contributions of this thesis include:
+
+\begin{enumerate}
+    \item A novel theoretical framework for self-partitioning graphs that integrates attention-based graph neural networks, reinforcement learning, and Bell's equation.
+    
+    \item New algorithms for node-level decision-making and partition optimization in distributed graph systems that operate without requiring global knowledge.
+    
+    \item A comprehensive evaluation of the proposed approach in a real-world industrial case study, demonstrating its advantages over traditional methods.
+    
+    \item Insights into the application of Bell's equation for optimizing graph partitioning and communication in distributed systems.
+    
+    \item Practical optimization techniques for enhancing the efficiency of GNN-RL systems in resource-constrained environments.
+\end{enumerate}
+
+These contributions have implications not only for industrial IoT systems but also for other domains involving distributed data processing, such as smart cities, autonomous vehicle networks, and large-scale scientific computing.
+
+\section{Case Study: Industrial IoT Sensor Networks}
+
+To demonstrate the practical applicability of the proposed approach, this thesis focuses on industrial IoT sensor networks as a primary case study. Industrial IoT sensor networks represent an ideal testbed for self-partitioning graphs due to their scale, dynamism, and resource constraints.
+
+\subsection{Environment Description}
+
+The case study environment consists of a large-scale manufacturing facility equipped with thousands of sensors monitoring various aspects of the production process, including:
+
+\begin{itemize}
+    \item \textbf{Equipment Sensors}: Monitoring temperature, vibration, pressure, and other parameters of manufacturing equipment to detect anomalies and predict maintenance needs.
+    
+    \item \textbf{Environmental Sensors}: Tracking ambient conditions such as temperature, humidity, air quality, and noise levels throughout the facility.
+    
+    \item \textbf{Process Sensors}: Measuring product characteristics, material flow rates, and quality parameters at different stages of the production process.
+    
+    \item \textbf{Logistics Sensors}: Tracking the movement of materials, components, and finished products within the facility.
+    
+    \item \textbf{Energy Sensors}: Monitoring power consumption, voltage levels, and other electrical parameters across the facility.
+\end{itemize}
+
+These sensors generate data streams with varying characteristics:
+
+\begin{itemize}
+    \item \textbf{Data Rates}: Ranging from low-frequency environmental readings (e.g., once per minute) to high-frequency vibration measurements (e.g., thousands of samples per second).
+    
+    \item \textbf{Data Volumes}: From small scalar values to large multi-dimensional arrays or image data.
+    
+    \item \textbf{Criticality}: From non-critical monitoring data to safety-critical measurements requiring immediate response.
+    
+    \item \textbf{Temporal Patterns}: Including periodic measurements, event-triggered data, and continuous streams.
+\end{itemize}
+
+The processing infrastructure consists of a heterogeneous network of computing devices:
+
+\begin{itemize}
+    \item \textbf{Edge Devices}: Low-power microcontrollers or single-board computers attached directly to sensors or small groups of sensors, with limited processing capabilities and memory.
+    
+    \item \textbf{Fog Nodes}: More powerful computing devices distributed throughout the facility, capable of aggregating and processing data from multiple sensors.
+    
+    \item \textbf{Local Servers}: High-performance computing resources located within the facility, providing substantial processing power for complex analytics.
+    
+    \item \textbf{Cloud Resources}: External computing resources accessible over the internet, offering virtually unlimited but higher-latency processing capabilities.
+\end{itemize}
+
+These devices are connected through a multi-tier network infrastructure combining wired and wireless technologies, with varying bandwidth, latency, and reliability characteristics.
+
+\subsection{Challenges and Requirements}
+
+The industrial IoT sensor network presents several specific challenges that align with the broader problem statement:
+
+\begin{itemize}
+    \item \textbf{Production Variability}: Changes in production schedules, product types, or manufacturing processes can dramatically alter the volume and characteristics of sensor data, requiring adaptive processing strategies.
+    
+    \item \textbf{Resource Constraints}: Edge and fog devices have limited processing power, memory, and energy resources, necessitating efficient allocation of processing tasks.
+    
+    \item \textbf{Network Limitations}: Wireless connections in industrial environments are subject to interference, congestion, and occasional failures, affecting the reliability of data transmission.
+    
+    \item \textbf{Real-time Requirements}: Some applications, such as safety monitoring or process control, require real-time or near-real-time processing with strict latency constraints.
+    
+    \item \textbf{Data Integration}: Data from different sensors must often be combined to extract meaningful insights, creating complex dependencies between data streams.
+\end{itemize}
+
+The requirements for an effective data management solution in this environment include:
+
+\begin{itemize}
+    \item \textbf{Adaptive Partitioning}: The ability to dynamically adjust how data processing tasks are distributed across available resources in response to changing conditions.
+    
+    \item \textbf{Local Decision-Making}: Enabling nodes to make autonomous decisions based on local observations without requiring continuous coordination with a central authority.
+    
+    \item \textbf{Multi-objective Optimization}: Balancing multiple objectives including processing latency, communication overhead, energy consumption, and resource utilization.
+    
+    \item \textbf{Fault Tolerance}: Maintaining system functionality even when individual nodes or communication links fail.
+    
+    \item \textbf{Scalability}: Supporting the addition or removal of sensors and processing nodes without requiring system-wide reconfiguration.
+\end{itemize}
+
+\subsection{Application of Self-Partitioning Graphs}
+
+The proposed self-partitioning graph approach addresses these challenges by modeling the industrial IoT sensor network as a dynamic graph where:
+
+\begin{itemize}
+    \item \textbf{Nodes} represent sensors and processing devices with varying capabilities and resource constraints.
+    
+    \item \textbf{Edges} represent communication links with different bandwidth, latency, and reliability characteristics.
+    
+    \item \textbf{Node Attributes} include data generation rates, processing capabilities, memory capacity, energy constraints, and current load.
+    
+    \item \textbf{Edge Attributes} include bandwidth, latency, reliability, and current utilization.
+\end{itemize}
+
+In this model, partitioning decisions determine how data processing tasks are distributed across the network, including:
+
+\begin{itemize}
+    \item Which processing nodes are responsible for which sensors
+    \item Where different stages of data processing (filtering, aggregation, analysis) occur
+    \item How processed data is routed to consumers (dashboards, control systems, databases)
+\end{itemize}
+
+The self-partitioning approach enables each node to make autonomous decisions about its role in the overall data processing pipeline based on local observations and learned policies. Through attention mechanisms, nodes can focus on the most relevant aspects of their local environment, while reinforcement learning enables them to improve their decision-making over time based on observed outcomes.
+
+This case study will serve as a concrete application domain for developing and evaluating the proposed self-partitioning graph approach, providing real-world constraints and requirements that inform the theoretical framework and implementation details.
+
+\section{Thesis Structure}
+
+The remainder of this thesis is organized as follows:
+
+\begin{itemize}
+    \item \textbf{Chapter 2: Literature Review} provides a comprehensive survey of related work in graph partitioning, graph neural networks, reinforcement learning, Bell's equation, and optimization techniques, identifying research gaps and positioning this thesis within the broader research landscape.
+    
+    \item \textbf{Chapter 3: Theoretical Framework} develops the mathematical foundations of self-partitioning graphs, integrating attention mechanisms, reinforcement learning, and Bell's equation into a coherent theoretical framework.
+    
+    \item \textbf{Chapter 4: Methodology} describes the system architecture, agent design, partitioning strategies, and optimization techniques that implement the theoretical framework in practical systems.
+    
+    \item \textbf{Chapter 5: Case Study Implementation} details the application of the proposed approach to the industrial IoT sensor network case study, including implementation details and baseline comparisons.
+    
+    \item \textbf{Chapter 6: Evaluation and Results} presents the experimental setup, performance analysis, efficiency analysis, resilience analysis, and ablation studies that evaluate the effectiveness of the proposed approach.
+    
+    \item \textbf{Chapter 7: Discussion} interprets the results, discusses theoretical and practical implications, and acknowledges limitations and challenges.
+    
+    \item \textbf{Chapter 8: Conclusion and Future Work} summarizes the contributions of the thesis and identifies promising directions for future research.
+\end{itemize}
+
+\chapter{Literature Review}
+
+\section{Graph Partitioning Approaches}
+
+Graph partitioning is a fundamental problem in computer science with applications spanning numerous domains including parallel computing, VLSI design, social network analysis, and distributed systems. This section reviews traditional and state-of-the-art approaches to graph partitioning, with a focus on methods relevant to distributed data management in industrial environments.
+
+\subsection{Traditional Graph Partitioning Algorithms}
+
+Traditional graph partitioning algorithms aim to divide a graph into a specified number of partitions while optimizing certain objectives, typically minimizing the number of edges between partitions (cut size) while maintaining balanced partition sizes.
+
+\subsubsection{Spectral Partitioning}
+
+Spectral partitioning methods leverage the eigenvalues and eigenvectors of matrices derived from the graph structure, such as the Laplacian matrix. The seminal work by Fiedler \cite{fiedler1973algebraic} established the connection between the second smallest eigenvalue of the Laplacian matrix (the Fiedler value) and the connectivity of the graph, leading to efficient bisection methods.
+
+Recent advances in spectral partitioning include multiway spectral partitioning techniques that extend beyond simple bisection. As noted in \cite{spectral2023}, these approaches provide a mathematical foundation for partitioning graphs based on multiple eigenvalues and eigenvectors of the normalized adjacency matrix, offering robust methods for measuring partition quality.
+
+The primary limitation of spectral methods is their computational complexity, which typically involves expensive eigendecomposition operations that scale poorly with graph size. Additionally, these methods generally require global knowledge of the graph structure, making them challenging to implement in distributed settings.
+
+\subsubsection{Multilevel Partitioning}
+
+Multilevel partitioning algorithms address the scalability limitations of spectral methods by following a three-phase approach: coarsening, initial partitioning, and refinement. Popular implementations include METIS \cite{karypis1998fast} and its parallel variant ParMETIS \cite{karypis1998parallel}.
+
+The coarsening phase progressively simplifies the graph by collapsing vertices and edges, creating a hierarchy of increasingly smaller graphs. Once the graph is sufficiently small, an initial partitioning is performed using a direct method. The refinement phase then projects this partitioning back through the hierarchy, refining the partition boundaries at each level.
+
+While multilevel methods offer excellent performance for static graphs, they still require significant computational resources and global knowledge, making them unsuitable for fully distributed, dynamic environments. Furthermore, they typically optimize for a single objective (cut size) rather than the multiple objectives relevant in industrial settings.
+
+\subsection{Dynamic and Adaptive Partitioning Methods}
+
+Dynamic partitioning methods address the limitations of static approaches by adapting the partitioning in response to changes in the graph structure or workload characteristics.
+
+\subsubsection{Incremental Repartitioning}
+
+Incremental repartitioning approaches avoid the cost of computing a new partitioning from scratch by modifying an existing partitioning to accommodate changes. Techniques such as diffusion-based repartitioning \cite{schloegel2000graph} gradually migrate vertices between partitions to restore balance and minimize cut size after graph modifications.
+
+While more efficient than recomputing partitions, these methods still typically require global coordination and can struggle with rapid or large-scale changes. Additionally, they may converge to locally optimal solutions that are far from the global optimum over time.
+
+\subsubsection{Online Partitioning}
+
+Online partitioning algorithms make decisions about partition assignments as new vertices and edges arrive, without knowledge of future graph evolution. Streaming graph partitioning algorithms \cite{stanton2012streaming} assign vertices to partitions based on limited information, such as the current partition assignments of neighboring vertices.
+
+Ding et al. \cite{ding2024play} recently proposed a skewness-aware vertex-cut partitioner (S5P) that leverages game theory principles to enable vertices to make autonomous decisions about their partition assignments. This approach demonstrates up to 51\% improvement in partitioning quality compared to baseline methods, highlighting the potential of decentralized decision-making in graph partitioning.
+
+While online methods are more suitable for dynamic environments, they often produce lower-quality partitions compared to offline methods with global knowledge. Additionally, most existing approaches still rely on heuristics rather than learning-based methods that can adapt to recurring patterns.
+
+\subsection{Distributed Partitioning Techniques}
+
+Distributed partitioning techniques aim to distribute both the graph data and the partitioning computation across multiple processing nodes, avoiding the need for a central coordinator with global knowledge.
+
+\subsubsection{Label Propagation}
+
+Label propagation algorithms \cite{raghavan2007near} assign labels to vertices and iteratively update these labels based on the labels of neighboring vertices. In a distributed setting, each node can independently update its label based on local information, with partitions emerging from the convergence of label assignments.
+
+While highly scalable and fully distributed, label propagation methods can be sensitive to initialization and may converge to different solutions in different runs. Additionally, they typically lack mechanisms to enforce constraints such as partition size balance.
+
+\subsubsection{Agent-Based Approaches}
+
+Agent-based approaches model each vertex or subgraph as an autonomous agent that makes decisions based on local observations and objectives. These approaches align conceptually with the self-partitioning graph concept proposed in this thesis but have been limited in their adoption of advanced learning techniques.
+
+Recent work by Huang et al. \cite{huang2024parallel} introduces task-parallel algorithms and task graph partitioning to improve scheduling performance in distributed environments. Their approach demonstrates how asynchronous execution can significantly enhance performance compared to traditional synchronization-based methods, highlighting the potential of local decision-making in distributed systems.
+
+\subsection{Game Theory Approaches}
+
+Game theory provides a mathematical framework for analyzing strategic interactions among rational decision-makers, making it relevant to distributed graph partitioning where nodes must make decisions that affect each other.
+
+\subsubsection{Cooperative Game Theory}
+
+Cooperative game theory approaches model graph partitioning as a coalition formation problem, where vertices form coalitions (partitions) to maximize collective utility. These approaches typically assume that vertices can communicate and coordinate their decisions, which may not be realistic in large-scale distributed systems.
+
+\subsubsection{Non-cooperative Game Theory}
+
+Non-cooperative game theory approaches model vertices as self-interested agents that make decisions to maximize their individual utility without explicit coordination. The work by Ding et al. \cite{ding2024play} mentioned earlier falls into this category, using a Stackelberg game formulation where vertices make sequential decisions about their partition assignments.
+
+The key challenge in game-theoretic approaches is designing utility functions that align individual incentives with global objectives. Without careful design, the system may converge to Nash equilibria that are suboptimal from a global perspective.
+
+\subsection{Research Gaps in Graph Partitioning}
+
+Despite the extensive literature on graph partitioning, several research gaps remain, particularly in the context of distributed industrial systems:
+
+\begin{itemize}
+    \item \textbf{Limited Autonomy}: Most existing approaches either rely on centralized computation or distributed algorithms with limited local decision-making capabilities.
+    
+    \item \textbf{Static Optimization Criteria}: Many methods optimize for fixed objectives such as cut size and balance, without adapting to changing priorities or constraints.
+    
+    \item \textbf{Reactive Rather than Proactive}: Current dynamic methods typically react to changes after they occur, rather than anticipating and preparing for predictable changes.
+    
+    \item \textbf{Limited Learning Capabilities}: Few approaches incorporate machine learning to improve partitioning decisions based on experience or to identify patterns in graph evolution.
+    
+    \item \textbf{Single-Objective Optimization}: Most methods focus on optimizing a single objective or a fixed weighted combination of objectives, rather than adapting to changing objective priorities.
+\end{itemize}
+
+This thesis addresses these gaps by proposing a self-partitioning graph approach that combines attention-based graph neural networks with reinforcement learning to enable autonomous, adaptive, and learning-based partitioning at the node level.
+
+\section{Graph Neural Networks}
+
+Graph Neural Networks (GNNs) have emerged as a powerful class of deep learning models specifically designed to operate on graph-structured data. This section reviews the fundamentals of GNNs and recent advances in attention-based mechanisms, with a focus on their potential application to distributed data management.
+
+\subsection{Fundamentals of Graph Neural Networks}
+
+Graph Neural Networks extend traditional neural network architectures to handle graph-structured data, where the input consists of nodes with features and edges representing relationships between nodes.
+
+\subsubsection{Message Passing Framework}
+
+Most modern GNNs follow a message passing framework \cite{gilmer2017neural}, where node representations are iteratively updated based on messages received from neighboring nodes. The general form of message passing can be expressed as:
+
+\begin{equation}
+h_v^{(l+1)} = \text{UPDATE}\left(h_v^{(l)}, \text{AGGREGATE}\left(\{m_{uv}^{(l)} : u \in \mathcal{N}(v)\}\right)\right)
+\end{equation}
+
+where $h_v^{(l)}$ is the representation of node $v$ at layer $l$, $m_{uv}^{(l)}$ is the message from node $u$ to node $v$, $\mathcal{N}(v)$ is the set of neighbors of node $v$, and AGGREGATE and UPDATE are learnable functions.
+
+Different GNN architectures vary in their choices of message, aggregation, and update functions. Common variants include Graph Convolutional Networks (GCNs) \cite{kipf2017semi}, GraphSAGE \cite{hamilton2017inductive}, and Graph Attention Networks (GATs) \cite{velivckovic2018graph}.
+
+\subsubsection{Spectral and Spatial Approaches}
+
+GNNs can be categorized into spectral and spatial approaches based on how they process graph information:
+
+\begin{itemize}
+    \item \textbf{Spectral Approaches}: These methods operate in the spectral domain of the graph, using eigendecomposition of the graph Laplacian. While theoretically elegant, spectral approaches typically require the entire graph structure for computation, limiting their applicability in distributed settings.
+    
+    \item \textbf{Spatial Approaches}: These methods operate directly in the vertex domain, updating node representations based on local neighborhood information. Spatial approaches are more amenable to distributed implementation as they only require local information for computation.
+\end{itemize}
+
+Recent work has increasingly focused on spatial approaches due to their scalability and flexibility, with message passing being the dominant paradigm.
+
+\subsection{Attention Mechanisms in GNNs}
+
+Attention mechanisms have revolutionized various deep learning domains by enabling models to focus on the most relevant parts of the input. In the context of GNNs, attention mechanisms allow nodes to assign different importance to different neighbors when aggregating information.
+
+\subsubsection{Graph Attention Networks}
+
+Graph Attention Networks (GATs) \cite{velivckovic2018graph} introduced the concept of self-attention to GNNs, allowing nodes to compute attention coefficients for their neighbors based on feature similarity. The attention mechanism in GATs can be expressed as:
+
+\begin{equation}
+\alpha_{ij} = \frac{\exp\left(\text{LeakyReLU}\left(\mathbf{a}^T[\mathbf{W}h_i \| \mathbf{W}h_j]\right)\right)}{\sum_{k \in \mathcal{N}(i)} \exp\left(\text{LeakyReLU}\left(\mathbf{a}^T[\mathbf{W}h_i \| \mathbf{W}h_k]\right)\right)}
+\end{equation}
+
+where $\alpha_{ij}$ is the attention coefficient from node $i$ to node $j$, $\mathbf{W}$ is a learnable weight matrix, $\mathbf{a}$ is a learnable attention vector, and $\|$ denotes concatenation.
+
+GATs have demonstrated superior performance compared to non-attentional GNNs on various tasks, particularly when the importance of neighbors varies significantly or when the graph contains noisy or irrelevant connections.
+
+\subsubsection{Multi-head Attention}
+
+To stabilize the learning process and capture different aspects of node relationships, GATs typically employ multi-head attention, where multiple independent attention mechanisms are computed in parallel and their outputs are concatenated or averaged:
+
+\begin{equation}
+h_i^{(l+1)} = \|_{k=1}^K \sigma\left(\sum_{j \in \mathcal{N}(i)} \alpha_{ij}^k \mathbf{W}^k h_j^{(l)}\right)
+\end{equation}
+
+where $K$ is the number of attention heads, $\alpha_{ij}^k$ is the attention coefficient from node $i$ to node $j$ in the $k$-th attention head, and $\mathbf{W}^k$ is the weight matrix for the $k$-th attention head.
+
+\subsection{Recent Advances in Attention-Based GNNs}
+
+Recent research has extended the basic attention mechanism in various directions to address specific challenges and improve performance.
+
+\subsubsection{Graph Topology Attention Networks}
+
+Graph Topology Attention Networks (GTAT) \cite{shen2025gtat} enhance GNNs by treating node features and topology as separate modalities that interact through cross-attention mechanisms. This approach enables the model to dynamically adjust the influence of node features and topological information based on their relevance to the task.
+
+The cross-attention mechanism in GTAT can be expressed as:
+
+\begin{equation}
+\alpha_{ij}^{\text{cross}} = \frac{\exp\left(\text{LeakyReLU}\left(\mathbf{a}^T[\mathbf{W}_f h_i^f \| \mathbf{W}_t h_j^t]\right)\right)}{\sum_{k \in \mathcal{N}(i)} \exp\left(\text{LeakyReLU}\left(\mathbf{a}^T[\mathbf{W}_f h_i^f \| \mathbf{W}_t h_k^t]\right)\right)}
+\end{equation}
+
+where $h_i^f$ is the feature representation of node $i$, $h_j^t$ is the topological representation of node $j$, and $\mathbf{W}_f$ and $\mathbf{W}_t$ are learnable weight matrices for feature and topology modalities, respectively.
+
+GTAT has demonstrated improved performance on benchmark datasets and increased robustness against noisy data, highlighting the benefits of explicitly modeling different information modalities in graph-structured data.
+
+\subsubsection{Hierarchical Multimodal Self-Attention}
+
+Hierarchical Multimodal Self-Attention approaches, such as HMSA-DTI \cite{ji2024hierarchical}, propose a hierarchical approach to capture both intra-modal and inter-modal interactions in multimodal data. This approach is particularly valuable for complex graph structures where different types of information need to be integrated.
+
+The hierarchical attention mechanism first computes attention within each modality (intra-modal attention) and then computes attention between modalities (inter-modal attention):
+
+\begin{equation}
+h_i^{m, \text{intra}} = \sigma\left(\sum_{j \in \mathcal{N}(i)} \alpha_{ij}^{m, \text{intra}} \mathbf{W}^m h_j^m\right)
+\end{equation}
+
+\begin{equation}
+h_i^{\text{inter}} = \sigma\left(\sum_{m \in \mathcal{M}} \alpha_i^{m, \text{inter}} \mathbf{W}^{\text{inter}} h_i^{m, \text{intra}}\right)
+\end{equation}
+
+where $m$ denotes a modality, $\mathcal{M}$ is the set of all modalities, $h_i^m$ is the representation of node $i$ in modality $m$, $\alpha_{ij}^{m, \text{intra}}$ is the intra-modal attention coefficient from node $i$ to node $j$ in modality $m$, and $\alpha_i^{m, \text{inter}}$ is the inter-modal attention coefficient for modality $m$ at node $i$.
+
+HMSA-DTI has demonstrated significant advantages over baseline methods on benchmark datasets, highlighting the potential of hierarchical attention mechanisms for complex multimodal graph data.
+
+\subsubsection{Attention for Heterogeneous Graphs}
+
+Heterogeneous Graph Neural Networks (HGNNs) extend GNNs to handle graphs with multiple node and edge types, which are common in real-world applications. Attention mechanisms in HGNNs must account for type-specific information when computing attention coefficients.
+
+Heterogeneous Graph Attention Networks (HGATs) \cite{wang2019heterogeneous} compute type-specific attention coefficients using separate attention parameters for each node or edge type:
+
+\begin{equation}
+\alpha_{ij}^{\phi_i, \phi_j, \psi_{ij}} = \frac{\exp\left(\text{LeakyReLU}\left(\mathbf{a}_{\phi_i, \phi_j, \psi_{ij}}^T[\mathbf{W}_{\phi_i} h_i \| \mathbf{W}_{\phi_j} h_j]\right)\right)}{\sum_{k \in \mathcal{N}_{\psi_{ij}}(i)} \exp\left(\text{LeakyReLU}\left(\mathbf{a}_{\phi_i, \phi_k, \psi_{ik}}^T[\mathbf{W}_{\phi_i} h_i \| \mathbf{W}_{\phi_k} h_k]\right)\right)}
+\end{equation}
+
+where $\phi_i$ is the type of node $i$, $\psi_{ij}$ is the type of the edge from node $i$ to node $j$, $\mathbf{a}_{\phi_i, \phi_j, \psi_{ij}}$ is a type-specific attention vector, and $\mathbf{W}_{\phi_i}$ is a type-specific weight matrix.
+
+\subsection{Applications of GNNs in Distributed Systems}
+
+GNNs have been applied to various problems in distributed systems, demonstrating their potential for the self-partitioning graph approach proposed in this thesis.
+
+\subsubsection{Resource Allocation}
+
+GNNs have been used for resource allocation in communication networks, where nodes represent devices or resources and edges represent communication links or resource dependencies. Ji et al. \cite{ji2024graph} integrate GNN with Deep Reinforcement Learning for resource allocation in V2X communications, demonstrating how this combination can effectively enhance decision-making quality while maintaining computational efficiency.
+
+\subsubsection{Anomaly Detection}
+
+GNNs have been applied to anomaly detection in distributed systems, where the goal is to identify nodes or edges that exhibit unusual behavior compared to the rest of the graph. Attention mechanisms are particularly valuable in this context as they can focus on the most relevant features or neighbors for detecting anomalies.
+
+\subsubsection{Traffic Prediction}
+
+GNNs have been used for traffic prediction in transportation networks, where nodes represent locations and edges represent roads or other connections. Attention mechanisms help the model focus on the most relevant historical data and spatial dependencies for accurate prediction.
+
+\subsection{Research Gaps in GNNs for Distributed Systems}
+
+Despite the advances in attention-based GNNs, several research gaps remain in their application to distributed systems:
+
+\begin{itemize}
+    \item \textbf{Distributed Training}: Most GNN models are trained in a centralized manner, requiring access to the entire graph. Distributed training approaches that preserve privacy and reduce communication overhead are still underdeveloped.
+    
+    \item \textbf{Dynamic Adaptation}: While some GNN architectures can handle dynamic graphs, few are designed to continuously adapt their parameters in response to changing graph structures without explicit retraining.
+    
+    \item \textbf{Resource Awareness}: Most GNN models do not explicitly account for the computational and memory constraints of the devices on which they will be deployed, potentially leading to inefficient resource utilization.
+    
+    \item \textbf{Multi-objective Optimization}: GNNs are typically trained to optimize a single objective or a fixed weighted combination of objectives, rather than adapting to changing objective priorities.
+    
+    \item \textbf{Integration with Decision-Making}: While GNNs excel at representation learning, their integration with decision-making frameworks such as reinforcement learning for autonomous agents is still an emerging area.
+\end{itemize}
+
+This thesis addresses these gaps by proposing an integrated framework that combines attention-based GNNs with reinforcement learning to enable autonomous, adaptive decision-making in distributed systems.
+
+\section{Reinforcement Learning for Graph-Based Decision Making}
+
+Reinforcement Learning (RL) provides a powerful framework for sequential decision-making under uncertainty, making it well-suited for autonomous agents in distributed systems. This section reviews the basics of RL and its applications to graph-structured environments, with a focus on recent advances in integrating RL with GNNs.
+
+\subsection{Basics of Reinforcement Learning}
+
+Reinforcement Learning is a branch of machine learning where an agent learns to make decisions by interacting with an environment and receiving feedback in the form of rewards or penalties.
+
+\subsubsection{Markov Decision Processes}
+
+RL problems are typically formulated as Markov Decision Processes (MDPs), defined by a tuple $(S, A, P, R, \gamma)$ where:
+\begin{itemize}
+    \item $S$ is the set of states
+    \item $A$ is the set of actions
+    \item $P(s'|s,a)$ is the transition probability from state $s$ to state $s'$ when taking action $a$
+    \item $R(s,a,s')$ is the reward received when transitioning from state $s$ to state $s'$ after taking action $a$
+    \item $\gamma \in [0,1]$ is the discount factor that determines the importance of future rewards
+\end{itemize}
+
+The goal of RL is to learn a policy $\pi(a|s)$ that maximizes the expected cumulative discounted reward:
+
+\begin{equation}
+J(\pi) = \mathbb{E}_{\pi}\left[\sum_{t=0}^{\infty} \gamma^t R(s_t, a_t, s_{t+1})\right]
+\end{equation}
+
+\subsubsection{Value-Based Methods}
+
+Value-based methods learn value functions that estimate the expected cumulative reward from a given state (state-value function $V(s)$) or state-action pair (action-value function $Q(s,a)$). Popular algorithms include Q-learning \cite{watkins1992q} and Deep Q-Networks (DQN) \cite{mnih2015human}.
+
+The Q-learning update rule is:
+
+\begin{equation}
+Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha \left[r_t + \gamma \max_{a} Q(s_{t+1}, a) - Q(s_t, a_t)\right]
+\end{equation}
+
+where $\alpha$ is the learning rate.
+
+\subsubsection{Policy-Based Methods}
+
+Policy-based methods directly optimize the policy $\pi(a|s)$ without explicitly learning value functions. These methods are particularly suitable for continuous action spaces or when the optimal policy is stochastic. Popular algorithms include REINFORCE \cite{williams1992simple} and Proximal Policy Optimization (PPO) \cite{schulman2017proximal}.
+
+The REINFORCE update rule is:
+
+\begin{equation}
+\nabla_{\theta} J(\theta) = \mathbb{E}_{\pi_{\theta}}\left[\sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t|s_t) G_t\right]
+\end{equation}
+
+where $\theta$ are the policy parameters and $G_t = \sum_{k=0}^{T-t} \gamma^k r_{t+k}$ is the return from time step $t$.
+
+\subsubsection{Actor-Critic Methods}
+
+Actor-Critic methods combine value-based and policy-based approaches by learning both a policy (actor) and a value function (critic). The critic provides feedback to the actor, reducing the variance of policy gradient estimates. Popular algorithms include Advantage Actor-Critic (A2C) \cite{mnih2016asynchronous} and Soft Actor-Critic (SAC) \cite{haarnoja2018soft}.
+
+The actor update rule in A2C is:
+
+\begin{equation}
+\nabla_{\theta} J(\theta) = \mathbb{E}_{\pi_{\theta}}\left[\nabla_{\theta} \log \pi_{\theta}(a_t|s_t) A(s_t, a_t)\right]
+\end{equation}
+
+where $A(s_t, a_t) = Q(s_t, a_t) - V(s_t)$ is the advantage function.
+
+\subsection{Multi-Agent Reinforcement Learning}
+
+Multi-Agent Reinforcement Learning (MARL) extends RL to settings with multiple agents that interact with each other and the environment. MARL is particularly relevant for distributed systems where multiple nodes make decisions that affect each other.
+
+\subsubsection{Cooperative MARL}
+
+In cooperative MARL, agents work together to maximize a shared reward. Challenges include credit assignment (determining each agent's contribution to the team's success) and coordination (ensuring agents work together effectively).
+
+Algorithms such as Multi-Agent Deep Deterministic Policy Gradient (MADDPG) \cite{lowe2017multi} and Value Decomposition Networks (VDN) \cite{sunehag2018value} address these challenges by learning centralized value functions or decomposing team rewards into individual contributions.
+
+\subsubsection{Competitive and Mixed MARL}
+
+In competitive MARL, agents have conflicting objectives and seek to maximize their individual rewards, potentially at the expense of others. Mixed settings combine cooperative and competitive elements, with agents forming coalitions or competing based on their objectives.
+
+Game-theoretic concepts such as Nash equilibria and Stackelberg equilibria provide theoretical frameworks for analyzing and designing algorithms in these settings.
+
+\subsubsection{Decentralized MARL}
+
+Decentralized MARL focuses on settings where agents make decisions based solely on their local observations, without access to global state information or centralized coordination. This paradigm aligns with the requirements of distributed systems where centralized control is impractical.
+
+Algorithms such as Decentralized Partially Observable Markov Decision Processes (Dec-POMDPs) \cite{oliehoek2016concise} and Independent Q-Learning (IQL) \cite{tan1993multi} address the challenges of learning effective policies with limited information.
+
+\subsection{Applications of RL in Graph-Structured Environments}
+
+Reinforcement Learning has been applied to various problems involving graph-structured environments, demonstrating its potential for the self-partitioning graph approach proposed in this thesis.
+
+\subsubsection{Resource Allocation}
+
+RL has been used for resource allocation in communication networks, where agents learn policies for assigning resources (bandwidth, time slots, power) to maximize network performance. Ji et al. \cite{ji2024graph} integrate GNN with Deep Reinforcement Learning for resource allocation in V2X communications, demonstrating significant advantages over traditional methods.
+
+\subsubsection{Traffic Routing}
+
+RL has been applied to traffic routing in transportation and communication networks, where agents learn policies for directing traffic to minimize congestion and maximize throughput. Recent work has shown that RL can outperform traditional routing algorithms, particularly in dynamic environments with changing traffic patterns.
+
+\subsubsection{Task Scheduling}
+
+RL has been used for task scheduling in distributed computing systems, where agents learn policies for assigning tasks to processors to minimize completion time and maximize resource utilization. The work by Huang et al. \cite{huang2024parallel} demonstrates how RL-based scheduling can significantly enhance performance compared to traditional methods.
+
+\subsection{Integration of GNNs and RL}
+
+The integration of Graph Neural Networks and Reinforcement Learning combines the representation learning capabilities of GNNs with the decision-making capabilities of RL, creating powerful frameworks for autonomous agents in graph-structured environments.
+
+\subsubsection{GNN as Function Approximator}
+
+GNNs can serve as function approximators for value functions or policies in RL, enabling agents to learn from high-dimensional, graph-structured state spaces. This approach has been successfully applied to various domains, including molecular design \cite{you2018graph} and traffic management \cite{jiang2018graph}.
+
+The general form of a GNN-based Q-function can be expressed as:
+
+\begin{equation}
+Q(s, a) = f_{\text{GNN}}(G_s, a)
+\end{equation}
+
+where $G_s$ is the graph representation of state $s$ and $f_{\text{GNN}}$ is a GNN-based function approximator.
+
+\subsubsection{Graph-Based Exploration}
+
+GNNs can guide exploration in RL by identifying promising regions of the state space based on graph structure. This approach can significantly improve sample efficiency, particularly in environments with sparse rewards or large state spaces.
+
+\subsubsection{Graph Reinforcement Learning}
+
+Graph Reinforcement Learning (Graph RL) refers to RL methods specifically designed for graph-structured environments, where the state, action, or both are represented as graphs. Recent work in this area includes Graph Convolutional Reinforcement Learning (Graph ConvRL) \cite{jiang2018graph} and Graph Attention Reinforcement Learning (Graph AttRL) \cite{lee2019attention}.
+
+\subsection{Recent Advances in GNN-RL Integration}
+
+Recent research has advanced the integration of GNNs and RL in various directions, addressing challenges such as sample efficiency, generalization, and scalability.
+
+\subsubsection{Security-Aware GNN Learning}
+
+Recent work by \cite{rl2025security} proposes a security graph neural network learning algorithm based on reinforcement learning, transforming the training process into a security-aware framework. This approach addresses the vulnerability of GNNs to adversarial attacks, which is particularly important in security-critical applications.
+
+\subsubsection{Efficient Integration of RL in GNNs}
+
+Recent work has focused on efficient integration of RL in GNNs, addressing computational challenges in resource-constrained environments. Techniques include parameter sharing, knowledge distillation, and model compression to reduce the computational footprint while maintaining performance.
+
+\subsection{Research Gaps in RL for Distributed Systems}
+
+Despite the advances in RL for graph-based decision making, several research gaps remain in their application to distributed systems:
+
+\begin{itemize}
+    \item \textbf{Scalability}: Most RL algorithms struggle to scale to large numbers of agents or high-dimensional state spaces, limiting their applicability in large-scale distributed systems.
+    
+    \item \textbf{Sample Efficiency}: RL algorithms typically require large amounts of experience to learn effective policies, which can be impractical in real-world systems where exploration is costly or risky.
+    
+    \item \textbf{Adaptation to Dynamic Environments}: While RL agents can adapt to changing environments through continued learning, ensuring stable and efficient adaptation without catastrophic forgetting remains challenging.
+    
+    \item \textbf{Multi-Objective Optimization}: Most RL formulations focus on optimizing a single reward function, whereas distributed systems often involve multiple competing objectives that must be balanced dynamically.
+    
+    \item \textbf{Theoretical Guarantees}: The theoretical understanding of RL in multi-agent, partially observable, and non-stationary environments is still limited, making it difficult to provide guarantees about system behavior.
+\end{itemize}
+
+This thesis addresses these gaps by proposing an integrated framework that combines attention-based GNNs with reinforcement learning, incorporating Bell's equation for correlation measurement and optimization techniques for efficiency.
+
+\section{Bell's Equation and Quantum-Inspired Computing}
+
+Bell's equation, originally developed in quantum mechanics, provides a mathematical framework for testing the predictions of quantum mechanics against local hidden variable theories. This section reviews the origins of Bell's equation and its potential applications in classical computing systems, with a focus on distributed decision-making.
+
+\subsection{Introduction to Bell's Equation and Its Origins}
+
+Bell's equation, or more precisely Bell's inequality, was formulated by physicist John Stewart Bell in 1964 to address the Einstein-Podolsky-Rosen (EPR) paradox in quantum mechanics. The inequality provides a mathematical test for distinguishing between quantum mechanical predictions and those of local hidden variable theories.
+
+\subsubsection{Classical Form of Bell's Inequality}
+
+In its simplest form, Bell's inequality can be expressed as:
+
+\begin{equation}
+|P(a,b) - P(a,c)| \leq 1 - P(b,c)
+\end{equation}
+
+where $P(a,b)$ represents the correlation between measurements at settings $a$ and $b$.
+
+This inequality is satisfied by any local hidden variable theory but can be violated by quantum mechanical systems, demonstrating the non-local nature of quantum entanglement.
+
+\subsubsection{CHSH Inequality}
+
+A more commonly used form of Bell's inequality is the Clauser-Horne-Shimony-Holt (CHSH) inequality:
+
+\begin{equation}
+|E(a,b) + E(a,b') + E(a',b) - E(a',b')| \leq 2
+\end{equation}
+
+where $E(a,b)$ is the expectation value of the product of measurements at settings $a$ and $b$.
+
+Quantum mechanical systems can violate this inequality, achieving values up to $2\sqrt{2}$ (the Tsirelson bound), demonstrating stronger correlations than possible in classical systems.
+
+\subsection{Applications in Classical Computing Systems}
+
+While Bell's equation originated in quantum mechanics, its mathematical framework for analyzing correlations has found applications in classical computing systems, particularly those involving distributed decision-making.
+
+\subsubsection{Correlation Measurement in Distributed Systems}
+
+Bell's equation can be adapted to measure correlations between different parts of a distributed system, providing insights into the degree of interdependence and potential for coordination or conflict.
+
+In the context of graph partitioning, Bell's equation can be reformulated as:
+
+\begin{equation}
+|C(P_i, P_j) - C(P_i, P_k)| \leq 1 - C(P_j, P_k)
+\end{equation}
+
+where $C(P_i, P_j)$ represents the correlation (or similarity) between partitions $P_i$ and $P_j$.
+
+Violations of this inequality indicate strong non-local correlations that may require special handling in the partitioning strategy.
+
+\subsubsection{Decision Boundary Definition}
+
+Bell's equation can help define decision boundaries for partition assignments in self-partitioning graphs. By measuring correlations between potential partition assignments and comparing them to Bell's inequality, nodes can identify assignments that maximize useful correlations while minimizing harmful ones.
+
+\subsection{Quantum-Inspired Algorithms for Graph Problems}
+
+Quantum-inspired algorithms adapt concepts from quantum computing to classical systems, often achieving improved performance compared to traditional approaches.
+
+\subsubsection{Quantum Graph Neural Networks}
+
+Quantum Graph Neural Networks (QGNNs) \cite{ceschini2024graphs} represent a novel fusion of quantum computing and Graph Neural Networks, aimed at overcoming the computational and scalability challenges inherent in classical GNNs.
+
+QGNNs leverage quantum principles like superposition and entanglement to enhance computational capabilities in graph-structured data processing. While true quantum computers are still in early stages of development, quantum-inspired classical implementations can provide insights into potential advantages and guide the development of hybrid approaches.
+
+\subsubsection{Quantum Approximate Optimization Algorithm}
+
+The Quantum Approximate Optimization Algorithm (QAOA) \cite{farhi2014quantum} is a quantum algorithm for solving combinatorial optimization problems, including graph partitioning. QAOA has inspired classical approximations that incorporate quantum-inspired operators into traditional optimization frameworks.
+
+\subsection{Connections to Distributed Decision-Making}
+
+Bell's equation and quantum-inspired computing have several connections to distributed decision-making, particularly in the context of self-partitioning graphs.
+
+\subsubsection{Non-Local Information Processing}
+
+Bell's equation highlights the importance of non-local information processing in distributed systems. While traditional approaches often focus on local information to ensure scalability, Bell's equation suggests that certain types of non-local correlations can provide significant advantages if properly leveraged.
+
+\subsubsection{Entanglement-Inspired Coordination}
+
+Quantum entanglement, which leads to violations of Bell's inequality, has inspired coordination mechanisms for distributed agents. These mechanisms enable agents to achieve stronger correlations in their decisions than possible with classical coordination protocols, potentially leading to better global outcomes.
+
+\subsection{Research Gaps in Bell's Equation Applications}
+
+Despite the potential of Bell's equation and quantum-inspired computing for distributed systems, several research gaps remain:
+
+\begin{itemize}
+    \item \textbf{Practical Implementations}: Most applications of Bell's equation in classical systems remain theoretical, with few practical implementations demonstrating clear advantages over traditional approaches.
+    
+    \item \textbf{Scalability Challenges}: Quantum-inspired algorithms often face scalability challenges when applied to large-scale systems, limiting their practical utility.
+    
+    \item \textbf{Integration with Learning Systems}: The integration of Bell's equation and quantum-inspired computing with learning systems such as GNNs and RL is still in its infancy.
+    
+    \item \textbf{Theoretical Foundations}: The theoretical foundations for applying quantum concepts to classical distributed systems are still being developed, with many open questions about the limits and possibilities of such applications.
+\end{itemize}
+
+This thesis addresses these gaps by proposing a novel integration of Bell's equation with attention-based GNNs and reinforcement learning, providing both theoretical foundations and practical implementations for self-partitioning graphs.
+
+\section{Optimization Techniques for Distributed Systems}
+
+Optimization techniques play a crucial role in enhancing the efficiency and performance of distributed systems, particularly in resource-constrained environments such as industrial IoT. This section reviews key optimization techniques relevant to the self-partitioning graph approach, with a focus on early stopping, overhead reduction, and quantization.
+
+\subsection{Early Stopping Methods}
+
+Early stopping is a regularization technique that prevents overfitting by stopping the training process when the model's performance on a validation set starts to degrade.
+
+\subsubsection{Validation-Based Early Stopping}
+
+Validation-based early stopping monitors the model's performance on a validation set during training and stops when the performance stops improving or starts degrading. This approach is widely used in deep learning and can be adapted for distributed systems by defining appropriate validation metrics.
+
+The general algorithm for validation-based early stopping is:
+
+\begin{algorithm}
+\caption{Validation-Based Early Stopping}
+\begin{algorithmic}[1]
+\STATE Initialize patience $p$, minimum improvement threshold $\delta$, and best validation performance $v_{\text{best}} = -\infty$
+\STATE Initialize counter $c = 0$
+\WHILE{training}
+    \STATE Train model for one epoch
+    \STATE Evaluate model on validation set, obtaining validation performance $v$
+    \IF{$v > v_{\text{best}} + \delta$}
+        \STATE $v_{\text{best}} = v$
+        \STATE $c = 0$
+    \ELSE
+        \STATE $c = c + 1$
+        \IF{$c \geq p$}
+            \STATE Stop training
+        \ENDIF
+    \ENDIF
+\ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Multi-Level Early Stopping}
+
+In distributed systems, early stopping can be applied at multiple levels:
+
+\begin{itemize}
+    \item \textbf{Node-Level}: Individual nodes stop updating their models when local performance metrics plateau.
+    
+    \item \textbf{Cluster-Level}: Groups of nodes stop coordinating when cluster-level performance metrics stabilize.
+    
+    \item \textbf{System-Level}: The entire system stops reconfiguring when global performance metrics reach satisfactory levels.
+\end{itemize}
+
+This hierarchical approach allows for fine-grained control over computational resources, with different parts of the system adapting at different rates based on their specific conditions.
+
+\subsection{Overhead Reduction Strategies}
+
+Overhead reduction strategies aim to minimize computational and communication costs in distributed systems, which is particularly important in resource-constrained environments.
+
+\subsubsection{Sparse Attention Mechanisms}
+
+Sparse attention mechanisms reduce computation by focusing only on important connections, ignoring or downweighting less relevant ones. Techniques include:
+
+\begin{itemize}
+    \item \textbf{Top-K Attention}: Only compute attention for the K most important neighbors, based on feature similarity or other relevance metrics.
+    
+    \item \textbf{Threshold-Based Attention}: Only compute attention for neighbors whose relevance exceeds a certain threshold.
+    
+    \item \textbf{Structured Sparsity}: Impose specific sparsity patterns based on domain knowledge or system structure.
+\end{itemize}
+
+These approaches can significantly reduce computational requirements while maintaining most of the benefits of full attention mechanisms.
+
+\subsubsection{Localized Decision Making}
+
+Localized decision making reduces communication overhead by enabling nodes to make decisions based primarily on local information, with limited coordination with neighbors. Techniques include:
+
+\begin{itemize}
+    \item \textbf{Local Policy Optimization}: Nodes optimize their policies based on local observations and rewards, with occasional global coordination.
+    
+    \item \textbf{Neighborhood-Based Decision Making}: Nodes make decisions based on information from their immediate neighborhood, without requiring global state information.
+    
+    \item \textbf{Event-Triggered Communication}: Nodes only communicate when significant changes occur, rather than at fixed intervals.
+\end{itemize}
+
+These approaches reduce communication overhead while maintaining acceptable performance, particularly in systems where local information is sufficient for most decisions.
+
+\subsubsection{Hierarchical Communication}
+
+Hierarchical communication organizes nodes into a multi-level structure, reducing direct communication between distant nodes. Techniques include:
+
+\begin{itemize}
+    \item \textbf{Cluster-Based Hierarchies}: Nodes are organized into clusters, with intra-cluster communication being more frequent than inter-cluster communication.
+    
+    \item \textbf{Tree-Based Hierarchies}: Nodes are organized into a tree structure, with communication flowing up and down the tree rather than directly between leaves.
+    
+    \item \textbf{Dynamic Hierarchies}: The hierarchical structure adapts based on communication patterns and system conditions.
+\end{itemize}
+
+These approaches reduce overall communication overhead by limiting the number of direct connections each node maintains, while still enabling information to flow throughout the system.
+
+\subsection{Quantization Approaches}
+
+Quantization reduces the precision of model parameters, activations, or gradients to decrease memory usage and computational requirements, which is particularly valuable in resource-constrained environments.
+
+\subsubsection{Parameter Quantization}
+
+Parameter quantization reduces the precision of model parameters (weights and biases) from floating-point to lower-precision formats such as 8-bit integers. Techniques include:
+
+\begin{itemize}
+    \item \textbf{Post-Training Quantization}: Quantize parameters after training is complete, without retraining.
+    
+    \item \textbf{Quantization-Aware Training}: Incorporate quantization effects during training to minimize performance degradation.
+    
+    \item \textbf{Mixed-Precision Quantization}: Use different precision levels for different parameters based on their sensitivity.
+\end{itemize}
+
+These approaches can significantly reduce model size and inference time with minimal impact on performance, particularly for models with redundant parameters.
+
+\subsubsection{Activation Quantization}
+
+Activation quantization reduces the precision of intermediate activations during model inference. Techniques include:
+
+\begin{itemize}
+    \item \textbf{Fixed-Point Quantization}: Convert floating-point activations to fixed-point representations.
+    
+    \item \textbf{Dynamic Range Quantization}: Adapt quantization parameters based on the observed range of activation values.
+    
+    \item \textbf{Binary or Ternary Activations}: Extreme quantization that restricts activations to binary (0/1) or ternary (-1/0/1) values.
+\end{itemize}
+
+These approaches reduce memory usage and computational requirements during inference, which is particularly valuable for edge devices with limited resources.
+
+\subsubsection{Gradient Quantization}
+
+Gradient quantization reduces the precision of gradients during model training, which is particularly relevant for distributed training scenarios. Techniques include:
+
+\begin{itemize}
+    \item \textbf{Stochastic Quantization}: Quantize gradients with controlled noise to maintain unbiasedness in expectation.
+    
+    \item \textbf{Error-Compensated Quantization}: Track quantization errors and compensate for them in subsequent updates.
+    
+    \item \textbf{Adaptive Quantization}: Adjust quantization precision based on gradient magnitude or importance.
+\end{itemize}
+
+These approaches reduce communication overhead during distributed training while maintaining convergence guarantees, enabling more efficient training on distributed systems.
+
+\subsection{Efficiency-Performance Trade-offs}
+
+Optimization techniques inevitably involve trade-offs between efficiency and performance, which must be carefully managed based on system requirements and constraints.
+
+\subsubsection{Pareto-Optimal Solutions}
+
+Pareto-optimal solutions represent the frontier of trade-offs where no objective can be improved without degrading another. In the context of distributed systems, these objectives typically include:
+
+\begin{itemize}
+    \item Performance metrics such as accuracy, throughput, or response time
+    \item Efficiency metrics such as computational cost, memory usage, or energy consumption
+    \item Resilience metrics such as fault tolerance or adaptation speed
+\end{itemize}
+
+Identifying and navigating the Pareto frontier is crucial for designing systems that achieve the best possible performance within given resource constraints.
+
+\subsubsection{Adaptive Optimization}
+
+Adaptive optimization adjusts the trade-off between efficiency and performance based on changing system conditions and requirements. Techniques include:
+
+\begin{itemize}
+    \item \textbf{Dynamic Precision Adjustment}: Increase or decrease quantization precision based on available resources and performance requirements.
+    
+    \item \textbf{Conditional Computation}: Activate different parts of the model based on input complexity or resource availability.
+    
+    \item \textbf{Anytime Algorithms}: Algorithms that can provide valid results at any time, with quality improving as more computation is performed.
+\end{itemize}
+
+These approaches enable systems to adapt their resource usage based on changing conditions, maintaining acceptable performance across a wide range of scenarios.
+
+\subsection{Research Gaps in Optimization Techniques}
+
+Despite the extensive literature on optimization techniques for distributed systems, several research gaps remain:
+
+\begin{itemize}
+    \item \textbf{Integrated Optimization Frameworks}: Most techniques focus on specific aspects of optimization (computation, communication, memory) without providing integrated frameworks that address all aspects simultaneously.
+    
+    \item \textbf{Theoretical Guarantees}: Many optimization techniques lack theoretical guarantees about their impact on system performance, making it difficult to predict their behavior in new environments.
+    
+    \item \textbf{Adaptation to Heterogeneous Systems}: Most techniques assume homogeneous hardware capabilities, whereas real-world distributed systems often involve heterogeneous devices with varying constraints.
+    
+    \item \textbf{Learning-Based Optimization}: The potential of learning-based approaches for automatically discovering and applying optimal optimization strategies remains largely unexplored.
+\end{itemize}
+
+This thesis addresses these gaps by proposing an integrated optimization framework that combines early stopping, overhead reduction, and quantization techniques with Bell's equation and learning-based approaches.
+
+\section{Research Gap Analysis}
+
+Based on the comprehensive literature review presented in the previous sections, this section synthesizes the key research gaps and positions the current thesis within the broader research landscape.
+
+\subsection{Synthesis of Existing Literature}
+
+The existing literature on graph partitioning, graph neural networks, reinforcement learning, Bell's equation, and optimization techniques provides a rich foundation for addressing the challenges of distributed data management in industrial environments. However, these areas have largely developed independently, with limited integration across domains.
+
+Graph partitioning approaches have evolved from centralized, static algorithms to more dynamic and distributed methods, but still largely rely on heuristics rather than learning-based approaches. Graph neural networks have demonstrated impressive capabilities for representation learning on graph-structured data, particularly with the introduction of attention mechanisms, but their application to autonomous decision-making in distributed systems remains limited. Reinforcement learning provides powerful frameworks for sequential decision-making, but faces challenges in scaling to large, multi-agent systems with partial observability. Bell's equation offers intriguing possibilities for measuring and leveraging correlations in distributed systems, but practical implementations remain scarce. Optimization techniques provide valuable tools for enhancing efficiency in resource-constrained environments, but often lack integration with learning-based approaches.
+
+\subsection{Identification of Research Gaps}
+
+Based on the literature review, the following key research gaps emerge:
+
+\begin{enumerate}
+    \item \textbf{Limited Autonomy in Graph Partitioning}: Most existing approaches either rely on centralized computation or distributed algorithms with limited local decision-making capabilities, failing to fully leverage the potential of autonomous agents.
+    
+    \item \textbf{Insufficient Integration of GNNs and RL}: While both GNNs and RL have shown promise individually, their integration for autonomous decision-making in graph-structured environments remains underdeveloped.
+    
+    \item \textbf{Lack of Practical Applications of Bell's Equation}: Despite its theoretical potential, practical applications of Bell's equation in classical distributed systems are scarce, particularly in combination with learning-based approaches.
+    
+    \item \textbf{Fragmented Optimization Techniques}: Optimization techniques such as early stopping, overhead reduction, and quantization are typically applied in isolation, without an integrated framework that addresses multiple efficiency aspects simultaneously.
+    
+    \item \textbf{Limited Adaptation to Dynamic Environments}: Most existing approaches are designed for static or slowly changing environments, failing to address the rapid dynamics of industrial data streams.
+    
+    \item \textbf{Insufficient Multi-Objective Optimization}: Few approaches explicitly address the multi-objective nature of distributed data management, where communication cost, load balance, and response time must be optimized simultaneously.
+\end{enumerate}
+
+\subsection{Positioning of the Current Thesis}
+
+This thesis addresses the identified research gaps by proposing a novel approach to distributed data management through self-partitioning graphs that embed intelligence at the node level. The key innovations include:
+
+\begin{enumerate}
+    \item \textbf{Integration of Attention-Based GNNs and RL}: The thesis develops a unified framework that combines the representation learning capabilities of attention-based GNNs with the decision-making capabilities of RL, enabling nodes to make intelligent partitioning decisions based on local observations.
+    
+    \item \textbf{Adaptation of Bell's Equation}: The thesis adapts Bell's equation from its origins in quantum mechanics to provide a mathematical foundation for measuring correlations between different partitions and guiding decision-making processes in classical distributed systems.
+    
+    \item \textbf{Integrated Optimization Framework}: The thesis develops an integrated optimization framework that combines early stopping, overhead reduction, and quantization techniques with Bell's equation and learning-based approaches, addressing multiple efficiency aspects simultaneously.
+    
+    \item \textbf{Dynamic Adaptation Mechanisms}: The thesis designs mechanisms for continuous adaptation to changing data patterns, computational loads, and network conditions, enabling the system to maintain optimal performance in highly dynamic environments.
+    
+    \item \textbf{Multi-Objective Optimization Approach}: The thesis develops a multi-objective optimization approach that explicitly addresses the trade-offs between communication cost, load balance, and response time, enabling the system to adapt its priorities based on changing requirements.
+\end{enumerate}
+
+By addressing these research gaps, the thesis contributes to the advancement of distributed data management in industrial environments, enabling more efficient, adaptive, and resilient systems that can handle the challenges of dynamic multi-source data streams.
+
+\begin{thebibliography}{99}
+
+\bibitem{fiedler1973algebraic} Fiedler, M. (1973). Algebraic connectivity of graphs. Czechoslovak Mathematical Journal, 23(2), 298-305.
+
+\bibitem{karypis1998fast} Karypis, G., \& Kumar, V. (1998). A fast and high quality multilevel scheme for partitioning irregular graphs. SIAM Journal on Scientific Computing, 20(1), 359-392.
+
+\bibitem{karypis1998parallel} Karypis, G., \& Kumar, V. (1998). Parallel multilevel k-way partitioning scheme for irregular graphs. SIAM Review, 41(2), 278-300.
+
+\bibitem{schloegel2000graph} Schloegel, K., Karypis, G., \& Kumar, V. (2000). Graph partitioning for high-performance scientific simulations. CRPC Parallel Computing Handbook.
+
+\bibitem{stanton2012streaming} Stanton, I., \& Kliot, G. (2012). Streaming graph partitioning for large distributed graphs. In Proceedings of the 18th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (pp. 1222-1230).
+
+\bibitem{ding2024play} Ding, Z., Xiang, Y., Wang, S., Xie, X., \& Zhou, S. K. (2024). Play like a Vertex: A Stackelberg Game Approach for Streaming Graph Partitioning. Proc. ACM Manag. Data, 37(4), Article 111.
+
+\bibitem{raghavan2007near} Raghavan, U. N., Albert, R., \& Kumara, S. (2007). Near linear time algorithm to detect community structures in large-scale networks. Physical Review E, 76(3), 036106.
+
+\bibitem{huang2024parallel} Huang, T. W., Zhang, B., Lin, D. L., \& Chiu, C. H. (2024). Parallel and Heterogeneous Timing Analysis: Partition, Algorithm, and System. In Proceedings of the 2024 International Symposium on Physical Design (ISPD '24).
+
+\bibitem{spectral2023} Multiway Spectral Graph Partitioning. (2023).
+
+\bibitem{gilmer2017neural} Gilmer, J., Schoenholz, S. S., Riley, P. F., Vinyals, O., \& Dahl, G. E. (2017). Neural message passing for quantum chemistry. In Proceedings of the 34th International Conference on Machine Learning (pp. 1263-1272).
+
+\bibitem{kipf2017semi} Kipf, T. N., \& Welling, M. (2017). Semi-supervised classification with graph convolutional networks. In International Conference on Learning Representations.
+
+\bibitem{hamilton2017inductive} Hamilton, W. L., Ying, R., \& Leskovec, J. (2017). Inductive representation learning on large graphs. In Advances in Neural Information Processing Systems (pp. 1024-1034).
+
+\bibitem{velivckovic2018graph} Veličković, P., Cucurull, G., Casanova, A., Romero, A., Liò, P., \& Bengio, Y. (2018). Graph attention networks. In International Conference on Learning Representations.
+
+\bibitem{shen2025gtat} Shen, J., Ain, Q. T., Liu, Y., Liang, B., Qiang, X., \& Kou, Z. (2025). GTAT: empowering graph neural networks with cross attention. Scientific Reports, 15, Article 4760.
+
+\bibitem{ji2024hierarchical} Ji, J., Jiao, Z., Guanghui, D., \& Guohua, W. (2024). Hierarchical multimodal self-attention-based graph neural network for DTI prediction. Briefings in Bioinformatics, 25(4), bbae293.
+
+\bibitem{wang2019heterogeneous} Wang, X., Ji, H., Shi, C., Wang, B., Ye, Y., Cui, P., \& Yu, P. S. (2019). Heterogeneous graph attention network. In The World Wide Web Conference (pp. 2022-2032).
+
+\bibitem{ji2024graph} Ji, M., Wu, Q., Fan, P., Cheng, N., Chen, W., Wang, J., \& Letaief, K. B. (2024). Graph Neural Networks and Deep Reinforcement Learning Based Resource Allocation for V2X Communications. arXiv:2407.06518v1.
+
+\bibitem{watkins1992q} Watkins, C. J., \& Dayan, P. (1992). Q-learning. Machine Learning, 8(3-4), 279-292.
+
+\bibitem{mnih2015human} Mnih, V., Kavukcuoglu, K., Silver, D., Rusu, A. A., Veness, J., Bellemare, M. G., ... \& Hassabis, D. (2015). Human-level control through deep reinforcement learning. Nature, 518(7540), 529-533.
+
+\bibitem{williams1992simple} Williams, R. J. (1992). Simple statistical gradient-following algorithms for connectionist reinforcement learning. Machine Learning, 8(3-4), 229-256.
+
+\bibitem{schulman2017proximal} Schulman, J., Wolski, F., Dhariwal, P., Radford, A., \& Klimov, O. (2017). Proximal policy optimization algorithms. arXiv preprint arXiv:1707.06347.
+
+\bibitem{mnih2016asynchronous} Mnih, V., Badia, A. P., Mirza, M., Graves, A., Lillicrap, T., Harley, T., ... \& Kavukcuoglu, K. (2016). Asynchronous methods for deep reinforcement learning. In International Conference on Machine Learning (pp. 1928-1937).
+
+\bibitem{haarnoja2018soft} Haarnoja, T., Zhou, A., Abbeel, P., \& Levine, S. (2018). Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor. In International Conference on Machine Learning (pp. 1861-1870).
+
+\bibitem{lowe2017multi} Lowe, R., Wu, Y., Tamar, A., Harb, J., Abbeel, P., \& Mordatch, I. (2017). Multi-agent actor-critic for mixed cooperative-competitive environments. In Advances in Neural Information Processing Systems (pp. 6379-6390).
+
+\bibitem{sunehag2018value} Sunehag, P., Lever, G., Gruslys, A., Czarnecki, W. M., Zambaldi, V., Jaderberg, M., ... \& Graepel, T. (2018). Value-decomposition networks for cooperative multi-agent learning based on team reward. In Proceedings of the 17th International Conference on Autonomous Agents and MultiAgent Systems (pp. 2085-2087).
+
+\bibitem{oliehoek2016concise} Oliehoek, F. A., \& Amato, C. (2016). A concise introduction to decentralized POMDPs. Springer.
+
+\bibitem{tan1993multi} Tan, M. (1993). Multi-agent reinforcement learning: Independent vs. cooperative agents. In Proceedings of the Tenth International Conference on Machine Learning (pp. 330-337).
+
+\bibitem{you2018graph} You, J., Liu, B., Ying, R., Pande, V., \& Leskovec, J. (2018). Graph convolutional policy network for goal-directed molecular graph generation. In Advances in Neural Information Processing Systems (pp. 6410-6421).
+
+\bibitem{jiang2018graph} Jiang, J., Dun, C., Huang, T., \& Lu, Z. (2018). Graph convolutional reinforcement learning. arXiv preprint arXiv:1810.09202.
+
+\bibitem{lee2019attention} Lee, J. B., Rossi, R. A., Kim, S., Ahmed, N. K., \& Koh, E. (2019). Attention models in graphs: A survey. ACM Transactions on Knowledge Discovery from Data, 13(6), 1-25.
+
+\bibitem{rl2025security} Reinforcement learning-based secure training for adversarial graph neural networks. (2025). Neurocomputing.
+
+\bibitem{ceschini2024graphs} Ceschini, A., Mauro, F., De Falco, F., Sebastianelli, A., Verdone, A., Rosato, A., Le Saux, B., Panella, M., Gamba, P., \& Ullo, S. L. (2024). From Graphs to Qubits: A Critical Review of Quantum Graph Neural Networks. arXiv:2408.06524v1.
+
+\bibitem{farhi2014quantum} Farhi, E., Goldstone, J., \& Gutmann, S. (2014). A quantum approximate optimization algorithm. arXiv preprint arXiv:1411.4028.
+
+\end{thebibliography}
+
+
+\end{document}

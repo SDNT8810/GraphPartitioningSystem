@@ -1,0 +1,20 @@
+include LICENSE
+include README.md
+include requirements.txt
+include CODEMAP.md
+include TODO.md
+include pyproject.toml
+
+recursive-include configs *.yaml
+recursive-include src *.py
+recursive-include src *.md
+recursive-include src *.yaml
+recursive-include src *.json
+recursive-include src *.txt
+
+global-exclude *.pyc
+global-exclude __pycache__
+global-exclude .DS_Store
+global-exclude *.swp
+global-exclude .git
+global-exclude .gitignore

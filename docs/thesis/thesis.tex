@@ -1,0 +1,73 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{booktabs}
+%\usepackage{multirow}
+%\usepackage[ruled,vlined]{algorithm2e}
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{setspace}
+%\usepackage{titlesec}
+%\usepackage{fancyhdr}
+\usepackage{cite}
+\usepackage{tikz}
+%\usepackage{pgfplots}
+%\usepackage{float}
+%\pgfplotsset{compat=1.18}
+
+% Configure listings for algorithms
+\lstset{
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60!black},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    showstringspaces=false,
+    tabsize=2
+}
+
+% Page layout
+\geometry{a4paper, margin=1in}
+\onehalfspacing
+
+% Title page
+\title{Self-Partitioning Graphs for Autonomous Data Management in Distributed Industrial Multi-Source Data Stream Systems}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The management of data in distributed industrial multi-source data stream systems presents significant challenges due to the dynamic nature of data, fluctuating computational loads, and complex network constraints. Traditional centralized graph partitioning approaches often fail to adapt efficiently to these rapidly changing conditions. This thesis proposes a novel framework for self-partitioning graphs, where decision-making capabilities are distributed across the nodes, enabling autonomous data management. By integrating principles from graph theory, distributed systems, and artificial intelligence, we develop a theoretical foundation and practical algorithms for creating graph structures that can intelligently reorganize themselves in response to evolving system dynamics. We draw inspiration from recent advancements in graph partitioning algorithms, spectral methods, and task-parallel programming to design a system that enhances performance, resilience, and scalability in industrial IoT environments. This research explores the potential of embedding intelligence within the graph structure itself, paving the way for more adaptive and efficient distributed data stream management.
+\end{abstract}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+% Main chapters
+\include{chapters/introduction}
+\include{chapters/literature_review}
+\include{chapters/theoretical_framework}
+\include{chapters/algorithms}
+\include{chapters/implementation}
+\include{chapters/evaluation}
+\include{chapters/conclusion}
+
+% Bibliography
+\cleardoublepage
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{plain}
+\bibliography{references.bib}
+
+\end{document} 

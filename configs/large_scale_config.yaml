@@ -1,0 +1,25 @@
+graph:
+  num_nodes: 1000  # Large graph with 1000 nodes
+  edge_probability: 0.01  # Sparse graph, more realistic for large networks
+
+partition:
+  num_partitions: 8  # More partitions for larger graph
+  balance_weight: 0.4
+  cut_size_weight: 0.4
+  conductance_weight: 0.2
+  use_laplacian: true
+
+agent:
+  # Training parameters
+  learning_rate: 0.0005  # Smaller learning rate for stability
+  epsilon: 0.05
+  num_episodes: 100
+  max_steps: 200
+  # Neural network dimensions
+  feature_dim: 14  # Base feature dimension
+  state_dim: 32
+  hidden_dim: 64
+  action_dim: 8  # Matches num_partitions
+
+test:
+  num_runs: 5  # Multiple runs to test consistency

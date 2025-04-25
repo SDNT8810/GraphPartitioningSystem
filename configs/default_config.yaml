@@ -1,0 +1,79 @@
+graph:
+  num_nodes: 100
+  edge_probability: 0.1
+  weight_range: [0.1, 1.0]
+
+partition:
+  num_partitions: 2
+  balance_weight: 0.5
+  cut_size_weight: 0.3
+  conductance_weight: 0.2
+  use_laplacian: true
+  min_partition_size: 10
+  max_partition_size: 50
+  balance_threshold: 0.8
+  conductance_threshold: 0.3
+  use_hybrid_strategy: true
+  strategy_weights: [0.4, 0.3, 0.3]
+
+agent:
+  # Training parameters
+  learning_rate: 0.001
+  epsilon: 0.1
+  epsilon_start: 1.0
+  epsilon_end: 0.01
+  epsilon_decay: 0.995
+  gamma: 0.99
+  weight_decay: 0.0
+  memory_size: 10000
+  batch_size: 64
+  target_update: 100
+  local_update_interval: 10
+  communication_interval: 50
+  max_grad_norm: 1.0
+  num_episodes: 100
+  max_steps: 50
+  device: 'cpu'
+  # Neural network dimensions
+  feature_dim: 24  # Base feature dimension
+  state_dim: 32   # Desired state dimension after encoding
+  hidden_dim: 64  # Hidden layer dimension
+  action_dim: 2   # Output action dimension
+
+gnn:
+  hidden_channels: 64
+  num_layers: 3
+  num_heads: 4
+  dropout: 0.1
+  use_attention: true
+  attention_dropout: 0.1
+  quantize: true
+  quantization_bits: 8
+  learning_rate: 0.001
+
+monitoring:
+  track_communication: true
+  track_computation: true
+  track_memory: true
+  sampling_interval: 100
+  log_interval: 1000
+  save_metrics: true
+  metrics_path: "metrics"
+
+recovery:
+  checkpoint_interval: 1000
+  max_checkpoints: 5
+  failure_detection_interval: 100
+  recovery_timeout: 1000
+  replication_factor: 2
+
+system:
+  num_nodes: 100
+  edge_probability: 0.3
+  weight_range: [0.1, 1.0]
+  num_episodes: 100
+  max_steps: 100
+  log_interval: 10
+
+test:
+  num_runs: 3  # Number of test runs for experiments
