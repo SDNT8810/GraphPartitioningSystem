@@ -57,15 +57,33 @@ python3 -m pytest src/tests
 
 ### Running Experiments
 
-1. Run with specific strategy and configuration:
+1. Basic experiment with default configuration:
+```bash
+python main.py --experiment_name basic_test
+```
+
+2. Run with specific strategy and configuration:
 ```bash
 python main.py --config configs/test_config.yaml --strategy hybrid --experiment_name hybrid_test --runs 10
 ```
 
-2. Run visualization experiment:
+3. Run with different strategies:
 ```bash
-python main.py --config configs/test_config.yaml --experiment_name visualization_test
+python main.py --config configs/test_config.yaml --strategy spectral --experiment_name spectral_test
+python main.py --config configs/test_config.yaml --strategy dynamic --experiment_name dynamic_test
 ```
+
+4. Run multiple experiments:
+```bash
+python main.py --config configs/test_config.yaml --strategy hybrid --experiment_name hybrid_multi --runs 5
+```
+
+5. Run with visualization:
+```bash
+python main.py --config configs/test_config.yaml --experiment_name viz_test --visualize
+```
+
+Note: All graph parameters (number of nodes, edge probability, etc.) and algorithm parameters should be specified in the YAML configuration files under `configs/`.
 
 ### Monitoring Results
 
