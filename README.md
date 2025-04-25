@@ -76,7 +76,6 @@ tensorboard --logdir runs/
 
 2. View results in browser:
 - Open: http://localhost:6006
-- Enable dark mode with: http://localhost:6006/?darkMode=true#timeseries
 - Monitor metrics, visualizations, and training progress
 
 ## Project Structure
@@ -143,13 +142,29 @@ python -m pytest src/tests/
 # Run specific test category
 python -m pytest src/tests/test_strategies.py
 
-# Run with coverage
-python -m pytest --cov=src tests/
+# Run individual test
+python -m pytest src/tests/test_strategies.py::test_spectral_strategy
+
+# Run benchmark test with verbose output
+python -m pytest src/tests/test_strategies.py::test_benchmark_strategies -v
+
+# Run tests with coverage report
+python -m pytest --cov=src src/tests/
+
+# Run tests with detailed coverage
+python -m pytest --cov=src --cov-report=term-missing src/tests/
 ```
 
 ### Performance Benchmarks
 ```bash
+# Run all benchmarks
 python -m pytest src/tests/ --benchmark-only
+
+# Run specific benchmark
+python -m pytest src/tests/test_strategies.py::test_benchmark_strategies --benchmark-only
+
+# Run benchmark with statistics
+python -m pytest src/tests/test_strategies.py::test_benchmark_strategies --benchmark-only --benchmark-columns=min,max,mean,stddev
 ```
 
 ## Contributing
