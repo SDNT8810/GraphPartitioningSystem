@@ -1,0 +1,22 @@
+Compare with other strategies
+Try different graph parameters
+Analyze specific runs in detail
+Generate visualizations of the partitions?
+
+
+handle this matter:
+in system_config.py all parameters have default values
+i want them be like this (no need to remove them) but i want to be able to run tests and main.py if i change equivalent values in /configs/*_config.yaml and selecting --config {config_name.yaml} and project works with new params
+
+
+python3 -m venv venv                                                                
+source venv/bin/activate 
+pip install -r requirements.txt
+python3 -m pytest src/tests
+
+python main.py --config configs/test_config.yaml --strategy hybrid --experiment_name hybrid_test --runs 10
+
+python main.py --config configs/test_config.yaml --experiment_name visualization_test
+
+http://127.0.0.1:50179/?darkMode=true#timeseries
+
