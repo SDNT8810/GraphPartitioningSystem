@@ -114,6 +114,8 @@ logs/
 *.log
 results/
 output/
+runs/
+plots/
 checkpoints/
 *.pkl
 *.pt
