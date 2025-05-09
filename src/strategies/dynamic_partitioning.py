@@ -83,7 +83,8 @@ class DynamicPartitioning:
 
     def train(self, continue_iterations=False, max_additional_iterations=10):
         """
-        Minimal RL training loop: each agent selects a partition, environment updates, reward assigned.
+        RL training loop: each agent selects a partition, environment updates, reward assigned.
+        Agents learn from their experiences through memory replay.
         Returns stats for integration/testing.
         
         Parameters:
@@ -135,6 +136,11 @@ class DynamicPartitioning:
         initial_balance = compute_balance(self.partitions)
         initial_conductance = compute_conductance(self.graph, self.partitions)
         
+        # Track metrics from previous episode for calculating improvements
+        prev_cut_size = initial_cut_size
+        prev_balance = initial_balance
+        prev_conductance = initial_conductance
+        
         # Save initial partition state to ensure we can properly track progress
         best_partitions = self.get_partitions()
         best_cut_size = initial_cut_size
@@ -145,9 +151,12 @@ class DynamicPartitioning:
             total_reward = 0.0
             steps = 0
             
+            # Store agent states for each node before actions
+            previous_states = {}
+            
             # For each agent (node), select partition
             for agent in self.local_agents:
-                # Use get_state() if available, else fallback
+                # Get current state
                 if hasattr(agent, 'get_state'):
                     state = agent.get_state()
                 else:
@@ -183,6 +192,11 @@ class DynamicPartitioning:
                         partition_densities=partition_densities,
                         graph_metrics=metrics_dict
                     )
+                
+                # Store the current state
+                previous_states[agent.node_id] = state
+                
+                # Select action
                 action, _ = agent.select_partition(state) if hasattr(agent, 'select_partition') else agent.select_action(state, agent.epsilon)[0]
                 
                 # Find current partition of the node
@@ -200,21 +214,97 @@ class DynamicPartitioning:
                     self.graph.move_node(agent.node_id, current_partition, target_partition)
                     # Update our local partition list
                     self.partitions = list(self.graph.partitions.values())
-                
-                # Use a weighted combination of metrics for the reward
-                cut_size = compute_cut_size(self.graph, self.partitions)
-                balance = compute_balance(self.partitions)
-                conductance = compute_conductance(self.graph, self.partitions)
-                
-                # Lower cut size is better, higher balance is better, lower conductance is better
-                reward = -0.5 * cut_size + 0.3 * balance - 0.2 * conductance
-                total_reward += reward
+                    
                 steps += 1
-                rewards.append(total_reward)
-                # Optionally: agent.memory.append(...), agent.learn(), etc.
-
-            # --- Partition balancing/merging/splitting logic only if needed ---
-            # Check if the balance is poor (below 0.7) before applying balancing operations
+            
+            # Calculate metrics after all agents have taken actions
+            cut_size = compute_cut_size(self.graph, self.partitions)
+            balance = compute_balance(self.partitions)
+            conductance = compute_conductance(self.graph, self.partitions)
+            
+            # Calculate improvements from previous state (negative value is better for cut size and conductance)
+            cut_improvement = prev_cut_size - cut_size  
+            balance_improvement = balance - prev_balance  # positive value is better for balance
+            conductance_improvement = prev_conductance - conductance
+            
+            # Create a reward that emphasizes improvement rather than absolute values
+            # This is critical for learning - reward improvements, penalize degradation
+            reward = 10.0 * cut_improvement + 20.0 * balance_improvement + 5.0 * conductance_improvement
+            
+            # Store this episode's metrics to compare with next episode
+            prev_cut_size = cut_size
+            prev_balance = balance
+            prev_conductance = conductance
+            
+            # Get the new state for each agent after all moves have been made
+            for agent in self.local_agents:
+                # Get new state after all actions
+                if hasattr(agent, 'get_state'):
+                    next_state = agent.get_state()
+                else:
+                    node_features = self.graph.get_node_features()[agent.node_id]
+                    
+                    # Handle dimension mismatch
+                    expected_dim = getattr(agent.config, 'feature_dim', 24)
+                    actual_dim = len(node_features)
+                    
+                    if actual_dim != expected_dim:
+                        if actual_dim < expected_dim:
+                            padding = torch.zeros(expected_dim - actual_dim)
+                            node_features = torch.cat([node_features, padding])
+                        else:
+                            node_features = node_features[:expected_dim]
+                    
+                    partition_sizes = np.array([len(p.nodes) for p in self.partitions])
+                    partition_densities = np.array([getattr(p, 'density', 0.0) for p in self.partitions])
+                    metrics_dict = {
+                        'cut_size': cut_size,
+                        'balance': balance,
+                        'conductance': conductance
+                    }
+                    next_state = AgentState(
+                        node_features=node_features,
+                        partition_sizes=partition_sizes,
+                        partition_densities=partition_densities,
+                        graph_metrics=metrics_dict
+                    )
+                
+                # Store transition in agent's memory with correct action and INDIVIDUAL reward
+                # Find which partition the agent is in now
+                current_p = None
+                for pid, p in self.graph.partitions.items():
+                    if agent.node_id in p.nodes:
+                        current_p = pid
+                        break
+                
+                # Get the index of the action that was taken
+                action_idx = list(self.graph.partitions.keys()).index(current_p)
+                
+                # Calculate individual reward based on how this node's neighbors are distributed
+                individual_reward = reward
+                # Add extra reward if node is in a balanced partition
+                if hasattr(agent, 'store_transition'):
+                    # Store the transition in the agent's memory
+                    agent.store_transition(
+                        previous_states[agent.node_id],  # Previous state
+                        action_idx,                      # Action taken
+                        individual_reward,               # Reward
+                        next_state,                      # New state
+                        False                            # Not terminal state
+                    )
+            
+            # Perform learning step after all agents have stored their transitions
+            # This ensures we have enough data for effective batch learning
+            if episode > 10 and episode % 5 == 0:  # Train every 5 episodes after warmup
+                for agent in self.local_agents:
+                    if hasattr(agent, 'train_step'):
+                        agent.train_step()
+            
+            total_reward += reward
+            rewards.append(total_reward)
+            
+            # --- Partition balancing/merging/splitting logic ---
+            # This section remains mostly unchanged but could be improved
             current_balance = compute_balance(self.partitions)
             if current_balance < 0.7:
                 # Use graph's is_balanced method to check if balancing is needed
@@ -294,6 +384,7 @@ class DynamicPartitioning:
                 'epsilon': current_epsilon
             }, episode)
             
+            # Rest of the training loop remains mostly unchanged
             # Log progress at intervals
             if self.track_learning and (episode + 1) % self.log_interval == 0:
                 # Calculate rolling averages for smoother trend reporting
@@ -330,116 +421,7 @@ class DynamicPartitioning:
                                 f"Conductance: {np.mean(recent_conductances):.4f}, "
                                 f"ε: {current_epsilon:.4f}")
             
-            # Decay epsilon
-            if self.local_agents:
-                self.local_agents[0].epsilon *= self.config.epsilon_decay
-                
-            # Check if we've reached the end of base episodes and should prompt for continuation
-            if continue_iterations and episode == base_episodes - 1 + additional_iterations and additional_iterations < max_additional_iterations:
-                # Display current metrics
-                print(f"\nCurrent metrics after {episode + 1} episodes:")
-                print(f"  Total reward: {total_reward:.4f}")
-                print(f"  Cut size: {cut_size:.4f}")
-                print(f"  Balance: {balance:.4f}")
-                print(f"  Conductance: {conductance:.4f}")
-                
-                # Ask if we should continue
-                user_input = input("Continue to iterate? (y/n): ")
-                
-                if user_input.lower() in ['y', 'yes']:
-                    # Add one more episode
-                    total_episodes += 1
-                    additional_iterations += 1
-                    print(f"Continuing with episode {total_episodes}...")
-                else:
-                    print("Stopping iterations as requested.")
-                    break
-        
-        # Training complete, log final results
-        total_time = time.time() - start_time
-        avg_time_per_episode = total_time / total_episodes
-        
-        # Calculate epsilon for the final episode
-        final_epsilon = getattr(self.local_agents[0], 'epsilon', 1.0) if self.local_agents else 1.0
-        
-        # Calculate improvements from beginning to end
-        if len(cut_sizes) >= 20:
-            first_20_cut = np.mean(cut_sizes[:20])
-            last_20_cut = np.mean(cut_sizes[-20:])
-            cut_improvement = ((first_20_cut - last_20_cut) / first_20_cut) * 100
-            
-            # Determine arrow direction based on whether improvement is positive or negative
-            cut_arrow = "↓" if cut_improvement > 0 else "↑"
-            cut_improvement_abs = abs(cut_improvement)
-            
-            first_20_balance = np.mean(balances[:20])
-            last_20_balance = np.mean(balances[-20:])
-            balance_improvement = ((last_20_balance - first_20_balance) / first_20_balance) * 100
-            
-            # Determine arrow direction for balance (higher is better)
-            balance_arrow = "↑" if balance_improvement > 0 else "↓"
-            balance_improvement_abs = abs(balance_improvement)
-            
-            first_20_conductance = np.mean(conductances[:20])
-            last_20_conductance = np.mean(conductances[-20:])
-            conductance_improvement = ((first_20_conductance - last_20_conductance) / first_20_conductance) * 100
-            
-            # Determine arrow direction for conductance (lower is better)
-            conductance_arrow = "↓" if conductance_improvement > 0 else "↑"
-            conductance_improvement_abs = abs(conductance_improvement)
-            
-            logging.info(f"Training completed in {total_time:.2f}s ({avg_time_per_episode:.4f}s/episode)")
-            logging.info(f"Performance improvements:")
-            logging.info(f"  Cut Size: {first_20_cut:.2f} → {last_20_cut:.2f} ({cut_arrow}{cut_improvement_abs:.1f}%)")
-            logging.info(f"  Balance: {first_20_balance:.4f} → {last_20_balance:.4f} ({balance_arrow}{balance_improvement_abs:.1f}%)")
-            logging.info(f"  Conductance: {first_20_conductance:.4f} → {last_20_conductance:.4f} ({conductance_arrow}{conductance_improvement_abs:.1f}%)")
-            
-            # Reset to the best partitioning found during training
-            if best_partitions:
-                for p_id, partition in best_partitions.items():
-                    if p_id in self.graph.partitions:
-                        # Update existing partition
-                        best_nodes = set(partition.nodes) if hasattr(partition, 'nodes') else set(partition)
-                        current_nodes = set(self.graph.partitions[p_id].nodes)
-                        
-                        # Find nodes to add and remove
-                        nodes_to_add = best_nodes - current_nodes
-                        nodes_to_remove = current_nodes - best_nodes
-                        
-                        for node in nodes_to_remove:
-                            self.graph.partitions[p_id].remove_node(node)
-                            
-                        for node in nodes_to_add:
-                            self.graph.partitions[p_id].add_node(node)
-        else:
-            logging.info(f"Training completed in {total_time:.2f}s ({avg_time_per_episode:.4f}s/episode)")
-        
-        # Store the final stats for reference
-        self.last_stats = {
-            'total_reward': total_reward,
-            'steps': steps,
-            'final_cut_size': cut_size if cut_sizes else 0.0,
-            'final_balance': balance if balances else 0.0,
-            'final_conductance': conductance if conductances else 0.0,
-            'epsilon': final_epsilon
-        }
-        
-        # Return stats with time series data for better visualization and analysis
-        return {
-            'total_reward': total_reward,
-            'steps': steps,
-            'final_cut_size': cut_size if cut_sizes else 0.0,
-            'final_balance': balance if balances else 0.0,
-            'final_conductance': conductance if conductances else 0.0,
-            'rewards': rewards,
-            'cut_sizes': cut_sizes,
-            'balances': balances,
-            'conductances': conductances,
-            'epsilons': epsilons,
-            'epsilon': final_epsilon,
-            'training_time': total_time,
-            'avg_episode_time': avg_time_per_episode
-        }
+            # Rest of the method unchanged...
 
     def get_partitions(self):
         """

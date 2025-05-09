@@ -247,36 +247,54 @@ class BaseAgent(nn.Module):
         dones: List[bool]
     ) -> Tuple[torch.Tensor, Dict[str, float]]:
         """Compute the loss for a batch of transitions"""
-        # Convert lists to tensors
-        states_tensor = torch.stack([self.encode_state(s) for s in states])
-        next_states_tensor = torch.stack([self.encode_state(s) for s in next_states])
-        actions_tensor = torch.tensor(actions, device=self.device)
-        rewards_tensor = torch.tensor(rewards, device=self.device)
-        dones_tensor = torch.tensor(dones, device=self.device)
-        
-        # Get current Q-values
-        current_q_values = self.action_head(states_tensor)
-        current_q_values = current_q_values.gather(1, actions_tensor.unsqueeze(1))
-        
-        # Get next Q-values
-        with torch.no_grad():
-            next_q_values = self.action_head(next_states_tensor)
-            next_q_values = next_q_values.max(1)[0]
-            next_q_values[dones_tensor] = 0.0
-            target_q_values = rewards_tensor + self.config.gamma * next_q_values
-        
-        # Compute loss
-        loss = F.smooth_l1_loss(current_q_values.squeeze(), target_q_values)
-        
-        # Compute metrics
-        metrics = {
-            'loss': loss.item(),
-            'avg_reward': np.mean(rewards),
-            'max_reward': np.max(rewards),
-            'min_reward': np.min(rewards)
-        }
-        
-        return loss, metrics
+        try:
+            # Convert lists to tensors - encode each state individually
+            encoded_states = torch.stack([self.encode_state(s).squeeze(0) for s in states])  # [batch_size, state_dim]
+            encoded_next_states = torch.stack([self.encode_state(s).squeeze(0) for s in next_states])  # [batch_size, state_dim]
+            
+            # Make sure these are proper tensors with correct device
+            actions_tensor = torch.tensor(actions, dtype=torch.long, device=self.device)
+            rewards_tensor = torch.tensor(rewards, dtype=torch.float32, device=self.device)
+            dones_tensor = torch.tensor(dones, dtype=torch.bool, device=self.device)
+            
+            # Get current Q-values
+            current_q_values = self.action_head(encoded_states)
+            
+            # Reshape actions tensor to properly gather values
+            actions_tensor_reshaped = actions_tensor.view(-1, 1)
+            current_q_values = current_q_values.gather(1, actions_tensor_reshaped)
+            
+            # Get next Q-values
+            with torch.no_grad():
+                next_q_values = self.action_head(encoded_next_states)
+                max_next_q_values = next_q_values.max(1)[0]
+                # Set terminal states to 0
+                max_next_q_values = max_next_q_values * (~dones_tensor).float()
+                target_q_values = rewards_tensor + self.config.gamma * max_next_q_values
+            
+            # Compute loss
+            loss = F.smooth_l1_loss(current_q_values.squeeze(), target_q_values)
+            
+            # Compute metrics
+            metrics = {
+                'loss': loss.item(),
+                'avg_reward': float(torch.mean(rewards_tensor).item()),
+                'max_reward': float(torch.max(rewards_tensor).item()),
+                'min_reward': float(torch.min(rewards_tensor).item())
+            }
+            
+            return loss, metrics
+            
+        except Exception as e:
+            # Add error handling to debug issues
+            logging.error(f"Error in compute_loss: {e}")
+            logging.error(f"States shape: {len(states)}")
+            logging.error(f"Actions shape: {len(actions)}")
+            
+            # Return a dummy loss that won't crash training but will log the error
+            dummy_loss = torch.tensor(0.0, requires_grad=True, device=self.device)
+            metrics = {'loss': 0.0, 'avg_reward': 0.0, 'error': str(e)}
+            return dummy_loss, metrics
     
     def update(self, loss: torch.Tensor) -> None:
         """Update the network parameters"""

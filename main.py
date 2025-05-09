@@ -75,6 +75,14 @@ def main():
                 # Submit all jobs and collect results
                 futures = [executor.submit(process_run_experiment, *run_arg) for run_arg in run_args]
                 results = [future.result() for future in futures]
+                
+                # Force cleanup of executor and processes
+                executor.shutdown(wait=True)
+                
+                # Make sure any lingering background processes are terminated
+                for p in mp.active_children():
+                    p.terminate()
+                    p.join()
         else:
             # Run experiments sequentially
             results = []
@@ -131,6 +139,14 @@ def main():
         import traceback
         traceback.print_exc()
         sys.exit(1)
+    # Ensure all active child processes are terminated before exiting
+    finally:
+        # Force cleanup of any remaining processes
+        for p in mp.active_children():
+            try:
+                p.terminate()
+            except:
+                pass
 
 if __name__ == '__main__':
     # This is needed for Windows compatibility with multiprocessing
