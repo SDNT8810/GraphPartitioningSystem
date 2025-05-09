@@ -1,8 +1,10 @@
+# Graph configuration
 graph:
-  num_nodes: 100
-  edge_probability: 0.1
+  num_nodes: 30
+  edge_probability: 0.3
   weight_range: [0.1, 1.0]
 
+# Partitioning strategy configuration
 partition:
   num_partitions: 2
   balance_weight: 0.5
@@ -15,7 +17,9 @@ partition:
   conductance_threshold: 0.3
   use_hybrid_strategy: true
   strategy_weights: [0.4, 0.3, 0.3]
+  epsilon_decay: 0.995
 
+# Agent configuration
 agent:
   # Training parameters
   learning_rate: 0.001
@@ -31,15 +35,14 @@ agent:
   local_update_interval: 10
   communication_interval: 50
   max_grad_norm: 1.0
-  num_episodes: 100
-  max_steps: 50
   device: 'cpu'
   # Neural network dimensions
-  feature_dim: 24  # Base feature dimension
-  state_dim: 32   # Desired state dimension after encoding
-  hidden_dim: 64  # Hidden layer dimension
-  action_dim: 2   # Output action dimension
+  feature_dim: 14
+  state_dim: 32
+  hidden_dim: 64
+  action_dim: 2
 
+# GNN configuration
 gnn:
   hidden_channels: 64
   num_layers: 3
@@ -51,15 +54,23 @@ gnn:
   quantization_bits: 8
   learning_rate: 0.001
 
+# Monitoring configuration
 monitoring:
   track_communication: true
   track_computation: true
   track_memory: true
   sampling_interval: 100
-  log_interval: 1000
+  log_interval: 10
   save_metrics: true
   metrics_path: "metrics"
+  # Learning progress tracking settings
+  track_learning_progress: true
+  learning_log_interval: 100
+  progress_metrics: ["reward", "cut_size", "balance", "conductance"]
+  visualize_progress: true
+  rolling_window_size: 20
 
+# Recovery configuration
 recovery:
   checkpoint_interval: 1000
   max_checkpoints: 5
@@ -67,13 +78,15 @@ recovery:
   recovery_timeout: 1000
   replication_factor: 2
 
+# System configuration
 system:
-  num_nodes: 100
-  edge_probability: 0.3
-  weight_range: [0.1, 1.0]
-  num_episodes: 100
+  num_episodes: 10000
   max_steps: 100
   log_interval: 10
+  seed: 42
+  num_workers: 4
+  log_level: "INFO"
 
+# Testing configuration
 test:
-  num_runs: 3  # Number of test runs for experiments
+  num_runs: 2  # Number of test runs for experiments

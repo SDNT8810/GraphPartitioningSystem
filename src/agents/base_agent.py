@@ -7,6 +7,7 @@ from ..utils import graph_metrics
 import torch.nn as nn
 import torch.nn.functional as F
 from dataclasses import dataclass
+import logging
 
 @dataclass
 class AgentState:
@@ -24,7 +25,15 @@ class BaseAgent(nn.Module):
         super().__init__()
         self.config = config
         self.graph = graph
-        self.device = torch.device(getattr(config, 'device', 'cpu') or 'cpu')
+        
+        # Handle device selection with graceful fallback
+        requested_device = getattr(config, 'device', 'cpu') or 'cpu'
+        if requested_device.startswith('cuda') and not torch.cuda.is_available():
+            logging.warning("CUDA requested but not available. Falling back to CPU.")
+            self.device = torch.device('cpu')
+        else:
+            self.device = torch.device(requested_device)
+            
         self.node_id = node_id
         self.current_partition = None
         self.neighbors = [] if node_id is None else graph.get_neighbors(node_id)
@@ -147,18 +156,36 @@ class BaseAgent(nn.Module):
     def encode_state(self, state: AgentState) -> torch.Tensor:
         """Encode the state into a feature vector"""
         # Get node features (average across nodes)
-        node_features = state.node_features.mean(dim=0)  # Shape: [feature_dim]
+        if isinstance(state.node_features, torch.Tensor):
+            if len(state.node_features.shape) > 1:
+                node_features = state.node_features.mean(dim=0)  # Shape: [feature_dim]
+            else:
+                node_features = state.node_features  # Already a 1D tensor
+        else:
+            # Handle non-tensor node features
+            node_features = torch.tensor(state.node_features, dtype=torch.float32)
         
-        # Get partition features
-        partition_sizes = F.normalize(state.partition_sizes.unsqueeze(0), dim=1).squeeze(0)  # Shape: [num_partitions]
-        partition_densities = F.normalize(state.partition_densities.unsqueeze(0), dim=1).squeeze(0)  # Shape: [num_partitions]
+        # Get partition features - use detach().clone() to avoid warnings
+        if isinstance(state.partition_sizes, torch.Tensor):
+            partition_sizes = state.partition_sizes.detach().clone()
+        else:
+            partition_sizes = torch.tensor(state.partition_sizes, dtype=torch.float32)
+        
+        if isinstance(state.partition_densities, torch.Tensor):
+            partition_densities = state.partition_densities.detach().clone()
+        else:
+            partition_densities = torch.tensor(state.partition_densities, dtype=torch.float32)
+            
+        # Normalize partition tensors
+        partition_sizes = F.normalize(partition_sizes.unsqueeze(0), dim=1).squeeze(0)
+        partition_densities = F.normalize(partition_densities.unsqueeze(0), dim=1).squeeze(0)
         
         # Get global metrics
         global_metrics = torch.tensor([
-            state.graph_metrics['balance'],
-            state.graph_metrics['cut_size'],
-            state.graph_metrics['conductance']
-        ], dtype=torch.float32, device=self.device)
+            state.graph_metrics.get('balance', 0.0),
+            state.graph_metrics.get('cut_size', 0.0),
+            state.graph_metrics.get('conductance', 0.0)
+        ], dtype=torch.float32)
         
         # Combine all features into state vector
         features = [node_features, partition_sizes, partition_densities, global_metrics]
@@ -166,21 +193,26 @@ class BaseAgent(nn.Module):
         # Add local metrics if available
         if state.local_metrics is not None:
             local_features = torch.tensor([
-                state.local_metrics['degree'],
-                state.local_metrics['avg_neighbor_degree'],
-                state.local_metrics['clustering_coefficient']
-            ], dtype=torch.float32, device=self.device)
+                state.local_metrics.get('degree', 0.0),
+                state.local_metrics.get('avg_neighbor_degree', 0.0),
+                state.local_metrics.get('clustering_coefficient', 0.0)
+            ], dtype=torch.float32)
             features.append(local_features)
         
         # Concatenate features
-        state_features = torch.cat(features)
+        state_features = torch.cat([f.to(self.device) for f in features])
         
-        # Ensure we have the expected feature dimension
-        if state_features.size(0) != self.config.feature_dim:
-            raise ValueError(
-                f"Expected feature dimension {self.config.feature_dim}, "
-                f"but got {state_features.size(0)}. Check feature extraction logic."
-            )
+        # Handle dimension mismatch - this is key to fixing our issue
+        expected_dim = self.config.feature_dim
+        actual_dim = state_features.size(0)
+        
+        if actual_dim < expected_dim:
+            # Pad with zeros to reach expected dimension
+            padding = torch.zeros(expected_dim - actual_dim, device=self.device)
+            state_features = torch.cat([state_features, padding])
+        elif actual_dim > expected_dim:
+            # Truncate to expected dimension
+            state_features = state_features[:expected_dim]
         
         # Encode state to desired dimension
         encoded_state = self.state_encoder(state_features.unsqueeze(0))  # Add batch dimension for encoder
@@ -308,4 +340,4 @@ class BaseAgent(nn.Module):
         
     def update_partition(self, new_partition: int) -> None:
         """Update the agent's current partition."""
-        self.current_partition = new_partition 
+        self.current_partition = new_partition

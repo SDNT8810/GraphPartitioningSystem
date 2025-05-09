@@ -1,80 +1,93 @@
+# Fast configuration for quick testing
+# Graph configuration - small graph for quick testing
 graph:
-  num_nodes: 10  # Smaller graph for faster tests
+  num_nodes: 10  # Small number of nodes for fast execution
   edge_probability: 0.3
   weight_range: [0.1, 1.0]
 
+# Partitioning strategy configuration - simplified for quick testing
 partition:
   num_partitions: 2
   balance_weight: 0.5
   cut_size_weight: 0.3
   conductance_weight: 0.2
   use_laplacian: true
-  min_partition_size: 3  # Smaller for test graph
-  max_partition_size: 7  # Smaller for test graph
+  min_partition_size: 3
+  max_partition_size: 7
   balance_threshold: 0.8
   conductance_threshold: 0.3
-  use_hybrid_strategy: true
+  use_hybrid_strategy: false  # Simple strategy for testing
   strategy_weights: [0.4, 0.3, 0.3]
+  epsilon_decay: 0.9  # Faster decay for quicker convergence
 
+# Agent configuration - minimal settings for fast testing
 agent:
-  # Training parameters
-  learning_rate: 0.001
+  # Training parameters - simplified for testing
+  learning_rate: 0.01  # Higher learning rate for faster convergence
   epsilon: 0.1
   epsilon_start: 1.0
   epsilon_end: 0.01
-  epsilon_decay: 0.995
-  gamma: 0.99
+  epsilon_decay: 0.9  # Faster decay
+  gamma: 0.9
   weight_decay: 0.0
-  memory_size: 1000  # Smaller for testing
-  batch_size: 32    # Smaller for testing
-  target_update: 50  # More frequent for testing
+  memory_size: 1000  # Smaller memory size
+  batch_size: 16  # Smaller batches for faster iteration
+  target_update: 10  # More frequent updates
   local_update_interval: 5
-  communication_interval: 25
+  communication_interval: 10
   max_grad_norm: 1.0
-  num_episodes: 10  # Fewer episodes for testing
-  max_steps: 10     # Fewer steps for testing
   device: 'cpu'
-  # Neural network dimensions
-  feature_dim: 34  # Base feature dimension (24 base + 2 partition sizes + 2 densities + 6 graph metrics)
-  state_dim: 32   # Desired state dimension after encoding
-  hidden_dim: 64  # Hidden layer dimension
-  action_dim: 2   # Output action dimension
+  # Neural network dimensions - simplified
+  feature_dim: 14
+  state_dim: 16  # Smaller network
+  hidden_dim: 32  # Smaller network
+  action_dim: 2
 
+# GNN configuration - minimal for testing
 gnn:
-  hidden_channels: 32  # Smaller for testing
-  num_layers: 2       # Fewer layers for testing
-  num_heads: 2        # Fewer heads for testing
+  hidden_channels: 32  # Smaller network
+  num_layers: 2  # Fewer layers
+  num_heads: 2  # Fewer attention heads
   dropout: 0.1
-  use_attention: true
+  use_attention: false  # Simpler model without attention
   attention_dropout: 0.1
-  quantize: true
+  quantize: false  # No quantization for testing
   quantization_bits: 8
-  learning_rate: 0.001
+  learning_rate: 0.01  # Higher learning rate
 
+# Monitoring configuration - more frequent output for testing
 monitoring:
   track_communication: true
   track_computation: true
   track_memory: true
-  sampling_interval: 50   # More frequent for testing
-  log_interval: 100      # More frequent for testing
+  sampling_interval: 10  # More frequent sampling
+  log_interval: 5  # More frequent logging
   save_metrics: true
   metrics_path: "metrics"
+  # Learning progress tracking settings
+  track_learning_progress: true
+  learning_log_interval: 10  # More frequent progress logs
+  progress_metrics: ["reward", "cut_size", "balance", "conductance"]
+  visualize_progress: true
+  rolling_window_size: 10  # Smaller window for more immediate feedback
 
+# Recovery configuration - minimal for testing
 recovery:
-  checkpoint_interval: 100  # More frequent for testing
-  max_checkpoints: 3       # Fewer checkpoints for testing
+  checkpoint_interval: 100
+  max_checkpoints: 2
   failure_detection_interval: 50
   recovery_timeout: 500
-  replication_factor: 2
+  replication_factor: 1  # Minimal replication
 
+# System configuration - minimal episodes and steps for fast testing
 system:
-  num_nodes: 10           # Smaller for testing
-  edge_probability: 0.3
-  weight_range: [0.1, 1.0]
-  num_episodes: 10        # Fewer for testing
-  max_steps: 10           # Fewer for testing
-  log_interval: 5         # More frequent for testing
+  num_episodes: 50  # Very few episodes for quick testing
+  max_steps: 20  # Few steps per episode
+  log_interval: 5  # Frequent logging
+  seed: 42
+  num_workers: 1  # Single worker for simpler debugging
+  log_level: "INFO"
 
+# Testing configuration
 test:
-  num_runs: 2  # Fewer runs for faster testing
-  
+  num_runs: 1  # Single run for fast testing

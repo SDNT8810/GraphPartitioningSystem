@@ -1,25 +1,93 @@
+# Large-scale configuration for comprehensive experiments
+# Graph configuration - large graph for extensive analysis
 graph:
-  num_nodes: 1000  # Large graph with 1000 nodes
-  edge_probability: 0.01  # Sparse graph, more realistic for large networks
+  num_nodes: 200  # Large number of nodes for real-world scale testing
+  edge_probability: 0.2  # Slightly lower density for larger graphs
+  weight_range: [0.1, 1.0]
 
+# Partitioning strategy configuration - optimized for quality
 partition:
-  num_partitions: 8  # More partitions for larger graph
-  balance_weight: 0.4
-  cut_size_weight: 0.4
+  num_partitions: 4  # More partitions for complex analysis
+  balance_weight: 0.5
+  cut_size_weight: 0.3
   conductance_weight: 0.2
   use_laplacian: true
+  min_partition_size: 30
+  max_partition_size: 70
+  balance_threshold: 0.85  # Stricter balance requirement
+  conductance_threshold: 0.25  # Stricter conductance requirement
+  use_hybrid_strategy: true
+  strategy_weights: [0.4, 0.3, 0.3]
+  epsilon_decay: 0.999  # Slower decay for more exploration
 
+# Agent configuration - comprehensive settings for deep learning
 agent:
-  # Training parameters
-  learning_rate: 0.0005  # Smaller learning rate for stability
-  epsilon: 0.05
-  num_episodes: 100
-  max_steps: 200
-  # Neural network dimensions
-  feature_dim: 14  # Base feature dimension
-  state_dim: 32
-  hidden_dim: 64
-  action_dim: 8  # Matches num_partitions
+  # Training parameters - tuned for convergence quality
+  learning_rate: 0.0005  # Lower learning rate for better convergence
+  epsilon: 0.1
+  epsilon_start: 1.0
+  epsilon_end: 0.001  # Lower end epsilon for better exploitation
+  epsilon_decay: 0.9995  # Very slow decay
+  gamma: 0.995  # Higher discount factor
+  weight_decay: 0.00001  # Add regularization
+  memory_size: 100000  # Larger memory for better experience replay
+  batch_size: 128  # Larger batches for stable learning
+  target_update: 200  # Less frequent updates for stability
+  local_update_interval: 20
+  communication_interval: 100
+  max_grad_norm: 0.5  # Lower clip for stability
+  device: 'cuda'  # Use GPU if available
+  # Neural network dimensions - larger for better representation
+  feature_dim: 64  # Larger feature dimensions
+  state_dim: 128  # Larger state representation
+  hidden_dim: 256  # Deeper network
+  action_dim: 4  # Matches num_partitions
 
+# GNN configuration - deep architecture for better learning
+gnn:
+  hidden_channels: 128  # Larger hidden dimension
+  num_layers: 5  # Deeper network
+  num_heads: 8  # More attention heads
+  dropout: 0.2  # More dropout for regularization
+  use_attention: true
+  attention_dropout: 0.2  # More dropout for attention
+  quantize: true
+  quantization_bits: 16  # Higher precision quantization
+  learning_rate: 0.0003  # Lower learning rate
+
+# Monitoring configuration - comprehensive tracking with periodic logs
+monitoring:
+  track_communication: true
+  track_computation: true
+  track_memory: true
+  sampling_interval: 500  # Less frequent sampling to reduce overhead
+  log_interval: 100  # Periodic logging for long runs
+  save_metrics: true
+  metrics_path: "metrics/large_scale"  # Separate directory for large-scale results
+  # Learning progress tracking settings
+  track_learning_progress: true
+  learning_log_interval: 500  # Log progress every 500 episodes
+  progress_metrics: ["reward", "cut_size", "balance", "conductance", "modularity", "normalized_cut"]
+  visualize_progress: true
+  rolling_window_size: 50  # Larger window for smoother trends
+
+# Recovery configuration - robust for long-running experiments
+recovery:
+  checkpoint_interval: 2000  # Save checkpoints every 2000 episodes
+  max_checkpoints: 10  # Keep more checkpoints
+  failure_detection_interval: 500
+  recovery_timeout: 3000
+  replication_factor: 3  # High replication for reliability
+
+# System configuration - extensive episodes and thorough exploration
+system:
+  num_episodes: 50000  # Very large number of episodes for comprehensive learning
+  max_steps: 500  # Many steps per episode for thorough exploration
+  log_interval: 100  # Less frequent logging to reduce overhead
+  seed: 42
+  num_workers: 8  # Use multiple workers for parallel computation
+  log_level: "INFO"
+
+# Testing configuration
 test:
-  num_runs: 5  # Multiple runs to test consistency
+  num_runs: 2  # Multiple runs for statistical significance

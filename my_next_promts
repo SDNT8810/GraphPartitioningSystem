@@ -3,3 +3,16 @@ Try different graph parameters
 Analyze specific runs in detail
 Generate visualizations of the partitions?
 
+
+
+all reported variabels (Rewads / Cut size / Balance / Conductance) over episodes are some noises with constant mean.
+the training is not making anything better or bad !
+its just some random behaiviors
+
+
+
+you hard coding parameters in system_config.py file.
+update default_config.yaml with the parameters that you need to use and remove the hard coded ones. then update the system_config.py to read the parameters from the config file.
+
+
+there is some redundant parameters in default_config.yaml file. Please review and clean up the configuration to ensure only necessary parameters are included. use the system_config.py file as a reference for the parameters you need to keep.

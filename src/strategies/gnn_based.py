@@ -85,7 +85,7 @@ class GNNBasedPartitioningStrategy(BasePartitioningStrategy):
         
         return metrics
         
-    def train(self, graph: Graph, epochs: int = 100) -> List[float]:
+    def train(self, graph: Graph, epochs: int = 500) -> List[float]:
         """Train the GNN model on the graph."""
         losses = []
         x = graph.get_node_features()
