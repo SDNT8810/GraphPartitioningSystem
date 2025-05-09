@@ -17,6 +17,7 @@ class GNNConfig:
     quantize: bool = True
     quantization_bits: int = 8
     learning_rate: float = 0.001
+    num_partitions: int = 5
 
     @classmethod
     def from_dict(cls, config: dict):
@@ -223,28 +224,21 @@ def get_configs(config_path: Optional[str] = None) -> Tuple[GraphConfig, Partiti
     Returns:
         tuple: (GraphConfig, PartitionConfig, AgentConfig, SystemConfig)
     """
-    config_data = load_config(config_path)
+    # Create the system config first
+    system_config = create_system_config(config_path)
     
+    # Extract the individual configs to maintain API compatibility
+    config_data = load_config(config_path)
     graph_config = GraphConfig.from_dict(config_data['graph'])
     partition_config = PartitionConfig.from_dict(config_data['partition'])
     agent_config = AgentConfig.from_dict(config_data['agent'])
     
-    # Create a complete system config using the loaded values
-    system_config = SystemConfig(
-        num_nodes=config_data['system'].get('num_nodes', 30),
-        edge_probability=config_data['system'].get('edge_probability', 0.3),
-        weight_range=config_data['system'].get('weight_range', (0.1, 1.0)),
-        num_episodes=config_data['system'].get('num_episodes', 400),
-        max_steps=config_data['system'].get('max_steps', 100),
-        log_interval=config_data['system'].get('log_interval', 10),
-        seed=config_data['system'].get('seed', 42),
-        num_workers=config_data['system'].get('num_workers', 4),
-        log_level=config_data['system'].get('log_level', "INFO"),
-        gnn=GNNConfig.from_dict(config_data['gnn']),
-        agent=agent_config,
-        partition=partition_config,
-        monitoring=MonitoringConfig.from_dict(config_data['monitoring']),
-        recovery=RecoveryConfig.from_dict(config_data['recovery'])
+    # Ensure compatibility with SystemConfig
+    # Override specific attributes from SystemConfig to ensure consistency
+    graph_config = GraphConfig(
+        num_nodes=system_config.num_nodes,
+        edge_probability=system_config.edge_probability,
+        weight_range=system_config.weight_range
     )
     
     return graph_config, partition_config, agent_config, system_config
@@ -259,21 +253,63 @@ def create_system_config(config_path: Optional[str] = None) -> SystemConfig:
         SystemConfig: Complete system configuration
     """
     config_data = load_config(config_path)
-    # Create nested configs first
+    
+    # Prioritize parameters in this order:
+    # 1. System section parameters
+    # 2. Graph section parameters (for graph-related settings)
+    # 3. Default values
+    
+    # Get graph parameters first from graph section
+    graph_params = config_data['graph']
+    num_nodes = graph_params.get('num_nodes', 30)
+    edge_probability = graph_params.get('edge_probability', 0.3)
+    weight_range = graph_params.get('weight_range', (0.1, 1.0))
+    
+    # System params only used for system-specific settings, not for overriding graph params
+    system_params = config_data['system']
+    
+    # Create nested configs
     gnn_config = GNNConfig.from_dict(config_data['gnn'])
     agent_config = AgentConfig.from_dict(config_data['agent'])
     partition_config = PartitionConfig.from_dict(config_data['partition'])
     monitoring_config = MonitoringConfig.from_dict(config_data['monitoring'])
     recovery_config = RecoveryConfig.from_dict(config_data['recovery'])
     
-    # Then create the main system config with these sub-configs
-    system_params = config_data['system']
+    # Ensure consistent parameters across configs
+    
+    # 1. Number of partitions should be consistent
+    if 'num_partitions' in config_data['partition']:
+        num_partitions = config_data['partition']['num_partitions']
+        # Update gnn_config to use the same num_partitions value
+        gnn_config = GNNConfig(**{
+            **{k: getattr(gnn_config, k) for k in gnn_config.__dataclass_fields__},
+            'num_partitions': num_partitions
+        })
+    
+    # 2. Training parameters - use system settings if available, otherwise partition settings
+    num_episodes = system_params.get('num_episodes', partition_config.num_episodes)
+    max_steps = system_params.get('max_steps', partition_config.max_steps)
+    
+    # Update partition config with system values if specified
+    if 'num_episodes' in system_params:
+        partition_config = PartitionConfig(**{
+            **{k: getattr(partition_config, k) for k in partition_config.__dataclass_fields__},
+            'num_episodes': num_episodes
+        })
+    
+    if 'max_steps' in system_params:
+        partition_config = PartitionConfig(**{
+            **{k: getattr(partition_config, k) for k in partition_config.__dataclass_fields__},
+            'max_steps': max_steps
+        })
+    
+    # Create the system config with all parameters properly synchronized
     system_config = SystemConfig(
-        num_nodes=system_params.get('num_nodes', 30),
-        edge_probability=system_params.get('edge_probability', 0.3),
-        weight_range=system_params.get('weight_range', (0.1, 1.0)),
-        num_episodes=system_params.get('num_episodes', 10000),
-        max_steps=system_params.get('max_steps', 100),
+        num_nodes=num_nodes,
+        edge_probability=edge_probability,
+        weight_range=weight_range,
+        num_episodes=num_episodes,
+        max_steps=max_steps,
         log_interval=system_params.get('log_interval', 10),
         seed=system_params.get('seed', 42),
         num_workers=system_params.get('num_workers', 4),

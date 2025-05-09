@@ -421,7 +421,30 @@ class DynamicPartitioning:
                                 f"Conductance: {np.mean(recent_conductances):.4f}, "
                                 f"ε: {current_epsilon:.4f}")
             
-            # Rest of the method unchanged...
+        # Log final time
+        elapsed_time = time.time() - start_time
+        logging.info(f"Training completed in {elapsed_time:.2f}s")
+        
+        # Ensure visualizer is properly closed to prevent hanging on program exit
+        try:
+            if 'visualizer' in locals() and visualizer:
+                visualizer.close()
+                logging.debug(f"Training visualizer for {self.experiment_name} closed successfully")
+        except Exception as e:
+            logging.warning(f"Error closing visualizer: {e}")
+        
+        # Return training statistics
+        return {
+            'rewards': rewards,
+            'cut_sizes': cut_sizes,
+            'balances': balances,
+            'conductances': conductances,
+            'epsilons': epsilons,
+            'episode_metrics': episode_metrics,
+            'best_cut_size': best_cut_size,
+            'best_partitions': best_partitions,
+            'training_time': elapsed_time
+        }
 
     def get_partitions(self):
         """

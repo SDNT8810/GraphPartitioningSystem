@@ -1,18 +1,18 @@
 # Graph configuration
 graph:
-  num_nodes: 30
+  num_nodes: 50
   edge_probability: 0.3
   weight_range: [0.1, 1.0]
 
 # Partitioning strategy configuration
 partition:
-  num_partitions: 2
+  num_partitions: 5
   balance_weight: 0.5
   cut_size_weight: 0.3
   conductance_weight: 0.2
   use_laplacian: true
-  min_partition_size: 10
-  max_partition_size: 50
+  min_partition_size: 2
+  max_partition_size: 10
   balance_threshold: 0.8
   conductance_threshold: 0.3
   use_hybrid_strategy: true
@@ -72,16 +72,16 @@ monitoring:
 
 # Recovery configuration
 recovery:
-  checkpoint_interval: 1000
+  checkpoint_interval: 10
   max_checkpoints: 5
-  failure_detection_interval: 100
+  failure_detection_interval: 10
   recovery_timeout: 1000
   replication_factor: 2
 
 # System configuration
 system:
-  num_episodes: 10000
-  max_steps: 100
+  num_episodes: 400
+  max_steps: 200
   log_interval: 10
   seed: 42
   num_workers: 4
@@ -89,4 +89,4 @@ system:
 
 # Testing configuration
 test:
-  num_runs: 2  # Number of test runs for experiments
+  num_runs: 1  # Number of test runs for experiments

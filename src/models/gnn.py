@@ -90,9 +90,13 @@ class GNNLayer(nn.Module):
         return x
 
 class GraphNeuralNetwork(nn.Module):
-    def __init__(self, config: GNNConfig):
+    def __init__(self, config: GNNConfig, input_dim=None):
         super().__init__()
         self.config = config
+        
+        # Input dimension will be determined dynamically on first forward pass if not provided
+        self.input_dim = input_dim
+        self.input_proj = None  # Will be initialized in the first forward pass
         
         self.layers = nn.ModuleList([
             GNNLayer(
@@ -105,9 +109,18 @@ class GraphNeuralNetwork(nn.Module):
             ) for _ in range(config.num_layers)
         ])
         
-        self.final_proj = nn.Linear(config.hidden_channels, 1)
+        self.final_proj = nn.Linear(config.hidden_channels, config.num_partitions)
         
     def forward(self, x: torch.Tensor, edge_index: torch.Tensor) -> torch.Tensor:
+        # Initialize input projection dynamically based on actual input dimension
+        if self.input_proj is None:
+            input_dim = x.shape[1]
+            self.input_proj = nn.Linear(input_dim, self.config.hidden_channels).to(x.device)
+            print(f"Initializing input projection: {input_dim} -> {self.config.hidden_channels}")
+        
+        # Project input features to hidden dimension
+        x = self.input_proj(x)
+        
         for layer in self.layers:
             x = layer(x, edge_index)
-        return self.final_proj(x) 
+        return self.final_proj(x)

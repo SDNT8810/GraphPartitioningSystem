@@ -13,7 +13,9 @@ class GNNBasedPartitioningStrategy(BasePartitioningStrategy):
     def __init__(self, config, gnn_config: GNNConfig):
         super().__init__(config)
         self.gnn_config = gnn_config
-        self.model = GraphNeuralNetwork(gnn_config)
+        # Ensure num_partitions is set
+        self.gnn_config.num_partitions = config.num_partitions
+        self.model = GraphNeuralNetwork(self.gnn_config)
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=gnn_config.learning_rate)
         
     def partition(self, graph: Graph) -> Dict[int, Set[int]]:

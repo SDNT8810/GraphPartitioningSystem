@@ -74,7 +74,7 @@ class LocalAgent(BaseAgent):
         
         # Compute loss and update
         loss, metrics = self.compute_loss(states, actions, rewards, next_states, dones)
-        self.update(loss)
+        super().update(loss)  # Call the parent class update method
         
         return metrics
     
@@ -156,19 +156,13 @@ class LocalAgent(BaseAgent):
                 
         return action, q_value
         
-    def update(self, reward: float, next_state: torch.Tensor, done: bool) -> None:
-        """Update the Q-network using experience replay."""
+    def store_experience(self, reward: float, next_state: torch.Tensor, done: bool) -> None:
+        """Store experience in the agent's memory."""
         # Store experience in memory
         self.memory.append((self.local_state, reward, next_state, done))
         
         # Update epsilon
         self.epsilon = max(self.config.epsilon_end, self.epsilon * self.config.epsilon_decay)
-        
-        # Sample random batch from memory
-        if len(self.memory) < self.config.batch_size:
-            return
-            
-        batch = random.sample(self.memory, self.config.batch_size)
         states, rewards, next_states, dones = zip(*batch)
         
         # Convert to tensors

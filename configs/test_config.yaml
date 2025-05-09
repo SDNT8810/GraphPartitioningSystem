@@ -90,4 +90,4 @@ system:
 
 # Testing configuration
 test:
-  num_runs: 1  # Single run for fast testing
+  num_runs: 2  # Two runs for more robust testing

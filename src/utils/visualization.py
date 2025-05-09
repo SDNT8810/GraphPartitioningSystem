@@ -279,18 +279,69 @@ class TrainingVisualizer:
     
     def __init__(self, log_dir: str):
         """Initialize the visualizer with a log directory."""
-        self.writer = SummaryWriter(log_dir)
+        # Suppress warnings during SummaryWriter creation
+        import warnings
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=FutureWarning)
+            self.writer = SummaryWriter(log_dir)
     
     def log_metrics(self, metrics: Dict[str, float], step: int):
         """Log metrics to TensorBoard."""
         for name, value in metrics.items():
+            # Ensure value is a native Python type to avoid warnings
+            if hasattr(value, 'item'):
+                value = value.item()  # Convert PyTorch tensors to Python scalars
             self.writer.add_scalar(name, value, step)
     
     def log_graph_metrics(self, prefix: str, metrics: Dict[str, float], step: int):
         """Log graph-specific metrics to TensorBoard."""
         for name, value in metrics.items():
+            if hasattr(value, 'item'):
+                value = value.item()  # Convert PyTorch tensors to Python scalars
             self.writer.add_scalar(f"{prefix}/{name}", value, step)
     
     def close(self):
         """Close the TensorBoard writer."""
-        self.writer.close()
+        try:
+            self.writer.close()
+            logging.debug("TensorBoard writer closed successfully")
+        except Exception as e:
+            logging.warning(f"Error closing TensorBoard writer: {str(e)}")
+            # Try alternate cleanup method if standard close fails
+            try:
+                import gc
+                del self.writer
+                gc.collect()
+                logging.debug("TensorBoard writer cleaned up via garbage collection")
+            except:
+                pass
+
+# Add a function to clean up all TensorBoard visualizers
+def cleanup_tensorboard_writers():
+    """
+    Clean up all TensorBoard writers that may be open to prevent the program from hanging
+    on exit. This should be called before program termination.
+    """
+    import gc
+    import warnings
+    closed_count = 0
+    
+    # Temporarily suppress FutureWarning about torch.distributed.reduce_op
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=FutureWarning, 
+                              message=".*torch.distributed.reduce_op.*")
+        
+        # Check all objects for SummaryWriter instances
+        for obj in gc.get_objects():
+            # Use string type checking to avoid triggering the warning
+            if obj.__class__.__name__ == 'SummaryWriter' or isinstance(obj, SummaryWriter):
+                try:
+                    obj.close()
+                    closed_count += 1
+                except Exception as e:
+                    print(f"Error closing TensorBoard writer: {e}")
+                
+    if closed_count > 0:
+        logging.info(f"Closed {closed_count} TensorBoard writers")
+    
+    return closed_count

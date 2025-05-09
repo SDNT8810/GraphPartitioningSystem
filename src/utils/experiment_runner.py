@@ -586,6 +586,14 @@ def run_dynamic_strategy(config: SystemConfig, graph: Graph, run_id: int,
             logging.info(f"  Balance:      {initial_balance:.4f} → {final_balance:.4f} ({balance_arrow}{balance_improvement_abs:.1f}%)")
             logging.info(f"  Conductance:  {initial_conductance:.4f} → {final_conductance:.4f} ({conductance_arrow}{conductance_improvement_abs:.1f}%)")
         
+        # Create a serializable version of the graph for visualization
+        graph_data = {
+            'num_nodes': graph.num_nodes,
+            'edge_probability': graph.edge_probability,
+            'weight_range': graph.weight_range,
+            'adjacency': graph.adj_matrix.tolist() if hasattr(graph.adj_matrix, 'tolist') else None
+        }
+        
         return {
             'mean_reward': float(mean_reward),
             'std_reward': float(std_reward),
@@ -599,7 +607,9 @@ def run_dynamic_strategy(config: SystemConfig, graph: Graph, run_id: int,
             'std_conductance': float(std_conductance),
             'final_epsilon': stats.get('epsilon', 1.0),
             'total_episodes_completed': getattr(algorithm, 'total_episodes', config.partition.num_episodes),
-            'training_time': training_time
+            'training_time': training_time,
+            'graph_data': graph_data,  # Add serializable graph data
+            'run_id': run_id  # Add run_id for reference
         }
     finally:
         # Ensure proper cleanup of resources
@@ -664,7 +674,11 @@ def aggregate_results(results: List[Dict]) -> Dict:
     """Aggregate results from multiple runs."""
     agg_result = {}
     for key in results[0].keys():
-        if key == 'final_partitions':
+        if key == 'final_partitions' or key == 'graph_data' or key == 'run_id':
+            continue
+        
+        # Skip nested dictionaries
+        if isinstance(results[0].get(key), dict):
             continue
         
         # Handle datetime.timedelta objects specially
@@ -675,9 +689,22 @@ def aggregate_results(results: List[Dict]) -> Dict:
             agg_result[f"{key}_mean"] = float(np.mean(values))
             agg_result[f"{key}_std"] = float(np.std(values))
         else:
-            values = [r.get(key, 0) for r in results]
-            agg_result[f"{key}_mean"] = float(np.mean(values))
-            agg_result[f"{key}_std"] = float(np.std(values))
+            # Handle different types of values
+            values = []
+            for r in results:
+                value = r.get(key, 0)
+                if isinstance(value, (int, float)):
+                    values.append(value)
+                elif isinstance(value, list):
+                    # If it's a list, we might want to take the last value or average
+                    if len(value) > 0 and isinstance(value[-1], (int, float)):
+                        values.append(value[-1])  # Use the final value
+            
+            # Only calculate mean and std if we have valid numerical values
+            if values:
+                agg_result[f"{key}_mean"] = float(np.mean(values))
+                agg_result[f"{key}_std"] = float(np.std(values))
+    
     return agg_result
 
 def compute_graph_metrics(graph, partitions):
@@ -732,14 +759,29 @@ def setup_logging(experiment_name: str):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     log_file = log_dir / f"{experiment_name}_{timestamp}.log"
     
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.FileHandler(log_file),
-            logging.StreamHandler()
-        ]
-    )
+    # Reset existing handlers
+    root = logging.getLogger()
+    if root.handlers:
+        for handler in root.handlers:
+            root.removeHandler(handler)
+    
+    # Configure the root logger with a file handler and console handler
+    file_handler = logging.FileHandler(log_file)
+    file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(processName)s - %(message)s'))
+    
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(processName)s - %(message)s'))
+    
+    root.setLevel(logging.INFO)
+    root.addHandler(file_handler)
+    root.addHandler(console_handler)
+    
+    # Log system information
+    logging.info(f"Starting logging for experiment: {experiment_name}")
+    logging.info(f"Process ID: {os.getpid()}")
+    logging.info(f"Log file: {log_file}")
+    
+    return log_file
 
 def configure_system():
     """Configure system for optimal performance."""
@@ -813,13 +855,33 @@ def generate_comparison_visualizations(experiment_results: Dict[str, List[Dict]]
     logging.info(f"Comparison visualizations generated and saved to {plots_dir} directory")
 
 def process_run_experiment(config, run_id, args):
+    # Set process name for better identification
+    import multiprocessing
+    multiprocessing.current_process().name = f"Run-{run_id}"
+    
     try:
         # Setup process-specific logging
         run_log_file = f"logs/{args.experiment_name}_run{run_id}.log"
+        
+        # Create a formatter that clearly identifies which run is logging
+        formatter = logging.Formatter(f'%(asctime)s - %(levelname)s - [Run-{run_id}] %(message)s')
+        
+        # Add file handler for this specific run
         file_handler = logging.FileHandler(run_log_file)
-        file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+        file_handler.setFormatter(formatter)
+        
+        # Add stream handler for console output with prominent run ID
+        # Using flush=True to ensure immediate output
+        console_handler = logging.StreamHandler(stream=sys.stdout)
+        console_handler.setFormatter(formatter)
+        console_handler.setLevel(logging.INFO)
+        
+        # Get the root logger and reset handlers
         logger = logging.getLogger()
+        logger.handlers = []  # Clear any existing handlers
         logger.addHandler(file_handler)
+        logger.addHandler(console_handler)
+        logger.setLevel(logging.INFO)
         
         # Set process-specific logging prefix
         logging.info(f"Starting run {run_id} on process ID {os.getpid()}")
@@ -833,3 +895,45 @@ def process_run_experiment(config, run_id, args):
         import traceback
         traceback.print_exc()
         return {"error": str(e), "run_id": run_id}
+
+def cleanup_tensorboard():
+    """Clean up TensorBoard resources to prevent hanging on program exit."""
+    # Suppress deprecation warnings during cleanup
+    import warnings
+    
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=FutureWarning)
+        warnings.filterwarnings("ignore", category=DeprecationWarning)
+        
+        # Find and close any TensorBoard writers that might be open
+        if 'tensorboardX' in sys.modules:
+            try:
+                # Force close tensorboardX writers
+                import tensorboardX.writer
+                if hasattr(tensorboardX.writer, '_default_writer'):
+                    if tensorboardX.writer._default_writer is not None:
+                        tensorboardX.writer._default_writer.close()
+                
+                # Clean up any event files that might still be open using our utility function
+                try:
+                    from src.utils.visualization import cleanup_tensorboard_writers
+                    closed_count = cleanup_tensorboard_writers()
+                    if closed_count > 0:
+                        logging.info(f"Closed {closed_count} TensorBoard writers")
+                except Exception as e:
+                    logging.warning(f"Error using cleanup utility: {e}")
+                    
+                    # Fallback to direct garbage collection
+                    import gc
+                    for obj in gc.get_objects():
+                        if 'SummaryWriter' in str(type(obj)):
+                            try:
+                                if hasattr(obj, 'close'):
+                                    obj.close()
+                                    logging.debug("Closed a TensorBoard writer")
+                            except:
+                                pass
+                            
+                logging.info("TensorBoard resources cleaned up")
+            except Exception as e:
+                logging.warning(f"Error during TensorBoard cleanup: {e}")

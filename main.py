@@ -1,5 +1,7 @@
 import os
 import sys
+import signal
+import time
 import torch
 import torch.multiprocessing as mp
 import numpy as np
@@ -7,9 +9,10 @@ import logging
 from pathlib import Path
 from concurrent.futures import ProcessPoolExecutor
 import argparse
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 import yaml
 import networkx as nx
+import warnings
 
 # Add the src directory to the Python path
 sys.path.append(str(Path(__file__).parent))
@@ -23,6 +26,24 @@ from src.utils.experiment_runner import *
 from src.config.system_config import SystemConfig, create_system_config, load_config
 
 def main():
+    # Register signal handler for graceful termination
+    import signal
+    def signal_handler(sig, frame):
+        logging.warning("Received interrupt signal, terminating processes...")
+        # Clean up TensorBoard resources before exiting
+        cleanup_tensorboard()
+        
+        # Terminate any remaining processes
+        for p in mp.active_children():
+            try:
+                p.terminate()
+            except:
+                pass
+        logging.info("All processes terminated, exiting.")
+        sys.exit(0)
+    
+    signal.signal(signal.SIGINT, signal_handler)
+    
     parser = argparse.ArgumentParser(description='Graph Partitioning Experiment Runner')
     parser.add_argument('--config', type=str, default='configs/default_config.yaml', help='Path to configuration YAML file')
     parser.add_argument('--runs', type=int, help='Number of experiment runs (overrides config)')
@@ -64,25 +85,58 @@ def main():
             num_cores = max(1, min(num_runs, mp.cpu_count() - 1))
             logging.info(f"Running {num_runs} experiments in parallel using {num_cores} CPU cores")
             
-            # Initialize multiprocessing context
-            mp.set_start_method('spawn', force=True)
-            
-            # Run experiments in parallel using ProcessPoolExecutor
-            with ProcessPoolExecutor(max_workers=num_cores) as executor:
-                # Prepare arguments for each run
-                run_args = [(config, run_id, args) for run_id in range(num_runs)]
+            try:
+                # Initialize multiprocessing context with spawn for better compatibility
+                # 'spawn' creates a new Python interpreter process for each child
+                try:
+                    mp.set_start_method('spawn', force=True)
+                except RuntimeError:
+                    # Method might already be set
+                    pass
                 
-                # Submit all jobs and collect results
-                futures = [executor.submit(process_run_experiment, *run_arg) for run_arg in run_args]
-                results = [future.result() for future in futures]
+                # Set up interprocess queue for logging
+                logging.info("Setting up parallel execution environment...")
                 
+                # Run experiments in parallel using ProcessPoolExecutor
+                with ProcessPoolExecutor(max_workers=num_cores) as executor:
+                    # Prepare arguments for each run
+                    run_args = [(config, run_id, args) for run_id in range(num_runs)]
+                    
+                    # Submit all jobs
+                    logging.info("Submitting parallel jobs...")
+                    futures = [executor.submit(process_run_experiment, *run_arg) for run_arg in run_args]
+                    
+                    # Wait for results and collect them as they complete
+                    # This ensures we see output from processes as they run
+                    results = []
+                    completed = 0
+                    total = len(futures)
+                    
+                    for i, future in enumerate(futures):
+                        try:
+                            logging.info(f"Waiting for run {i} to complete...")
+                            result = future.result(timeout=None)  # Wait indefinitely
+                            results.append(result)
+                            completed += 1
+                            logging.info(f"Run {i} completed successfully ({completed}/{total})")
+                        except Exception as e:
+                            logging.error(f"Run {i} failed with error: {str(e)}")
+                            results.append({"error": str(e), "run_id": i})
+                            completed += 1
+                
+                # Additional logging to confirm all processes completed
+                logging.info(f"All {len(results)} experiment runs completed")
+                    
+            finally:
                 # Force cleanup of executor and processes
-                executor.shutdown(wait=True)
-                
-                # Make sure any lingering background processes are terminated
+                logging.info("Cleaning up processes...")
                 for p in mp.active_children():
-                    p.terminate()
-                    p.join()
+                    try:
+                        p.terminate()
+                        p.join(timeout=1.0)  # Add timeout to avoid hanging
+                    except Exception as e:
+                        logging.error(f"Error terminating process: {e}")
+                logging.info("Process cleanup complete.")
         else:
             # Run experiments sequentially
             results = []
@@ -122,9 +176,11 @@ def main():
         
         # If generating comparison visualizations, pass the experiment name
         if hasattr(args, 'generate_comparisons') and args.generate_comparisons:
-            # Use the first graph for visualization if available
-            if len(results) > 0 and 'graph' in locals():
-                generate_comparison_visualizations({'results': results}, graph, experiment_name=args.experiment_name)
+            # Use the first graph for visualization if available in the results
+            if len(results) > 0 and any('graph' in result for result in results if isinstance(result, dict)):
+                graph_result = next((result for result in results if isinstance(result, dict) and 'graph' in result), None)
+                if graph_result:
+                    generate_comparison_visualizations({'results': results}, graph_result['graph'], experiment_name=args.experiment_name)
         
         logging.info("Experiment completed!")
         
@@ -145,8 +201,17 @@ def main():
         for p in mp.active_children():
             try:
                 p.terminate()
+                p.join(timeout=1.0)
             except:
                 pass
+        
+        # Clean up TensorBoard resources to prevent hanging
+        cleanup_tensorboard()
+        
+        logging.info("Cleanup completed, exiting program.")
+        
+        # Exit explicitly to ensure no background threads block program termination
+        os._exit(0)
 
 if __name__ == '__main__':
     # This is needed for Windows compatibility with multiprocessing
