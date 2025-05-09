@@ -16,3 +16,48 @@ update default_config.yaml with the parameters that you need to use and remove t
 
 
 there is some redundant parameters in default_config.yaml file. Please review and clean up the configuration to ensure only necessary parameters are included. use the system_config.py file as a reference for the parameters you need to keep.
+
+
+
+
+Compare with other strategies
+Try different graph parameters
+Analyze specific runs in detail
+Generate visualizations of the partitions?
+
+
+
+
+i see that you didnt solve some issues in the code base on P.md:
+right now the code is running and generating some results in /runs , /plots , /outputs and /logs
+but the results are not correct
+2. the experiment_runner.py file is not using the visualization.py file correctly. and its not generating the plots and metrics correctly.
+5. there are several files if /strategies thet i dont know if they are realy aligned with the project. we need to check if they are aligned with the project and if not we need to remove them.
+6. base on your understanding of the project, update visualization.py file to make sure the plots and metrics are related to the project goals.
+7. some parameters in *.py files (experiment_runner.py and visualization.py and system_config.py) are hard coded and not using the *config.yaml files. we need to make sure all parameters are using the *config.yaml files and not hard coded.
+8. i didnt see any report on progress of training. (it starts and end imediately)
+9. check the main.py to see if we are doing curect or not ? P.md is the project goal ! is main.py doing that ?
+
+
+
+
+i am working on this python project. 
+the project description is in P.md
+we are using the following documentation for doing the project and the comparison: docs/summaries/*.tex
+the main file is in main.py
+3 different config files are in config/ for test, default and large scale tests
+right now the code is running and generating some results in /runs , /plots , /outputs and /logs
+but the results are not correct
+and the code is not working as expected.
+i need you to help me debug the code and fix the issues.
+some issues are:
+1. in every epoch and episode, the network is not learning anything and is not saved. its looking like the network is not learning anything and start from scratch every time.
+2. the experiment_runner.py file is not using the visualization.py file correctly. and its not generating the plots and metrics correctly.
+3. there are several unused functions and variables in the code. we need to clean up the code and remove the unused functions and variables.
+4. saving plots and runs and outputs are not managed well. we need to make sure everywhere we save the plots and runs and outputs in the correct directory and with the correct name. and de directories are created if not exist.
+5. there are several files if /strategies thet i dont know if they are realy aligned with the project. we need to check if they are aligned with the project and if not we need to remove them.
+6. base on your understanding of the project, update visualization.py file to make sure the plots and metrics are generated correctly.
+7. some parameters in *.py files are hard coded and not using the config files. we need to make sure all parameters are using the config files and not hard coded.
+8. add some logging to track the progress of the code and the results. specially for the training progress.
+
+
