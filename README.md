@@ -22,6 +22,7 @@ A self-partitioning graph framework for distributed, autonomous data management 
 - Real-time visualization and monitoring
 - Checkpoint management
 - Extensive test coverage
+- Cross-platform compatibility (Windows, macOS, Linux)
 
 ## Requirements
 
@@ -34,8 +35,13 @@ A self-partitioning graph framework for distributed, autonomous data management 
 
 1. Create and activate a virtual environment:
 ```bash
+# On macOS/Linux
 python3 -m venv venv
-source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+source venv/bin/activate
+
+# On Windows
+python -m venv venv
+.\venv\Scripts\activate
 ```
 
 2. Install dependencies:
@@ -45,7 +51,7 @@ pip install -r requirements.txt
 
 3. Verify installation by running tests:
 ```bash
-python3 -m pytest src/tests
+python -m pytest src/tests
 ```
 
 ## Usage
@@ -56,6 +62,25 @@ python3 -m pytest src/tests
 - Example configurations provided in `configs/test_config.yaml`
 
 ### Running Experiments
+
+Basic syntax:
+```
+python main.py [options]
+```
+
+Available options:
+```
+  -h, --help            show this help message and exit
+  --config CONFIG       Path to configuration YAML file
+  --runs RUNS           Number of experiment runs (overrides config)
+  --experiment_name EXPERIMENT_NAME
+                        Experiment name for logging
+  --strategy {dynamic,spectral,hybrid,gnn}
+                        Partitioning strategy to use
+  --no_parallel         Disable parallel processing for multiple runs
+```
+
+#### Example Commands
 
 1. Basic experiment with default configuration:
 ```bash
@@ -71,6 +96,7 @@ python main.py --config configs/test_config.yaml --strategy hybrid --experiment_
 ```bash
 python main.py --config configs/test_config.yaml --strategy spectral --experiment_name spectral_test
 python main.py --config configs/test_config.yaml --strategy dynamic --experiment_name dynamic_test
+python main.py --config configs/test_config.yaml --strategy gnn --experiment_name gnn_test
 ```
 
 4. Run multiple experiments:
@@ -78,9 +104,9 @@ python main.py --config configs/test_config.yaml --strategy dynamic --experiment
 python main.py --config configs/test_config.yaml --strategy hybrid --experiment_name hybrid_multi --runs 5
 ```
 
-5. Run with visualization:
+5. Run without parallel processing:
 ```bash
-python main.py --config configs/test_config.yaml --experiment_name viz_test --visualize
+python main.py --config configs/test_config.yaml --experiment_name sequential_test --runs 3 --no_parallel
 ```
 
 Note: All graph parameters (number of nodes, edge probability, etc.) and algorithm parameters should be specified in the YAML configuration files under `configs/`.
@@ -95,6 +121,25 @@ tensorboard --logdir runs/
 2. View results in browser:
 - Open: http://localhost:6006
 - Monitor metrics, visualizations, and training progress
+
+### Cleaning up
+
+To clean all generated files (output, plots, logs, etc.):
+```bash
+python CleanUp.py
+```
+
+## Cross-Platform Compatibility
+
+The system has been tested and is compatible with:
+- macOS
+- Windows
+- Linux
+
+### Windows-Specific Notes
+- Automatic system compatibility checks run at startup to verify permissions
+- Path handling is platform-independent using Python's `pathlib.Path`
+- Directory and file operations handle Windows-specific errors
 
 ## Project Structure
 
@@ -135,6 +180,7 @@ tensorboard --logdir runs/
   - Metric calculations
   - Visualization tools
   - Helper functions
+  - Cross-platform file operations
 - `src/config/`: Configuration
   - System settings
   - Training parameters
