@@ -4,7 +4,6 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent))
 from src.utils.experiment_runner import *
 
-
 def main():
     """Main entry point for the graph partitioning system."""
     # Set up signal handlers for graceful termination
@@ -12,6 +11,11 @@ def main():
     args = parse_arguments()
     
     try:
+        # Check system compatibility
+        if not check_system_compatibility():
+            logging.error("System compatibility check failed. Exiting.")
+            sys.exit(1)
+        
         # Setup logging and system configuration
         setup_logging(args.experiment_name)
         configure_system()
@@ -24,8 +28,8 @@ def main():
         # Log experiment configuration
         log_configuration(args, config, num_runs)
         
-        # Create experiment-specific plots directory
-        plots_dir = Path(f"plots/{args.experiment_name}")
+        # Create experiment-specific plots directory using platform-independent path joining
+        plots_dir = Path("plots").joinpath(args.experiment_name)
         plots_dir.mkdir(exist_ok=True, parents=True)
         
         # Determine if we should use parallel processing

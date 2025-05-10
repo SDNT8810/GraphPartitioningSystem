@@ -120,7 +120,9 @@ class DynamicPartitioning:
         episode_metrics = []
         
         # Initialize visualizer
-        visualizer = TrainingVisualizer(f'runs/{self.experiment_name}')
+        tb_dir = Path('runs').joinpath(f'{self.experiment_name}')
+
+        visualizer = TrainingVisualizer(tb_dir)
         
         # Calculate total episodes (configured + potential additional)
         base_episodes = self.config.num_episodes

@@ -7,7 +7,12 @@ from ..config.system_config import PartitionConfig
 
 @dataclass
 class Partition:
-    # ... existing code ...
+    """Represents a partition of nodes in the graph."""
+    id: int
+    nodes: Set[int] = field(default_factory=set)
+    density: float = 0.0
+    conductance: float = 0.0
+    
     def to_dict(self):
         return {
             'id': self.id,
@@ -24,12 +29,6 @@ class Partition:
             density=data.get('density', 0.0),
             conductance=data.get('conductance', 0.0),
         )
-
-    """Represents a partition of nodes in the graph."""
-    id: int
-    nodes: Set[int] = field(default_factory=set)
-    density: float = 0.0
-    conductance: float = 0.0
     
     def add_node(self, node: int) -> None:
         """Add a node to the partition."""

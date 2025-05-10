@@ -48,9 +48,8 @@ gnn:
   hidden_channels: 128  # Larger hidden dimension
   num_layers: 5  # Deeper network
   num_heads: 8  # More attention heads
-  dropout: 0.2  # More dropout for regularization
+  dropout: 0.2  # attention_dropout for regularization
   use_attention: true
-  attention_dropout: 0.2  # More dropout for attention
   quantize: true
   quantization_bits: 16  # Higher precision quantization
   learning_rate: 0.0003  # Lower learning rate

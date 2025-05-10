@@ -13,7 +13,6 @@ class GNNConfig:
     num_heads: int = 4
     dropout: float = 0.1
     use_attention: bool = True
-    attention_dropout: float = 0.1
     quantize: bool = True
     quantization_bits: int = 8
     learning_rate: float = 0.001

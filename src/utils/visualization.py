@@ -153,28 +153,89 @@ def visualize_graph_partition(graph: nx.Graph,
 def compare_strategies(results: Dict[str, Dict[str, List[float]]],
                       metrics: List[str] = ['cut_size', 'balance', 'conductance'],
                       save_path: str = None):
-    """Compare different strategies using box plots."""
+    """Compare different strategies using box plots or bar plots depending on data size.
+    
+    This function handles two different data structures:
+    1. Strategy-first: {strategy: {metric: [values]}}
+    2. Metric-first: {metric: {strategy: [values]}}
+    """
+    import logging
+    
+    # Debug output
+    logging.info(f"Generating strategy comparison with input data structure of length {len(results)}")
+    
     num_metrics = len(metrics)
     fig, axes = plt.subplots(1, num_metrics, figsize=(5*num_metrics, 6))
     
     if num_metrics == 1:
         axes = [axes]
     
+    # Determine the data structure layout (metrics->strategies or strategies->metrics)
+    # If any of our expected metrics are top-level keys, we have a metric-first structure
+    is_metric_first_level = any(metric in results for metric in metrics)
+    logging.info(f"Data structure has metrics at first level: {is_metric_first_level}")
+    
+    # We don't need to restructure the data anymore - we'll handle both structures directly
+    
     for i, metric in enumerate(metrics):
         data = []
         labels = []
-        for strategy, strategy_results in results.items():
-            if metric in strategy_results:
-                data.append(strategy_results[metric])
-                labels.append(strategy)
+        bar_values = []
         
-        sns.boxplot(data=data, ax=axes[i])
+        # Handle both data structures directly
+        if is_metric_first_level:
+            # Metric-first structure: {metric: {strategy: [values]}}
+            if metric in results:
+                logging.info(f"Using metric-first structure for '{metric}'")
+                for strategy, values in results[metric].items():
+                    if values and len(values) > 0:
+                        data.append(values)
+                        labels.append(strategy)
+                        try:
+                            bar_values.append(float(values[-1]))
+                            logging.info(f"Will plot {strategy} {metric}: {values[-1]}")
+                        except (ValueError, TypeError) as e:
+                            logging.error(f"Error converting value to float: {values[-1]}, error: {e}")
+                            continue
+        else:
+            # Strategy-first structure: {strategy: {metric: [values]}}
+            logging.info(f"Using strategy-first structure for '{metric}'")
+            for strategy, strategy_results in results.items():
+                if metric in strategy_results and strategy_results[metric] and len(strategy_results[metric]) > 0:
+                    data.append(strategy_results[metric])
+                    labels.append(strategy)
+                    try:
+                        bar_values.append(float(strategy_results[metric][-1]))
+                        logging.info(f"Will plot {strategy} {metric}: {strategy_results[metric][-1]}")
+                    except (ValueError, TypeError) as e:
+                        logging.error(f"Error converting value to float: {strategy_results[metric][-1]}, error: {e}")
+                        continue
+                    
+        if len(bar_values) == 0:
+            logging.warning(f"No data to plot for metric {metric}")
+            axes[i].text(0.5, 0.5, "No data available", 
+                        ha='center', va='center', transform=axes[i].transAxes)
+            continue
+        
+        # Always use bar charts for strategy comparison
+        x_pos = range(len(labels))
+        axes[i].bar(x_pos, bar_values, align='center', alpha=0.7)
+        axes[i].set_xticks(x_pos)
         axes[i].set_xticklabels(labels, rotation=45)
+        
+        # Add value labels on top of bars
+        for j, v in enumerate(bar_values):
+            axes[i].text(j, v, f"{v:.3f}", ha='center', va='bottom')
+        
+        # Set axis labels
         axes[i].set_title(f'{metric.replace("_", " ").title()}')
+        axes[i].grid(True, linestyle='--', alpha=0.3)
     
     plt.tight_layout()
     if save_path:
         plt.savefig(save_path)
+        logging.info(f"Strategy comparison saved to: {save_path}")
+    
     plt.close()
 
 def compare_partitions(graph: nx.Graph, partition_dict: Dict[str, Dict[int, List[int]]], 
@@ -316,7 +377,6 @@ class TrainingVisualizer:
             except:
                 pass
 
-# Add a function to clean up all TensorBoard visualizers
 def cleanup_tensorboard_writers():
     """
     Clean up all TensorBoard writers that may be open to prevent the program from hanging

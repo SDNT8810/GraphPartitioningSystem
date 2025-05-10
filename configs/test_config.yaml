@@ -1,18 +1,18 @@
 # Fast configuration for quick testing
 # Graph configuration - small graph for quick testing
 graph:
-  num_nodes: 10  # Small number of nodes for fast execution
+  num_nodes: 20  # Small number of nodes for fast execution
   edge_probability: 0.3
   weight_range: [0.1, 1.0]
 
 # Partitioning strategy configuration - simplified for quick testing
 partition:
-  num_partitions: 2
+  num_partitions: 3
   balance_weight: 0.5
   cut_size_weight: 0.3
   conductance_weight: 0.2
   use_laplacian: true
-  min_partition_size: 3
+  min_partition_size: 2
   max_partition_size: 7
   balance_threshold: 0.8
   conductance_threshold: 0.3
@@ -48,9 +48,8 @@ gnn:
   hidden_channels: 32  # Smaller network
   num_layers: 2  # Fewer layers
   num_heads: 2  # Fewer attention heads
-  dropout: 0.1
+  dropout: 0.1 # attention_dropout
   use_attention: false  # Simpler model without attention
-  attention_dropout: 0.1
   quantize: false  # No quantization for testing
   quantization_bits: 8
   learning_rate: 0.01  # Higher learning rate
@@ -81,8 +80,8 @@ recovery:
 
 # System configuration - minimal episodes and steps for fast testing
 system:
-  num_episodes: 50  # Very few episodes for quick testing
-  max_steps: 20  # Few steps per episode
+  num_episodes: 200  # Very few episodes for quick testing
+  max_steps: 50  # Few steps per episode
   log_interval: 5  # Frequent logging
   seed: 42
   num_workers: 1  # Single worker for simpler debugging

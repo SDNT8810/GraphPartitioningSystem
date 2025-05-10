@@ -21,8 +21,6 @@ import yaml
 import networkx as nx
 import warnings
 
-
-
 from src.core.graph import Graph, Partition
 from src.strategies.spectral import SpectralPartitioningStrategy
 from src.strategies.dynamic_partitioning import DynamicPartitioning
@@ -31,6 +29,7 @@ from src.strategies.gnn_based import GNNBasedPartitioningStrategy
 from src.strategies.rl_based import RLPartitioningStrategy
 from src.config.system_config import *
 from src.utils.visualization import *
+from src.utils.file_utils import ensure_directory_exists
 
 def run_single_experiment(config: SystemConfig, run_id: int, args=None) -> Dict:
     """Run a single experiment with the given configuration."""
@@ -79,7 +78,7 @@ def run_single_experiment(config: SystemConfig, run_id: int, args=None) -> Dict:
         if hasattr(args, 'strategy') and args.strategy == 'spectral':
             return run_spectral_strategy(config, graph, run_id)
         elif hasattr(args, 'strategy') and args.strategy == 'hybrid':
-            return run_hybrid_strategy(config, graph, run_id)
+            return run_hybrid_strategy(config, graph, run_id, getattr(args, 'experiment_name', 'hybrid'))
         elif hasattr(args, 'strategy') and args.strategy == 'gnn':
             return run_gnn_strategy(config, graph, run_id)
         elif hasattr(args, 'strategy') and args.strategy == 'rl':
@@ -100,7 +99,7 @@ def run_spectral_strategy(config: SystemConfig, graph: Graph, run_id: int, exper
     # Create experiment-specific directories
     output_dir = Path("output")
     output_dir.mkdir(exist_ok=True)
-    plots_dir = Path(f"plots/{experiment_name}")
+    plots_dir = Path("plots").joinpath(experiment_name)
     plots_dir.mkdir(exist_ok=True, parents=True)
     
     # Partition once for baseline
@@ -232,17 +231,18 @@ def run_spectral_strategy(config: SystemConfig, graph: Graph, run_id: int, exper
 
 def run_hybrid_strategy(config: SystemConfig, graph: Graph, run_id: int, experiment_name: str = "hybrid") -> Dict:
     """Run experiment with hybrid partitioning strategy."""
-    algorithm = HybridPartitioningStrategy(config.partition)
+    algorithm = HybridPartitioningStrategy(config.partition, experiment_name=experiment_name)
     logging.info("Using HybridPartitioningStrategy for this run.")
     
     # Create experiment-specific directories
     output_dir = Path("output")
     output_dir.mkdir(exist_ok=True)
-    plots_dir = Path(f"plots/{experiment_name}")
+    plots_dir = Path("plots").joinpath(experiment_name)
+
     plots_dir.mkdir(exist_ok=True, parents=True)
     
     # Partition using hybrid strategy
-    final_partitions = algorithm.partition(graph)
+    final_partitions = algorithm.partition(graph, run_id=run_id)
     
     # Evaluate using spectral's evaluate (for consistency)
     metrics = SpectralPartitioningStrategy(config.partition).evaluate(graph, final_partitions)
@@ -343,8 +343,12 @@ def run_hybrid_strategy(config: SystemConfig, graph: Graph, run_id: int, experim
             }
         }
         
+        logging.info(f"Sending variant data to compare_strategies: {variant_data}")
+        
+        # Make sure we're using the updated metrics parameter list that matches our data
         compare_strategies(
             variant_data,
+            metrics=['cut_size', 'balance', 'conductance'],
             save_path=str(plots_dir / f'hybrid_strategy_comparison_run_{run_id}.png')
         )
         logging.info(f"Strategy comparison saved to {plots_dir / f'hybrid_strategy_comparison_run_{run_id}.png'}")
@@ -405,7 +409,7 @@ def run_dynamic_strategy(config: SystemConfig, graph: Graph, run_id: int,
     output_dir.mkdir(exist_ok=True)
     
     # Create experiment-specific directory for plots
-    plots_dir = Path(f"plots/{experiment_name}")
+    plots_dir = Path("plots").joinpath(experiment_name)
     plots_dir.mkdir(exist_ok=True, parents=True)
     
     # Use consistent experiment name for checkpoint loading/saving
@@ -825,7 +829,7 @@ def generate_comparison_visualizations(experiment_results: Dict[str, List[Dict]]
     
     # Create experiment-specific subdirectory if experiment_name is provided
     if experiment_name:
-        plots_dir = Path(f"plots/{experiment_name}")
+        plots_dir = Path("plots").joinpath(experiment_name)
     else:
         plots_dir = Path("plots")
         
@@ -1169,3 +1173,42 @@ def perform_cleanup():
     
     # Exit explicitly to ensure no background threads block program termination
     os._exit(0)
+
+def check_system_compatibility():
+    """
+    Check if the system is compatible with the graph partitioning system.
+    Tests directory creation and permissions to catch issues early.
+    """
+    logging.info(f"Running on platform: {sys.platform}")
+    required_dirs = [
+        "output",
+        "plots",
+        "logs", 
+        "runs",
+        "checkpoints"
+    ]
+    
+    try:
+        # Test creating each required directory
+        for dir_name in required_dirs:
+            dir_path = ensure_directory_exists(dir_name)
+            logging.info(f"Successfully verified directory: {dir_path}")
+            
+        # Test file creation permission
+        for dir_name in required_dirs:
+            test_file = Path(dir_name) / ".permission_test"
+            try:
+                with open(test_file, 'w') as f:
+                    f.write("Testing write permissions")
+                test_file.unlink()  # Remove test file
+                logging.info(f"Write permissions verified for directory: {dir_name}")
+            except Exception as e:
+                logging.warning(f"Cannot write to directory {dir_name}: {str(e)}")
+                logging.warning("This may cause issues during experiment execution.")
+                
+    except Exception as e:
+        logging.error(f"System compatibility check failed: {str(e)}")
+        logging.error("Please ensure you have sufficient permissions to create directories and files.")
+        return False
+        
+    return True
