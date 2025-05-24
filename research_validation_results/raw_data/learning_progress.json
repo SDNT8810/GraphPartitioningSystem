@@ -1,0 +1,2702 @@
+[
+  {
+    "episode": 0,
+    "reward": 90.93888444386167,
+    "cut_size": 37,
+    "balance": 0.705361808792306,
+    "conductance": 0.40536180879230616,
+    "convergence_rate": 0.0,
+    "adaptation_speed": 0.8674628883284562
+  },
+  {
+    "episode": 1,
+    "reward": 91.57907634291271,
+    "cut_size": 36,
+    "balance": 0.7057037634545033,
+    "conductance": 0.40030376345450325,
+    "convergence_rate": 0.006000000000000005,
+    "adaptation_speed": 0.8378808048556088
+  },
+  {
+    "episode": 2,
+    "reward": 91.96405504906606,
+    "cut_size": 36,
+    "balance": 0.7090133133829527,
+    "conductance": 0.3982133133829528,
+    "convergence_rate": 0.01200000000000001,
+    "adaptation_speed": 0.8261036906320272
+  },
+  {
+    "episode": 3,
+    "reward": 92.99545315358742,
+    "cut_size": 33,
+    "balance": 0.704806358679216,
+    "conductance": 0.3886063586792161,
+    "convergence_rate": 0.018000000000000016,
+    "adaptation_speed": 1.0186446114415963
+  },
+  {
+    "episode": 4,
+    "reward": 92.47316321940227,
+    "cut_size": 37,
+    "balance": 0.7186655439604387,
+    "conductance": 0.39706554396043875,
+    "convergence_rate": 0.02400000000000002,
+    "adaptation_speed": 0.9909317640884162
+  },
+  {
+    "episode": 5,
+    "reward": 93.56402557047394,
+    "cut_size": 34,
+    "balance": 0.7137671445293726,
+    "conductance": 0.38676714452937266,
+    "convergence_rate": 0.030000000000000027,
+    "adaptation_speed": 1.1611245194627338
+  },
+  {
+    "episode": 6,
+    "reward": 94.03479117660646,
+    "cut_size": 34,
+    "balance": 0.7160791723650409,
+    "conductance": 0.38367917236504095,
+    "convergence_rate": 0.03600000000000003,
+    "adaptation_speed": 0.8847404245896904
+  },
+  {
+    "episode": 7,
+    "reward": 94.71971704077255,
+    "cut_size": 32,
+    "balance": 0.7159009646421794,
+    "conductance": 0.37810096464217946,
+    "convergence_rate": 0.04200000000000004,
+    "adaptation_speed": 1.095503564073166
+  },
+  {
+    "episode": 8,
+    "reward": 95.22849766116857,
+    "cut_size": 32,
+    "balance": 0.717770957428272,
+    "conductance": 0.3745709574282721,
+    "convergence_rate": 0.04800000000000004,
+    "adaptation_speed": 0.9394840104598702
+  },
+  {
+    "episode": 9,
+    "reward": 95.26858855072138,
+    "cut_size": 33,
+    "balance": 0.7250908308055656,
+    "conductance": 0.37649083080556556,
+    "convergence_rate": 0.05400000000000005,
+    "adaptation_speed": 1.1027362335065072
+  },
+  {
+    "episode": 10,
+    "reward": 95.44448769306024,
+    "cut_size": 34,
+    "balance": 0.7308315384527881,
+    "conductance": 0.37683153845278816,
+    "convergence_rate": 0.06000000000000005,
+    "adaptation_speed": 0.837189498618155
+  },
+  {
+    "episode": 11,
+    "reward": 96.4814410693651,
+    "cut_size": 31,
+    "balance": 0.7265599875655218,
+    "conductance": 0.3671599875655218,
+    "convergence_rate": 0.06600000000000006,
+    "adaptation_speed": 0.977486912631663
+  },
+  {
+    "episode": 12,
+    "reward": 96.15663020537315,
+    "cut_size": 34,
+    "balance": 0.7381229045886845,
+    "conductance": 0.37332290458868445,
+    "convergence_rate": 0.07199999999999995,
+    "adaptation_speed": 0.8350353791244635
+  },
+  {
+    "episode": 13,
+    "reward": 97.07835061978832,
+    "cut_size": 31,
+    "balance": 0.7351912718629263,
+    "conductance": 0.3649912718629263,
+    "convergence_rate": 0.07799999999999996,
+    "adaptation_speed": 0.9542907333413445
+  },
+  {
+    "episode": 14,
+    "reward": 97.45710943434534,
+    "cut_size": 31,
+    "balance": 0.7385731461122632,
+    "conductance": 0.36297314611226333,
+    "convergence_rate": 0.08399999999999996,
+    "adaptation_speed": 0.9065428519897066
+  },
+  {
+    "episode": 15,
+    "reward": 97.46335546874272,
+    "cut_size": 33,
+    "balance": 0.7462865643169451,
+    "conductance": 0.3652865643169452,
+    "convergence_rate": 0.08999999999999997,
+    "adaptation_speed": 0.9736223305274487
+  },
+  {
+    "episode": 16,
+    "reward": 98.2454062171168,
+    "cut_size": 31,
+    "balance": 0.7449789974753861,
+    "conductance": 0.3585789974753862,
+    "convergence_rate": 0.09599999999999997,
+    "adaptation_speed": 0.9242167050045853
+  },
+  {
+    "episode": 17,
+    "reward": 98.00791818421197,
+    "cut_size": 33,
+    "balance": 0.7555265327417214,
+    "conductance": 0.36372653274172145,
+    "convergence_rate": 0.10199999999999998,
+    "adaptation_speed": 1.1067960023575045
+  },
+  {
+    "episode": 18,
+    "reward": 98.98016690707175,
+    "cut_size": 31,
+    "balance": 0.7520073615456775,
+    "conductance": 0.35480736154567755,
+    "convergence_rate": 0.10799999999999998,
+    "adaptation_speed": 0.8087159010617284
+  },
+  {
+    "episode": 19,
+    "reward": 99.28207703155381,
+    "cut_size": 31,
+    "balance": 0.7562828252144904,
+    "conductance": 0.35368282521449046,
+    "convergence_rate": 0.11399999999999999,
+    "adaptation_speed": 0.8186678394806108
+  },
+  {
+    "episode": 20,
+    "reward": 99.8915250916223,
+    "cut_size": 30,
+    "balance": 0.7569822663764849,
+    "conductance": 0.34898226637648494,
+    "convergence_rate": 0.12,
+    "adaptation_speed": 0.9766052084249669
+  },
+  {
+    "episode": 21,
+    "reward": 99.93701194775844,
+    "cut_size": 31,
+    "balance": 0.764239395956297,
+    "conductance": 0.35083939595629715,
+    "convergence_rate": 0.126,
+    "adaptation_speed": 1.0684044463273323
+  },
+  {
+    "episode": 22,
+    "reward": 99.95733804096977,
+    "cut_size": 33,
+    "balance": 0.7717890925468629,
+    "conductance": 0.3529890925468629,
+    "convergence_rate": 0.132,
+    "adaptation_speed": 1.091186932211317
+  },
+  {
+    "episode": 23,
+    "reward": 101.48378852056439,
+    "cut_size": 28,
+    "balance": 0.7618257148771583,
+    "conductance": 0.3376257148771583,
+    "convergence_rate": 0.138,
+    "adaptation_speed": 1.1583567419987555
+  },
+  {
+    "episode": 24,
+    "reward": 101.0513811834476,
+    "cut_size": 31,
+    "balance": 0.7746397536808419,
+    "conductance": 0.34503975368084194,
+    "convergence_rate": 0.14400000000000002,
+    "adaptation_speed": 1.0978689815571168
+  },
+  {
+    "episode": 25,
+    "reward": 101.85942195666595,
+    "cut_size": 29,
+    "balance": 0.7730299772480698,
+    "conductance": 0.33802997724806993,
+    "convergence_rate": 0.15000000000000002,
+    "adaptation_speed": 0.8754271226115174
+  },
+  {
+    "episode": 26,
+    "reward": 101.74040429379808,
+    "cut_size": 31,
+    "balance": 0.7821999500721154,
+    "conductance": 0.34179995007211533,
+    "convergence_rate": 0.15600000000000003,
+    "adaptation_speed": 1.1876706654337004
+  },
+  {
+    "episode": 27,
+    "reward": 102.69119702108532,
+    "cut_size": 29,
+    "balance": 0.7789302671966823,
+    "conductance": 0.33313026719668243,
+    "convergence_rate": 0.16200000000000003,
+    "adaptation_speed": 1.0204848981014132
+  },
+  {
+    "episode": 28,
+    "reward": 102.97451096300566,
+    "cut_size": 29,
+    "balance": 0.7834219655464457,
+    "conductance": 0.3322219655464457,
+    "convergence_rate": 0.16800000000000004,
+    "adaptation_speed": 1.160522480484126
+  },
+  {
+    "episode": 29,
+    "reward": 103.17067653088444,
+    "cut_size": 30,
+    "balance": 0.7889270170827389,
+    "conductance": 0.3323270170827391,
+    "convergence_rate": 0.17399999999999993,
+    "adaptation_speed": 0.8351620214663402
+  },
+  {
+    "episode": 30,
+    "reward": 104.17323847297826,
+    "cut_size": 27,
+    "balance": 0.7850553665932761,
+    "conductance": 0.32305536659327627,
+    "convergence_rate": 0.17999999999999994,
+    "adaptation_speed": 1.1417244927982877
+  },
+  {
+    "episode": 31,
+    "reward": 103.85718848166545,
+    "cut_size": 30,
+    "balance": 0.7965164130038901,
+    "conductance": 0.3291164130038902,
+    "convergence_rate": 0.18599999999999994,
+    "adaptation_speed": 0.9454726398283443
+  },
+  {
+    "episode": 32,
+    "reward": 104.52000295058525,
+    "cut_size": 29,
+    "balance": 0.7965953145280784,
+    "conductance": 0.32379531452807847,
+    "convergence_rate": 0.19199999999999995,
+    "adaptation_speed": 1.1991745403339047
+  },
+  {
+    "episode": 33,
+    "reward": 104.96138548672447,
+    "cut_size": 28,
+    "balance": 0.7992490059683202,
+    "conductance": 0.32104900596832026,
+    "convergence_rate": 0.19799999999999995,
+    "adaptation_speed": 1.094375324599817
+  },
+  {
+    "episode": 34,
+    "reward": 104.66164158771781,
+    "cut_size": 31,
+    "balance": 0.8105204466544439,
+    "conductance": 0.3269204466544439,
+    "convergence_rate": 0.20399999999999996,
+    "adaptation_speed": 1.1736612709210243
+  },
+  {
+    "episode": 35,
+    "reward": 106.00533201592496,
+    "cut_size": 27,
+    "balance": 0.8026821858613377,
+    "conductance": 0.31368218586133784,
+    "convergence_rate": 0.20999999999999996,
+    "adaptation_speed": 0.9974624434586477
+  },
+  {
+    "episode": 36,
+    "reward": 105.63393971524425,
+    "cut_size": 30,
+    "balance": 0.8147867474971597,
+    "conductance": 0.3203867474971599,
+    "convergence_rate": 0.21599999999999997,
+    "adaptation_speed": 1.1773026117570866
+  },
+  {
+    "episode": 37,
+    "reward": 106.77438042864739,
+    "cut_size": 27,
+    "balance": 0.8093118554808443,
+    "conductance": 0.3095118554808443,
+    "convergence_rate": 0.22199999999999998,
+    "adaptation_speed": 1.0256913688688036
+  },
+  {
+    "episode": 38,
+    "reward": 107.08673070397958,
+    "cut_size": 27,
+    "balance": 0.813465922046749,
+    "conductance": 0.308265922046749,
+    "convergence_rate": 0.22799999999999998,
+    "adaptation_speed": 1.031763235804008
+  },
+  {
+    "episode": 39,
+    "reward": 107.12921419755762,
+    "cut_size": 28,
+    "balance": 0.8207579744470043,
+    "conductance": 0.3101579744470043,
+    "convergence_rate": 0.23399999999999999,
+    "adaptation_speed": 1.0373161299808606
+  },
+  {
+    "episode": 40,
+    "reward": 108.3708573372881,
+    "cut_size": 25,
+    "balance": 0.8141063100315338,
+    "conductance": 0.2981063100315338,
+    "convergence_rate": 0.24,
+    "adaptation_speed": 1.0639385582026637
+  },
+  {
+    "episode": 41,
+    "reward": 107.32803287717009,
+    "cut_size": 31,
+    "balance": 0.8340182223584872,
+    "conductance": 0.3126182223584873,
+    "convergence_rate": 0.246,
+    "adaptation_speed": 0.9814993166256962
+  },
+  {
+    "episode": 42,
+    "reward": 108.7225051830935,
+    "cut_size": 26,
+    "balance": 0.8255894746151915,
+    "conductance": 0.29878947461519156,
+    "convergence_rate": 0.252,
+    "adaptation_speed": 0.8252721119883404
+  },
+  {
+    "episode": 43,
+    "reward": 108.83118932962205,
+    "cut_size": 27,
+    "balance": 0.8321117519811388,
+    "conductance": 0.2999117519811389,
+    "convergence_rate": 0.258,
+    "adaptation_speed": 0.9540482632686239
+  },
+  {
+    "episode": 44,
+    "reward": 109.39139110482172,
+    "cut_size": 26,
+    "balance": 0.8333838243625382,
+    "conductance": 0.2957838243625382,
+    "convergence_rate": 0.264,
+    "adaptation_speed": 1.1976647574998065
+  },
+  {
+    "episode": 45,
+    "reward": 109.66611216413827,
+    "cut_size": 27,
+    "balance": 0.8379754399518805,
+    "conductance": 0.29497543995188047,
+    "convergence_rate": 0.27,
+    "adaptation_speed": 0.940828469103114
+  },
+  {
+    "episode": 46,
+    "reward": 110.9924571776566,
+    "cut_size": 23,
+    "balance": 0.8303388700272485,
+    "conductance": 0.2819388700272486,
+    "convergence_rate": 0.276,
+    "adaptation_speed": 1.0327623014823837
+  },
+  {
+    "episode": 47,
+    "reward": 110.51195479595344,
+    "cut_size": 26,
+    "balance": 0.8437121535354248,
+    "conductance": 0.2899121535354248,
+    "convergence_rate": 0.28200000000000003,
+    "adaptation_speed": 0.9510452747087444
+  },
+  {
+    "episode": 48,
+    "reward": 111.2475493469155,
+    "cut_size": 25,
+    "balance": 0.8429447750358662,
+    "conductance": 0.28374477503586615,
+    "convergence_rate": 0.28800000000000003,
+    "adaptation_speed": 1.0194622247042089
+  },
+  {
+    "episode": 49,
+    "reward": 112.0185027395316,
+    "cut_size": 23,
+    "balance": 0.8417662472147487,
+    "conductance": 0.2771662472147487,
+    "convergence_rate": 0.29400000000000004,
+    "adaptation_speed": 0.8284621169112207
+  },
+  {
+    "episode": 50,
+    "reward": 111.33979831550471,
+    "cut_size": 27,
+    "balance": 0.8574442056336662,
+    "conductance": 0.28744420563366624,
+    "convergence_rate": 0.30000000000000004,
+    "adaptation_speed": 0.9259294554604581
+  },
+  {
+    "episode": 51,
+    "reward": 111.78466587394621,
+    "cut_size": 27,
+    "balance": 0.8600573735587651,
+    "conductance": 0.2846573735587652,
+    "convergence_rate": 0.30600000000000005,
+    "adaptation_speed": 0.8696550101665376
+  },
+  {
+    "episode": 52,
+    "reward": 112.24229670474797,
+    "cut_size": 27,
+    "balance": 0.8625221313401397,
+    "conductance": 0.2817221313401397,
+    "convergence_rate": 0.31200000000000006,
+    "adaptation_speed": 1.0649013642007454
+  },
+  {
+    "episode": 53,
+    "reward": 113.26102583851272,
+    "cut_size": 24,
+    "balance": 0.858462490249852,
+    "conductance": 0.272262490249852,
+    "convergence_rate": 0.31800000000000006,
+    "adaptation_speed": 0.810859655273463
+  },
+  {
+    "episode": 54,
+    "reward": 113.05214668553526,
+    "cut_size": 26,
+    "balance": 0.8686773641216828,
+    "conductance": 0.2770773641216828,
+    "convergence_rate": 0.32400000000000007,
+    "adaptation_speed": 0.9400298715960007
+  },
+  {
+    "episode": 55,
+    "reward": 114.07361108576637,
+    "cut_size": 23,
+    "balance": 0.8645859176073677,
+    "conductance": 0.2675859176073677,
+    "convergence_rate": 0.33000000000000007,
+    "adaptation_speed": 0.9168309038653406
+  },
+  {
+    "episode": 56,
+    "reward": 114.96962100015276,
+    "cut_size": 21,
+    "balance": 0.8619532441842703,
+    "conductance": 0.25955324418427034,
+    "convergence_rate": 0.3360000000000001,
+    "adaptation_speed": 0.9494272107114775
+  },
+  {
+    "episode": 57,
+    "reward": 114.41467210159357,
+    "cut_size": 25,
+    "balance": 0.8761921848651912,
+    "conductance": 0.26839218486519123,
+    "convergence_rate": 0.34199999999999997,
+    "adaptation_speed": 0.97450155791667
+  },
+  {
+    "episode": 58,
+    "reward": 116.25171430487192,
+    "cut_size": 19,
+    "balance": 0.8626172755247449,
+    "conductance": 0.24941727552474494,
+    "convergence_rate": 0.348,
+    "adaptation_speed": 0.8793702909701239
+  },
+  {
+    "episode": 59,
+    "reward": 115.719072975693,
+    "cut_size": 23,
+    "balance": 0.8765968258640349,
+    "conductance": 0.2579968258640349,
+    "convergence_rate": 0.354,
+    "adaptation_speed": 1.0264585361357936
+  },
+  {
+    "episode": 60,
+    "reward": 116.26786084675197,
+    "cut_size": 22,
+    "balance": 0.8780016180610238,
+    "conductance": 0.25400161806102384,
+    "convergence_rate": 0.36,
+    "adaptation_speed": 0.8452623539491924
+  },
+  {
+    "episode": 61,
+    "reward": 116.4310826350703,
+    "cut_size": 23,
+    "balance": 0.8838897368015082,
+    "conductance": 0.2544897368015081,
+    "convergence_rate": 0.366,
+    "adaptation_speed": 1.0894805319602823
+  },
+  {
+    "episode": 62,
+    "reward": 117.25093821947809,
+    "cut_size": 21,
+    "balance": 0.8821425788432781,
+    "conductance": 0.24734257884327807,
+    "convergence_rate": 0.372,
+    "adaptation_speed": 0.8228908884614871
+  },
+  {
+    "episode": 63,
+    "reward": 117.02909475030334,
+    "cut_size": 23,
+    "balance": 0.8925082005778683,
+    "conductance": 0.2523082005778683,
+    "convergence_rate": 0.378,
+    "adaptation_speed": 0.8697774684211891
+  },
+  {
+    "episode": 64,
+    "reward": 117.58674400837317,
+    "cut_size": 22,
+    "balance": 0.8938099533910094,
+    "conductance": 0.24820995339100949,
+    "convergence_rate": 0.384,
+    "adaptation_speed": 1.1915748891650295
+  },
+  {
+    "episode": 65,
+    "reward": 117.63419586832276,
+    "cut_size": 24,
+    "balance": 0.9010442340892701,
+    "conductance": 0.2500442340892701,
+    "convergence_rate": 0.39,
+    "adaptation_speed": 1.1836926164550132
+  },
+  {
+    "episode": 66,
+    "reward": 118.12339970215912,
+    "cut_size": 23,
+    "balance": 0.9031418639283825,
+    "conductance": 0.2467418639283825,
+    "convergence_rate": 0.396,
+    "adaptation_speed": 0.9889070664373835
+  },
+  {
+    "episode": 67,
+    "reward": 118.81624431750464,
+    "cut_size": 22,
+    "balance": 0.9028715777034344,
+    "conductance": 0.24107157770343443,
+    "convergence_rate": 0.402,
+    "adaptation_speed": 1.1822194650376985
+  },
+  {
+    "episode": 68,
+    "reward": 119.26105068530191,
+    "cut_size": 21,
+    "balance": 0.9054854571476524,
+    "conductance": 0.23828545714765234,
+    "convergence_rate": 0.40800000000000003,
+    "adaptation_speed": 0.8300902878214022
+  },
+  {
+    "episode": 69,
+    "reward": 119.93429055174266,
+    "cut_size": 20,
+    "balance": 0.9054431331192715,
+    "conductance": 0.23284313311927146,
+    "convergence_rate": 0.4139999999999999,
+    "adaptation_speed": 1.05982251514473
+  },
+  {
+    "episode": 70,
+    "reward": 120.27050307373649,
+    "cut_size": 20,
+    "balance": 0.9093197317007382,
+    "conductance": 0.23131973170073836,
+    "convergence_rate": 0.41999999999999993,
+    "adaptation_speed": 0.9746064447126074
+  },
+  {
+    "episode": 71,
+    "reward": 120.76626683881412,
+    "cut_size": 20,
+    "balance": 0.9113410832696033,
+    "conductance": 0.22794108326960327,
+    "convergence_rate": 0.42599999999999993,
+    "adaptation_speed": 1.102673315382043
+  },
+  {
+    "episode": 72,
+    "reward": 121.55089447734349,
+    "cut_size": 18,
+    "balance": 0.9100035525890291,
+    "conductance": 0.22120355258902924,
+    "convergence_rate": 0.43199999999999994,
+    "adaptation_speed": 1.0208352715491127
+  },
+  {
+    "episode": 73,
+    "reward": 121.20384762292935,
+    "cut_size": 21,
+    "balance": 0.9218250276403565,
+    "conductance": 0.22762502764035644,
+    "convergence_rate": 0.43799999999999994,
+    "adaptation_speed": 0.9560395905098349
+  },
+  {
+    "episode": 74,
+    "reward": 122.39888721869156,
+    "cut_size": 17,
+    "balance": 0.9157152648989354,
+    "conductance": 0.21611526489893554,
+    "convergence_rate": 0.44399999999999995,
+    "adaptation_speed": 1.035152841958966
+  },
+  {
+    "episode": 75,
+    "reward": 122.15065115316331,
+    "cut_size": 20,
+    "balance": 0.9263877772887987,
+    "conductance": 0.2213877772887987,
+    "convergence_rate": 0.44999999999999996,
+    "adaptation_speed": 0.8369945997944863
+  },
+  {
+    "episode": 76,
+    "reward": 121.91906442741035,
+    "cut_size": 22,
+    "balance": 0.9368666927045307,
+    "conductance": 0.22646669270453082,
+    "convergence_rate": 0.45599999999999996,
+    "adaptation_speed": 1.1129164205377564
+  },
+  {
+    "episode": 77,
+    "reward": 123.80262352193756,
+    "cut_size": 16,
+    "balance": 0.9227508892797958,
+    "conductance": 0.20695088927979577,
+    "convergence_rate": 0.46199999999999997,
+    "adaptation_speed": 1.108992529329871
+  },
+  {
+    "episode": 78,
+    "reward": 123.77496399756075,
+    "cut_size": 18,
+    "balance": 0.9308585581678982,
+    "conductance": 0.20965855816789833,
+    "convergence_rate": 0.46799999999999997,
+    "adaptation_speed": 0.8813561327169238
+  },
+  {
+    "episode": 79,
+    "reward": 123.95693913666528,
+    "cut_size": 18,
+    "balance": 0.9365286146899388,
+    "conductance": 0.20992861468993876,
+    "convergence_rate": 0.474,
+    "adaptation_speed": 0.8245559704728496
+  },
+  {
+    "episode": 80,
+    "reward": 124.47321770999878,
+    "cut_size": 18,
+    "balance": 0.9383114219767584,
+    "conductance": 0.20631142197675845,
+    "convergence_rate": 0.48,
+    "adaptation_speed": 1.1189735680895838
+  },
+  {
+    "episode": 81,
+    "reward": 126.0368602148968,
+    "cut_size": 13,
+    "balance": 0.9279155788965489,
+    "conductance": 0.19051557889654883,
+    "convergence_rate": 0.486,
+    "adaptation_speed": 1.0960555865551493
+  },
+  {
+    "episode": 82,
+    "reward": 125.0554232425707,
+    "cut_size": 18,
+    "balance": 0.9471136832259222,
+    "conductance": 0.2043136832259222,
+    "convergence_rate": 0.492,
+    "adaptation_speed": 0.9108782202681026
+  },
+  {
+    "episode": 83,
+    "reward": 125.69661876726154,
+    "cut_size": 17,
+    "balance": 0.9474439678225401,
+    "conductance": 0.19924396782254025,
+    "convergence_rate": 0.498,
+    "adaptation_speed": 0.9566875140692328
+  },
+  {
+    "episode": 84,
+    "reward": 127.21616324242376,
+    "cut_size": 12,
+    "balance": 0.9375608925299563,
+    "conductance": 0.18396089252995643,
+    "convergence_rate": 0.504,
+    "adaptation_speed": 0.9010795247875948
+  },
+  {
+    "episode": 85,
+    "reward": 126.16021679541717,
+    "cut_size": 18,
+    "balance": 0.9576253860998002,
+    "conductance": 0.19862538609980018,
+    "convergence_rate": 0.51,
+    "adaptation_speed": 1.1569643461151573
+  },
+  {
+    "episode": 86,
+    "reward": 126.60589979499825,
+    "cut_size": 18,
+    "balance": 0.9602290721511831,
+    "conductance": 0.19582907215118314,
+    "convergence_rate": 0.516,
+    "adaptation_speed": 0.8080458439188765
+  },
+  {
+    "episode": 87,
+    "reward": 127.58759776390019,
+    "cut_size": 15,
+    "balance": 0.9566000260011603,
+    "conductance": 0.18680002600116044,
+    "convergence_rate": 0.522,
+    "adaptation_speed": 0.8104414724881204
+  },
+  {
+    "episode": 88,
+    "reward": 127.09683315740408,
+    "cut_size": 19,
+    "balance": 0.9700926377046036,
+    "conductance": 0.19489263770460372,
+    "convergence_rate": 0.528,
+    "adaptation_speed": 0.8418223470584466
+  },
+  {
+    "episode": 89,
+    "reward": 128.07391493647202,
+    "cut_size": 16,
+    "balance": 0.9665172681805579,
+    "conductance": 0.1859172681805579,
+    "convergence_rate": 0.534,
+    "adaptation_speed": 1.1150746912770428
+  },
+  {
+    "episode": 90,
+    "reward": 128.37685805543333,
+    "cut_size": 16,
+    "balance": 0.970780720285659,
+    "conductance": 0.18478072028565903,
+    "convergence_rate": 0.54,
+    "adaptation_speed": 1.0206872346669216
+  },
+  {
+    "episode": 91,
+    "reward": 128.16745090151952,
+    "cut_size": 19,
+    "balance": 0.9810017337032617,
+    "conductance": 0.18960173370326155,
+    "convergence_rate": 0.546,
+    "adaptation_speed": 0.9084739694489034
+  },
+  {
+    "episode": 92,
+    "reward": 129.43057032722382,
+    "cut_size": 15,
+    "balance": 0.974100345032281,
+    "conductance": 0.17730034503228106,
+    "convergence_rate": 0.552,
+    "adaptation_speed": 1.1646675810572042
+  },
+  {
+    "episode": 93,
+    "reward": 130.07524032855918,
+    "cut_size": 14,
+    "balance": 0.9743902287376841,
+    "conductance": 0.17219022873768403,
+    "convergence_rate": 0.558,
+    "adaptation_speed": 0.9847381126028368
+  },
+  {
+    "episode": 94,
+    "reward": 129.91261395801018,
+    "cut_size": 16,
+    "balance": 0.984067279558021,
+    "conductance": 0.17646727955802105,
+    "convergence_rate": 0.564,
+    "adaptation_speed": 0.8486383372601431
+  },
+  {
+    "episode": 95,
+    "reward": 130.58958764208043,
+    "cut_size": 15,
+    "balance": 0.9839815390455764,
+    "conductance": 0.17098153904557645,
+    "convergence_rate": 0.57,
+    "adaptation_speed": 1.1851641832044328
+  },
+  {
+    "episode": 96,
+    "reward": 130.20452428869743,
+    "cut_size": 18,
+    "balance": 0.9962450664104948,
+    "conductance": 0.17784506641049486,
+    "convergence_rate": 0.576,
+    "adaptation_speed": 1.0393587668850353
+  },
+  {
+    "episode": 97,
+    "reward": 131.91765565535397,
+    "cut_size": 12,
+    "balance": 0.9841109807516981,
+    "conductance": 0.1603109807516982,
+    "convergence_rate": 0.582,
+    "adaptation_speed": 0.8839778776863009
+  },
+  {
+    "episode": 98,
+    "reward": 131.78766825733675,
+    "cut_size": 14,
+    "balance": 0.9934085086356194,
+    "conductance": 0.1642085086356194,
+    "convergence_rate": 0.588,
+    "adaptation_speed": 1.1247087586262092
+  },
+  {
+    "episode": 99,
+    "reward": 131.74501952013526,
+    "cut_size": 16,
+    "balance": 1.0,
+    "conductance": 0.16709047069610167,
+    "convergence_rate": 0.594,
+    "adaptation_speed": 1.0024357040651142
+  },
+  {
+    "episode": 0,
+    "reward": 80.5926295268769,
+    "cut_size": 143,
+    "balance": 0.7009748723887776,
+    "conductance": 0.40097487238877777,
+    "convergence_rate": 0.0,
+    "adaptation_speed": 1.090776645510771
+  },
+  {
+    "episode": 1,
+    "reward": 79.83763378465419,
+    "cut_size": 151,
+    "balance": 0.7103760989352019,
+    "conductance": 0.4049760989352019,
+    "convergence_rate": 0.006000000000000005,
+    "adaptation_speed": 0.9629506320339618
+  },
+  {
+    "episode": 2,
+    "reward": 81.04691372714966,
+    "cut_size": 145,
+    "balance": 0.709557368745319,
+    "conductance": 0.3987573687453191,
+    "convergence_rate": 0.01200000000000001,
+    "adaptation_speed": 1.1098716605100862
+  },
+  {
+    "episode": 3,
+    "reward": 83.17849480895356,
+    "cut_size": 132,
+    "balance": 0.7039399853852571,
+    "conductance": 0.3877399853852572,
+    "convergence_rate": 0.018000000000000016,
+    "adaptation_speed": 1.0957023272232354
+  },
+  {
+    "episode": 4,
+    "reward": 82.27182423275816,
+    "cut_size": 141,
+    "balance": 0.7141303629929335,
+    "conductance": 0.39253036299293353,
+    "convergence_rate": 0.02400000000000002,
+    "adaptation_speed": 1.1191932502595703
+  },
+  {
+    "episode": 5,
+    "reward": 82.81929652331243,
+    "cut_size": 140,
+    "balance": 0.7167549608568552,
+    "conductance": 0.3897549608568552,
+    "convergence_rate": 0.030000000000000027,
+    "adaptation_speed": 0.9638035348075437
+  },
+  {
+    "episode": 6,
+    "reward": 82.90513817656353,
+    "cut_size": 142,
+    "balance": 0.7217813830563812,
+    "conductance": 0.3893813830563812,
+    "convergence_rate": 0.03600000000000003,
+    "adaptation_speed": 1.1214563000077558
+  },
+  {
+    "episode": 7,
+    "reward": 83.23783058158236,
+    "cut_size": 142,
+    "balance": 0.7255234621145559,
+    "conductance": 0.38772346211455583,
+    "convergence_rate": 0.04200000000000004,
+    "adaptation_speed": 0.9387151422506342
+  },
+  {
+    "episode": 8,
+    "reward": 83.34916109525098,
+    "cut_size": 144,
+    "balance": 0.7304172679747607,
+    "conductance": 0.3872172679747608,
+    "convergence_rate": 0.04800000000000004,
+    "adaptation_speed": 1.070675973021241
+  },
+  {
+    "episode": 9,
+    "reward": 83.18371353592813,
+    "cut_size": 148,
+    "balance": 0.7367511262438702,
+    "conductance": 0.38815112624387027,
+    "convergence_rate": 0.05400000000000005,
+    "adaptation_speed": 1.034808141936994
+  },
+  {
+    "episode": 10,
+    "reward": 85.8754462552046,
+    "cut_size": 131,
+    "balance": 0.7282193222934205,
+    "conductance": 0.3742193222934205,
+    "convergence_rate": 0.06000000000000005,
+    "adaptation_speed": 1.0284490346938455
+  },
+  {
+    "episode": 11,
+    "reward": 84.46981389863323,
+    "cut_size": 144,
+    "balance": 0.7410057549498791,
+    "conductance": 0.3816057549498791,
+    "convergence_rate": 0.06600000000000006,
+    "adaptation_speed": 0.8304682667332174
+  },
+  {
+    "episode": 12,
+    "reward": 87.77616709133974,
+    "cut_size": 122,
+    "balance": 0.7292761337599389,
+    "conductance": 0.364476133759939,
+    "convergence_rate": 0.07199999999999995,
+    "adaptation_speed": 0.8744233187778935
+  },
+  {
+    "episode": 13,
+    "reward": 86.95910469708966,
+    "cut_size": 131,
+    "balance": 0.7390002877362661,
+    "conductance": 0.3688002877362661,
+    "convergence_rate": 0.07799999999999996,
+    "adaptation_speed": 1.1215996448952263
+  },
+  {
+    "episode": 14,
+    "reward": 86.20577460121675,
+    "cut_size": 139,
+    "balance": 0.7483928480685913,
+    "conductance": 0.3727928480685913,
+    "convergence_rate": 0.08399999999999996,
+    "adaptation_speed": 1.0134926683915737
+  },
+  {
+    "episode": 15,
+    "reward": 87.44993622688256,
+    "cut_size": 132,
+    "balance": 0.7473926314938474,
+    "conductance": 0.3663926314938474,
+    "convergence_rate": 0.08999999999999997,
+    "adaptation_speed": 1.0001033124330059
+  },
+  {
+    "episode": 16,
+    "reward": 89.77334884273708,
+    "cut_size": 118,
+    "balance": 0.7407771652302961,
+    "conductance": 0.3543771652302961,
+    "convergence_rate": 0.09599999999999997,
+    "adaptation_speed": 1.0961882297478256
+  },
+  {
+    "episode": 17,
+    "reward": 88.41167103580237,
+    "cut_size": 131,
+    "balance": 0.753334906161278,
+    "conductance": 0.361534906161278,
+    "convergence_rate": 0.10199999999999998,
+    "adaptation_speed": 0.8183762009850728
+  },
+  {
+    "episode": 18,
+    "reward": 89.32495091084444,
+    "cut_size": 126,
+    "balance": 0.7540562387573131,
+    "conductance": 0.3568562387573131,
+    "convergence_rate": 0.10799999999999998,
+    "adaptation_speed": 1.0688042087855878
+  },
+  {
+    "episode": 19,
+    "reward": 90.44481813142411,
+    "cut_size": 121,
+    "balance": 0.7537027152371274,
+    "conductance": 0.35110271523712744,
+    "convergence_rate": 0.11399999999999999,
+    "adaptation_speed": 1.0832029655522692
+  },
+  {
+    "episode": 20,
+    "reward": 89.17105153013134,
+    "cut_size": 133,
+    "balance": 0.7658030617579015,
+    "conductance": 0.3578030617579015,
+    "convergence_rate": 0.12,
+    "adaptation_speed": 0.9529238109003171
+  },
+  {
+    "episode": 21,
+    "reward": 91.0708101177897,
+    "cut_size": 121,
+    "balance": 0.7613918308127484,
+    "conductance": 0.3479918308127486,
+    "convergence_rate": 0.126,
+    "adaptation_speed": 0.8515165186006008
+  },
+  {
+    "episode": 22,
+    "reward": 91.07786317993688,
+    "cut_size": 124,
+    "balance": 0.7668281832469466,
+    "conductance": 0.3480281832469465,
+    "convergence_rate": 0.132,
+    "adaptation_speed": 0.8179117500355877
+  },
+  {
+    "episode": 23,
+    "reward": 92.16347120192745,
+    "cut_size": 119,
+    "balance": 0.766652907378109,
+    "conductance": 0.34245290737810896,
+    "convergence_rate": 0.138,
+    "adaptation_speed": 0.9108043408131999
+  },
+  {
+    "episode": 24,
+    "reward": 91.74777175842908,
+    "cut_size": 124,
+    "balance": 0.7742888045867373,
+    "conductance": 0.34468880458673734,
+    "convergence_rate": 0.14400000000000002,
+    "adaptation_speed": 1.0536859035429056
+  },
+  {
+    "episode": 25,
+    "reward": 95.2225512486302,
+    "cut_size": 101,
+    "balance": 0.7616828759176367,
+    "conductance": 0.32668287591763684,
+    "convergence_rate": 0.15000000000000002,
+    "adaptation_speed": 0.8974927247297786
+  },
+  {
+    "episode": 26,
+    "reward": 93.41564838807741,
+    "cut_size": 117,
+    "balance": 0.776557084349233,
+    "conductance": 0.33615708434923297,
+    "convergence_rate": 0.15600000000000003,
+    "adaptation_speed": 1.1754490916319236
+  },
+  {
+    "episode": 27,
+    "reward": 93.08291061034457,
+    "cut_size": 123,
+    "balance": 0.7837613391761468,
+    "conductance": 0.33796133917614685,
+    "convergence_rate": 0.16200000000000003,
+    "adaptation_speed": 1.0160360594076014
+  },
+  {
+    "episode": 28,
+    "reward": 94.54271859097874,
+    "cut_size": 114,
+    "balance": 0.7816391332415259,
+    "conductance": 0.33043913324152585,
+    "convergence_rate": 0.16800000000000004,
+    "adaptation_speed": 1.1345363953898837
+  },
+  {
+    "episode": 29,
+    "reward": 94.32295813055244,
+    "cut_size": 119,
+    "balance": 0.7882555768441599,
+    "conductance": 0.33165557684416,
+    "convergence_rate": 0.17399999999999993,
+    "adaptation_speed": 1.029759527757266
+  },
+  {
+    "episode": 30,
+    "reward": 94.92919034132338,
+    "cut_size": 117,
+    "balance": 0.7905744519181925,
+    "conductance": 0.3285744519181927,
+    "convergence_rate": 0.17999999999999994,
+    "adaptation_speed": 1.070648184273338
+  },
+  {
+    "episode": 31,
+    "reward": 95.6581188521698,
+    "cut_size": 114,
+    "balance": 0.7922549487400112,
+    "conductance": 0.32485494874001136,
+    "convergence_rate": 0.18599999999999994,
+    "adaptation_speed": 1.1328948086924853
+  },
+  {
+    "episode": 32,
+    "reward": 96.40325855032327,
+    "cut_size": 111,
+    "balance": 0.7938511001544054,
+    "conductance": 0.32105110015440547,
+    "convergence_rate": 0.19199999999999995,
+    "adaptation_speed": 1.116737921402675
+  },
+  {
+    "episode": 33,
+    "reward": 95.5193350617607,
+    "cut_size": 121,
+    "balance": 0.8039231266297568,
+    "conductance": 0.325723126629757,
+    "convergence_rate": 0.19799999999999995,
+    "adaptation_speed": 0.8273819632372911
+  },
+  {
+    "episode": 34,
+    "reward": 97.3692774151957,
+    "cut_size": 110,
+    "balance": 0.7997710852487215,
+    "conductance": 0.3161710852487217,
+    "convergence_rate": 0.20399999999999996,
+    "adaptation_speed": 1.152695317521886
+  },
+  {
+    "episode": 35,
+    "reward": 97.58792296594513,
+    "cut_size": 111,
+    "balance": 0.8041065402396195,
+    "conductance": 0.31510654023961954,
+    "convergence_rate": 0.20999999999999996,
+    "adaptation_speed": 0.8793711240215734
+  },
+  {
+    "episode": 36,
+    "reward": 98.0862756402322,
+    "cut_size": 110,
+    "balance": 0.8069867032245982,
+    "conductance": 0.3125867032245983,
+    "convergence_rate": 0.21599999999999997,
+    "adaptation_speed": 1.0218175050983695
+  },
+  {
+    "episode": 37,
+    "reward": 98.1822447615833,
+    "cut_size": 111,
+    "balance": 0.8119604330822928,
+    "conductance": 0.3121604330822929,
+    "convergence_rate": 0.22199999999999998,
+    "adaptation_speed": 1.121659556408216
+  },
+  {
+    "episode": 38,
+    "reward": 98.83494318492711,
+    "cut_size": 109,
+    "balance": 0.8140375484655196,
+    "conductance": 0.3088375484655197,
+    "convergence_rate": 0.22799999999999998,
+    "adaptation_speed": 1.0048213597544373
+  },
+  {
+    "episode": 39,
+    "reward": 99.12187249718912,
+    "cut_size": 110,
+    "balance": 0.8180177289428245,
+    "conductance": 0.3074177289428246,
+    "convergence_rate": 0.23399999999999999,
+    "adaptation_speed": 1.038548126453682
+  },
+  {
+    "episode": 40,
+    "reward": 98.55665345898484,
+    "cut_size": 117,
+    "balance": 0.8264315636889445,
+    "conductance": 0.3104315636889447,
+    "convergence_rate": 0.24,
+    "adaptation_speed": 0.8055347297652546
+  },
+  {
+    "episode": 41,
+    "reward": 100.53334470306557,
+    "cut_size": 105,
+    "balance": 0.8216200587769742,
+    "conductance": 0.3002200587769743,
+    "convergence_rate": 0.246,
+    "adaptation_speed": 1.1559789801428644
+  },
+  {
+    "episode": 42,
+    "reward": 99.66056850661631,
+    "cut_size": 114,
+    "balance": 0.8316340868542335,
+    "conductance": 0.3048340868542336,
+    "convergence_rate": 0.252,
+    "adaptation_speed": 0.9674301238094852
+  },
+  {
+    "episode": 43,
+    "reward": 101.16284889067819,
+    "cut_size": 105,
+    "balance": 0.8292909006728502,
+    "conductance": 0.29709090067285027,
+    "convergence_rate": 0.258,
+    "adaptation_speed": 1.1767842951993774
+  },
+  {
+    "episode": 44,
+    "reward": 100.95617260957623,
+    "cut_size": 110,
+    "balance": 0.835839268420519,
+    "conductance": 0.29823926842051907,
+    "convergence_rate": 0.264,
+    "adaptation_speed": 0.9605341546239099
+  },
+  {
+    "episode": 45,
+    "reward": 102.19128082268561,
+    "cut_size": 103,
+    "balance": 0.8348861559693777,
+    "conductance": 0.29188615596937767,
+    "convergence_rate": 0.27,
+    "adaptation_speed": 0.9569221879957472
+  },
+  {
+    "episode": 46,
+    "reward": 103.27465768128089,
+    "cut_size": 98,
+    "balance": 0.8347224886509839,
+    "conductance": 0.2863224886509839,
+    "convergence_rate": 0.276,
+    "adaptation_speed": 1.1577464061408174
+  },
+  {
+    "episode": 47,
+    "reward": 104.30989789519782,
+    "cut_size": 93,
+    "balance": 0.8348092721373683,
+    "conductance": 0.2810092721373683,
+    "convergence_rate": 0.28200000000000003,
+    "adaptation_speed": 1.177353779700933
+  },
+  {
+    "episode": 48,
+    "reward": 103.30011300624216,
+    "cut_size": 103,
+    "balance": 0.8455361446085216,
+    "conductance": 0.2863361446085216,
+    "convergence_rate": 0.28800000000000003,
+    "adaptation_speed": 0.958593053776409
+  },
+  {
+    "episode": 49,
+    "reward": 104.13979644717878,
+    "cut_size": 99,
+    "balance": 0.8466403930948035,
+    "conductance": 0.2820403930948035,
+    "convergence_rate": 0.29400000000000004,
+    "adaptation_speed": 1.0955961919113182
+  },
+  {
+    "episode": 50,
+    "reward": 104.51426759085172,
+    "cut_size": 99,
+    "balance": 0.8501651009841221,
+    "conductance": 0.2801651009841222,
+    "convergence_rate": 0.30000000000000004,
+    "adaptation_speed": 0.9715883811705178
+  },
+  {
+    "episode": 51,
+    "reward": 105.8802148129223,
+    "cut_size": 92,
+    "balance": 0.8485312444697071,
+    "conductance": 0.27313124446970705,
+    "convergence_rate": 0.30600000000000005,
+    "adaptation_speed": 1.059694879623542
+  },
+  {
+    "episode": 52,
+    "reward": 105.06277800916646,
+    "cut_size": 101,
+    "balance": 0.8582573464663555,
+    "conductance": 0.27745734646635556,
+    "convergence_rate": 0.31200000000000006,
+    "adaptation_speed": 0.9907001160309687
+  },
+  {
+    "episode": 53,
+    "reward": 105.7638997560954,
+    "cut_size": 98,
+    "balance": 0.8600825194792123,
+    "conductance": 0.2738825194792124,
+    "convergence_rate": 0.31800000000000006,
+    "adaptation_speed": 1.0147225423247546
+  },
+  {
+    "episode": 54,
+    "reward": 103.94829797454676,
+    "cut_size": 114,
+    "balance": 0.8750019876454384,
+    "conductance": 0.28340198764543834,
+    "convergence_rate": 0.32400000000000007,
+    "adaptation_speed": 1.1296932259192853
+  },
+  {
+    "episode": 55,
+    "reward": 106.09067697216172,
+    "cut_size": 101,
+    "balance": 0.8693284236620099,
+    "conductance": 0.2723284236620099,
+    "convergence_rate": 0.33000000000000007,
+    "adaptation_speed": 1.0896390656629573
+  },
+  {
+    "episode": 56,
+    "reward": 107.65063398709,
+    "cut_size": 92,
+    "balance": 0.8666851509516649,
+    "conductance": 0.2642851509516649,
+    "convergence_rate": 0.3360000000000001,
+    "adaptation_speed": 0.8324216845703363
+  },
+  {
+    "episode": 57,
+    "reward": 109.13666918800826,
+    "cut_size": 84,
+    "balance": 0.8644264870551079,
+    "conductance": 0.256626487055108,
+    "convergence_rate": 0.34199999999999997,
+    "adaptation_speed": 0.8131858066459914
+  },
+  {
+    "episode": 58,
+    "reward": 108.85291239485926,
+    "cut_size": 88,
+    "balance": 0.8713758980496396,
+    "conductance": 0.25817589804963964,
+    "convergence_rate": 0.348,
+    "adaptation_speed": 1.0050131607551247
+  },
+  {
+    "episode": 59,
+    "reward": 106.34357936795209,
+    "cut_size": 110,
+    "balance": 0.8899047899690317,
+    "conductance": 0.27130478996903173,
+    "convergence_rate": 0.354,
+    "adaptation_speed": 0.8672849632127438
+  },
+  {
+    "episode": 60,
+    "reward": 109.35542579375605,
+    "cut_size": 90,
+    "balance": 0.8797074620512172,
+    "conductance": 0.2557074620512172,
+    "convergence_rate": 0.36,
+    "adaptation_speed": 1.134587321892113
+  },
+  {
+    "episode": 61,
+    "reward": 110.25206987019197,
+    "cut_size": 86,
+    "balance": 0.8805153492705932,
+    "conductance": 0.2511153492705932,
+    "convergence_rate": 0.366,
+    "adaptation_speed": 0.8601623327156006
+  },
+  {
+    "episode": 62,
+    "reward": 110.43046949163923,
+    "cut_size": 87,
+    "balance": 0.8850602003556751,
+    "conductance": 0.2502602003556752,
+    "convergence_rate": 0.372,
+    "adaptation_speed": 0.9386715904489707
+  },
+  {
+    "episode": 63,
+    "reward": 112.2256634834171,
+    "cut_size": 77,
+    "balance": 0.8811930099718153,
+    "conductance": 0.2409930099718153,
+    "convergence_rate": 0.378,
+    "adaptation_speed": 1.0643702322240227
+  },
+  {
+    "episode": 64,
+    "reward": 111.21712598678405,
+    "cut_size": 87,
+    "balance": 0.8919133923684491,
+    "conductance": 0.24631339236844915,
+    "convergence_rate": 0.384,
+    "adaptation_speed": 1.0156314276174645
+  },
+  {
+    "episode": 65,
+    "reward": 111.95903542879805,
+    "cut_size": 84,
+    "balance": 0.8935263505265452,
+    "conductance": 0.2425263505265451,
+    "convergence_rate": 0.39,
+    "adaptation_speed": 1.0240936964331682
+  },
+  {
+    "episode": 66,
+    "reward": 111.02971650782801,
+    "cut_size": 94,
+    "balance": 0.9038345655159833,
+    "conductance": 0.24743456551598328,
+    "convergence_rate": 0.396,
+    "adaptation_speed": 0.9066886978469003
+  },
+  {
+    "episode": 67,
+    "reward": 112.39393304479094,
+    "cut_size": 86,
+    "balance": 0.9022097136067069,
+    "conductance": 0.2404097136067069,
+    "convergence_rate": 0.402,
+    "adaptation_speed": 0.886013311127569
+  },
+  {
+    "episode": 68,
+    "reward": 113.5424996346562,
+    "cut_size": 80,
+    "balance": 0.9017068697468461,
+    "conductance": 0.2345068697468461,
+    "convergence_rate": 0.40800000000000003,
+    "adaptation_speed": 0.8012281812410511
+  },
+  {
+    "episode": 69,
+    "reward": 112.53046611983227,
+    "cut_size": 91,
+    "balance": 0.9124454416241817,
+    "conductance": 0.23984544162418175,
+    "convergence_rate": 0.4139999999999999,
+    "adaptation_speed": 1.0241664692731807
+  },
+  {
+    "episode": 70,
+    "reward": 114.02470056513754,
+    "cut_size": 82,
+    "balance": 0.9101441177672344,
+    "conductance": 0.23214411776723448,
+    "convergence_rate": 0.41999999999999993,
+    "adaptation_speed": 1.1804179831215085
+  },
+  {
+    "episode": 71,
+    "reward": 116.49503202265058,
+    "cut_size": 67,
+    "balance": 0.9027642454596745,
+    "conductance": 0.21936424545967445,
+    "convergence_rate": 0.42599999999999993,
+    "adaptation_speed": 1.0874531384341353
+  },
+  {
+    "episode": 72,
+    "reward": 116.20216103812601,
+    "cut_size": 71,
+    "balance": 0.9097610768047553,
+    "conductance": 0.22096107680475535,
+    "convergence_rate": 0.43199999999999994,
+    "adaptation_speed": 0.962889787585284
+  },
+  {
+    "episode": 73,
+    "reward": 115.15562985435281,
+    "cut_size": 82,
+    "balance": 0.920679137074127,
+    "conductance": 0.22647913707412692,
+    "convergence_rate": 0.43799999999999994,
+    "adaptation_speed": 1.1394810499455017
+  },
+  {
+    "episode": 74,
+    "reward": 116.33812412781847,
+    "cut_size": 76,
+    "balance": 0.9199997704067717,
+    "conductance": 0.2203997704067718,
+    "convergence_rate": 0.44399999999999995,
+    "adaptation_speed": 0.9927038851800268
+  },
+  {
+    "episode": 75,
+    "reward": 113.82731456530311,
+    "cut_size": 97,
+    "balance": 0.9385363446134074,
+    "conductance": 0.23353634461340733,
+    "convergence_rate": 0.44999999999999996,
+    "adaptation_speed": 0.8644625158702576
+  },
+  {
+    "episode": 76,
+    "reward": 118.01762723258787,
+    "cut_size": 69,
+    "balance": 0.922207558623372,
+    "conductance": 0.21180755862337214,
+    "convergence_rate": 0.45599999999999996,
+    "adaptation_speed": 0.8995330597284992
+  },
+  {
+    "episode": 77,
+    "reward": 117.77524861459574,
+    "cut_size": 73,
+    "balance": 0.9289416825463283,
+    "conductance": 0.21314168254632823,
+    "convergence_rate": 0.46199999999999997,
+    "adaptation_speed": 1.0172804951785541
+  },
+  {
+    "episode": 78,
+    "reward": 117.16497826922745,
+    "cut_size": 80,
+    "balance": 0.9375899153526148,
+    "conductance": 0.21638991535261487,
+    "convergence_rate": 0.46799999999999997,
+    "adaptation_speed": 1.1517292558720127
+  },
+  {
+    "episode": 79,
+    "reward": 119.49936629615037,
+    "cut_size": 66,
+    "balance": 0.930917344973203,
+    "conductance": 0.20431734497320303,
+    "convergence_rate": 0.474,
+    "adaptation_speed": 0.9267851940376649
+  },
+  {
+    "episode": 80,
+    "reward": 117.87203619578813,
+    "cut_size": 80,
+    "balance": 0.9448572518429337,
+    "conductance": 0.21285725184293378,
+    "convergence_rate": 0.48,
+    "adaptation_speed": 0.9455475643941078
+  },
+  {
+    "episode": 81,
+    "reward": 119.76841680295145,
+    "cut_size": 69,
+    "balance": 0.9404635962385461,
+    "conductance": 0.20306359623854614,
+    "convergence_rate": 0.486,
+    "adaptation_speed": 1.1063299683809458
+  },
+  {
+    "episode": 82,
+    "reward": 120.68766499436174,
+    "cut_size": 65,
+    "balance": 0.941153876199991,
+    "conductance": 0.19835387619999104,
+    "convergence_rate": 0.492,
+    "adaptation_speed": 1.0057526703673487
+  },
+  {
+    "episode": 83,
+    "reward": 118.86007468126526,
+    "cut_size": 81,
+    "balance": 0.9561357196604304,
+    "conductance": 0.20793571966043045,
+    "convergence_rate": 0.498,
+    "adaptation_speed": 0.9150967731086124
+  },
+  {
+    "episode": 84,
+    "reward": 121.16018740807002,
+    "cut_size": 67,
+    "balance": 0.949641480707232,
+    "conductance": 0.196041480707232,
+    "convergence_rate": 0.504,
+    "adaptation_speed": 0.8839310407530909
+  },
+  {
+    "episode": 85,
+    "reward": 121.86935562558713,
+    "cut_size": 64,
+    "balance": 0.9514247886285789,
+    "conductance": 0.192424788628579,
+    "convergence_rate": 0.51,
+    "adaptation_speed": 1.022926641446205
+  },
+  {
+    "episode": 86,
+    "reward": 122.82632829863665,
+    "cut_size": 60,
+    "balance": 0.9519187913702568,
+    "conductance": 0.1875187913702568,
+    "convergence_rate": 0.516,
+    "adaptation_speed": 1.0465101483020103
+  },
+  {
+    "episode": 87,
+    "reward": 121.64232003500797,
+    "cut_size": 71,
+    "balance": 0.9635521330124455,
+    "conductance": 0.19375213301244548,
+    "convergence_rate": 0.522,
+    "adaptation_speed": 1.0892521282596812
+  },
+  {
+    "episode": 88,
+    "reward": 121.21123140448651,
+    "cut_size": 77,
+    "balance": 0.971268098832016,
+    "conductance": 0.1960680988320161,
+    "convergence_rate": 0.528,
+    "adaptation_speed": 0.940270757615424
+  },
+  {
+    "episode": 89,
+    "reward": 124.23303404953162,
+    "cut_size": 57,
+    "balance": 0.9610189695653923,
+    "conductance": 0.18041896956539225,
+    "convergence_rate": 0.534,
+    "adaptation_speed": 1.094351536044505
+  },
+  {
+    "episode": 90,
+    "reward": 122.96539555696292,
+    "cut_size": 69,
+    "balance": 0.9730874320657495,
+    "conductance": 0.18708743206574963,
+    "convergence_rate": 0.54,
+    "adaptation_speed": 0.8557724761202976
+  },
+  {
+    "episode": 91,
+    "reward": 124.46116865569876,
+    "cut_size": 61,
+    "balance": 0.9707781027278942,
+    "conductance": 0.17937810272789406,
+    "convergence_rate": 0.546,
+    "adaptation_speed": 0.8478747200749777
+  },
+  {
+    "episode": 92,
+    "reward": 125.52283164348094,
+    "cut_size": 56,
+    "balance": 0.9707274108039493,
+    "conductance": 0.1739274108039493,
+    "convergence_rate": 0.552,
+    "adaptation_speed": 1.0800629705349327
+  },
+  {
+    "episode": 93,
+    "reward": 124.12619023569624,
+    "cut_size": 69,
+    "balance": 0.9834670643304045,
+    "conductance": 0.18126706433040446,
+    "convergence_rate": 0.558,
+    "adaptation_speed": 1.1971137721125178
+  },
+  {
+    "episode": 94,
+    "reward": 126.53972618759849,
+    "cut_size": 54,
+    "balance": 0.9763826941332024,
+    "conductance": 0.16878269413320246,
+    "convergence_rate": 0.564,
+    "adaptation_speed": 1.0347550481191936
+  },
+  {
+    "episode": 95,
+    "reward": 126.83431964941043,
+    "cut_size": 54,
+    "balance": 0.9803229987023391,
+    "conductance": 0.16732299870233913,
+    "convergence_rate": 0.57,
+    "adaptation_speed": 1.1189706788461757
+  },
+  {
+    "episode": 96,
+    "reward": 127.0944803537985,
+    "cut_size": 55,
+    "balance": 0.9844424539344511,
+    "conductance": 0.16604245393445105,
+    "convergence_rate": 0.576,
+    "adaptation_speed": 0.9625024887137087
+  },
+  {
+    "episode": 97,
+    "reward": 127.10685321216835,
+    "cut_size": 57,
+    "balance": 0.9898511279283646,
+    "conductance": 0.16605112792836457,
+    "convergence_rate": 0.582,
+    "adaptation_speed": 0.8270863994780384
+  },
+  {
+    "episode": 98,
+    "reward": 127.0106458278859,
+    "cut_size": 61,
+    "balance": 0.9958247355468997,
+    "conductance": 0.1666247355468997,
+    "convergence_rate": 0.588,
+    "adaptation_speed": 1.1507315854896742
+  },
+  {
+    "episode": 99,
+    "reward": 127.767941097784,
+    "cut_size": 58,
+    "balance": 0.9973576425713631,
+    "conductance": 0.16275764257136313,
+    "convergence_rate": 0.594,
+    "adaptation_speed": 1.1412512240312964
+  },
+  {
+    "episode": 0,
+    "reward": 33.94322900927658,
+    "cut_size": 608,
+    "balance": 0.7033914086566339,
+    "conductance": 0.4033914086566339,
+    "convergence_rate": 0.0,
+    "adaptation_speed": 0.9292448826224559
+  },
+  {
+    "episode": 1,
+    "reward": 37.38241392243288,
+    "cut_size": 580,
+    "balance": 0.7021718986970842,
+    "conductance": 0.39677189869708424,
+    "convergence_rate": 0.006000000000000005,
+    "adaptation_speed": 0.8533836370868572
+  },
+  {
+    "episode": 2,
+    "reward": 31.845843653752524,
+    "cut_size": 634,
+    "balance": 0.7150011525219087,
+    "conductance": 0.4042011525219087,
+    "convergence_rate": 0.01200000000000001,
+    "adaptation_speed": 1.0309813088329205
+  },
+  {
+    "episode": 3,
+    "reward": 39.34799045479275,
+    "cut_size": 569,
+    "balance": 0.7074223345518974,
+    "conductance": 0.3912223345518974,
+    "convergence_rate": 0.018000000000000016,
+    "adaptation_speed": 1.0708822983035944
+  },
+  {
+    "episode": 4,
+    "reward": 39.645876841260055,
+    "cut_size": 569,
+    "balance": 0.7111195541692595,
+    "conductance": 0.3895195541692596,
+    "convergence_rate": 0.02400000000000002,
+    "adaptation_speed": 0.9716267692175652
+  },
+  {
+    "episode": 5,
+    "reward": 36.923923841267296,
+    "cut_size": 597,
+    "balance": 0.7195433967111171,
+    "conductance": 0.3925433967111171,
+    "convergence_rate": 0.030000000000000027,
+    "adaptation_speed": 0.8218701097103992
+  },
+  {
+    "episode": 6,
+    "reward": 41.36285799737183,
+    "cut_size": 560,
+    "balance": 0.7167590890634342,
+    "conductance": 0.3843590890634343,
+    "convergence_rate": 0.03600000000000003,
+    "adaptation_speed": 1.0087098758470494
+  },
+  {
+    "episode": 7,
+    "reward": 41.47753807023254,
+    "cut_size": 562,
+    "balance": 0.7207430614020464,
+    "conductance": 0.3829430614020464,
+    "convergence_rate": 0.04200000000000004,
+    "adaptation_speed": 0.8579547848881826
+  },
+  {
+    "episode": 8,
+    "reward": 40.87570124715073,
+    "cut_size": 571,
+    "balance": 0.7258485189432607,
+    "conductance": 0.38264851894326074,
+    "convergence_rate": 0.04800000000000004,
+    "adaptation_speed": 1.0280574263021531
+  },
+  {
+    "episode": 9,
+    "reward": 47.933031499862466,
+    "cut_size": 509,
+    "balance": 0.718965923462416,
+    "conductance": 0.3703659234624159,
+    "convergence_rate": 0.05400000000000005,
+    "adaptation_speed": 0.850856691844423
+  },
+  {
+    "episode": 10,
+    "reward": 37.81889544458521,
+    "cut_size": 606,
+    "balance": 0.7389599382617229,
+    "conductance": 0.3849599382617229,
+    "convergence_rate": 0.06000000000000005,
+    "adaptation_speed": 1.1563507530181578
+  },
+  {
+    "episode": 11,
+    "reward": 44.32911491532927,
+    "cut_size": 549,
+    "balance": 0.7329336751990464,
+    "conductance": 0.37353367519904634,
+    "convergence_rate": 0.06600000000000006,
+    "adaptation_speed": 1.1609559629223767
+  },
+  {
+    "episode": 12,
+    "reward": 47.03893282341525,
+    "cut_size": 527,
+    "balance": 0.7328557633065969,
+    "conductance": 0.3680557633065969,
+    "convergence_rate": 0.07199999999999995,
+    "adaptation_speed": 0.9201108970657593
+  },
+  {
+    "episode": 13,
+    "reward": 46.12689086379716,
+    "cut_size": 539,
+    "balance": 0.7384467508783892,
+    "conductance": 0.36824675087838915,
+    "convergence_rate": 0.07799999999999996,
+    "adaptation_speed": 0.8097052326617119
+  },
+  {
+    "episode": 14,
+    "reward": 45.232703557547275,
+    "cut_size": 551,
+    "balance": 0.7440097925222299,
+    "conductance": 0.36840979252223,
+    "convergence_rate": 0.08399999999999996,
+    "adaptation_speed": 1.0463697115343609
+  },
+  {
+    "episode": 15,
+    "reward": 45.9465333369294,
+    "cut_size": 548,
+    "balance": 0.7470559816294734,
+    "conductance": 0.3660559816294735,
+    "convergence_rate": 0.08999999999999997,
+    "adaptation_speed": 1.077950751714455
+  },
+  {
+    "episode": 16,
+    "reward": 42.29245389722688,
+    "cut_size": 585,
+    "balance": 0.7569387793125264,
+    "conductance": 0.37053877931252643,
+    "convergence_rate": 0.09599999999999997,
+    "adaptation_speed": 1.0489802049209078
+  },
+  {
+    "episode": 17,
+    "reward": 42.895985746095214,
+    "cut_size": 582,
+    "balance": 0.7601576056564483,
+    "conductance": 0.36835760565644826,
+    "convergence_rate": 0.10199999999999998,
+    "adaptation_speed": 1.0963627227321053
+  },
+  {
+    "episode": 18,
+    "reward": 50.600062350090376,
+    "cut_size": 515,
+    "balance": 0.7522627291436995,
+    "conductance": 0.3550627291436995,
+    "convergence_rate": 0.10799999999999998,
+    "adaptation_speed": 1.115711207267382
+  },
+  {
+    "episode": 19,
+    "reward": 45.660999040791424,
+    "cut_size": 563,
+    "balance": 0.7641567709488317,
+    "conductance": 0.36155677094883176,
+    "convergence_rate": 0.11399999999999999,
+    "adaptation_speed": 1.1248428301177062
+  },
+  {
+    "episode": 20,
+    "reward": 54.4559458904894,
+    "cut_size": 486,
+    "balance": 0.7545544750501026,
+    "conductance": 0.34655447505010273,
+    "convergence_rate": 0.12,
+    "adaptation_speed": 0.8883675405389716
+  },
+  {
+    "episode": 21,
+    "reward": 51.47957218595894,
+    "cut_size": 516,
+    "balance": 0.7633765343779011,
+    "conductance": 0.3499765343779012,
+    "convergence_rate": 0.126,
+    "adaptation_speed": 0.9339292176590871
+  },
+  {
+    "episode": 22,
+    "reward": 53.364265735549644,
+    "cut_size": 502,
+    "balance": 0.7645900990208959,
+    "conductance": 0.34579009902089586,
+    "convergence_rate": 0.132,
+    "adaptation_speed": 1.1923185479189475
+  },
+  {
+    "episode": 23,
+    "reward": 53.77271387431926,
+    "cut_size": 502,
+    "balance": 0.7681142684703095,
+    "conductance": 0.3439142684703095,
+    "convergence_rate": 0.138,
+    "adaptation_speed": 0.8682237377662788
+  },
+  {
+    "episode": 24,
+    "reward": 49.33761068974026,
+    "cut_size": 546,
+    "balance": 0.7792195168418529,
+    "conductance": 0.34961951684185283,
+    "convergence_rate": 0.14400000000000002,
+    "adaptation_speed": 1.09023595116048
+  },
+  {
+    "episode": 25,
+    "reward": 57.197113288907204,
+    "cut_size": 477,
+    "balance": 0.7710813690892044,
+    "conductance": 0.3360813690892046,
+    "convergence_rate": 0.15000000000000002,
+    "adaptation_speed": 1.0306602543703087
+  },
+  {
+    "episode": 26,
+    "reward": 57.61584553864997,
+    "cut_size": 476,
+    "balance": 0.7745894419492096,
+    "conductance": 0.33418944194920963,
+    "convergence_rate": 0.15600000000000003,
+    "adaptation_speed": 1.1061024682210343
+  },
+  {
+    "episode": 27,
+    "reward": 53.334043418263846,
+    "cut_size": 519,
+    "balance": 0.7854547450019348,
+    "conductance": 0.3396547450019348,
+    "convergence_rate": 0.16200000000000003,
+    "adaptation_speed": 0.9084291223428164
+  },
+  {
+    "episode": 28,
+    "reward": 54.41623521759881,
+    "cut_size": 513,
+    "balance": 0.7879243774963237,
+    "conductance": 0.33672437749632367,
+    "convergence_rate": 0.16800000000000004,
+    "adaptation_speed": 1.1404273529133362
+  },
+  {
+    "episode": 29,
+    "reward": 56.56715280271243,
+    "cut_size": 496,
+    "balance": 0.7887212508957387,
+    "conductance": 0.3321212508957389,
+    "convergence_rate": 0.17399999999999993,
+    "adaptation_speed": 0.8570238324117209
+  },
+  {
+    "episode": 30,
+    "reward": 60.79991063989112,
+    "cut_size": 460,
+    "balance": 0.7862596483958504,
+    "conductance": 0.32425964839585053,
+    "convergence_rate": 0.17999999999999994,
+    "adaptation_speed": 0.8936230957017075
+  },
+  {
+    "episode": 31,
+    "reward": 67.26391144315485,
+    "cut_size": 404,
+    "balance": 0.7803057263372125,
+    "conductance": 0.31290572633721264,
+    "convergence_rate": 0.18599999999999994,
+    "adaptation_speed": 0.823770480490194
+  },
+  {
+    "episode": 32,
+    "reward": 59.34383464321428,
+    "cut_size": 480,
+    "balance": 0.7968656211563401,
+    "conductance": 0.3240656211563402,
+    "convergence_rate": 0.19199999999999995,
+    "adaptation_speed": 1.1132888619219727
+  },
+  {
+    "episode": 33,
+    "reward": 59.48720325577693,
+    "cut_size": 482,
+    "balance": 0.8008046904746017,
+    "conductance": 0.3226046904746018,
+    "convergence_rate": 0.19799999999999995,
+    "adaptation_speed": 1.0712272148386828
+  },
+  {
+    "episode": 34,
+    "reward": 66.4338477578921,
+    "cut_size": 422,
+    "balance": 0.7940953392426168,
+    "conductance": 0.31049533924261685,
+    "convergence_rate": 0.20399999999999996,
+    "adaptation_speed": 1.1498265512529116
+  },
+  {
+    "episode": 35,
+    "reward": 59.51212297465079,
+    "cut_size": 489,
+    "balance": 0.8090926232984023,
+    "conductance": 0.3200926232984023,
+    "convergence_rate": 0.20999999999999996,
+    "adaptation_speed": 1.1899465573260646
+  },
+  {
+    "episode": 36,
+    "reward": 56.54504598631611,
+    "cut_size": 519,
+    "balance": 0.8179001314973922,
+    "conductance": 0.32350013149739226,
+    "convergence_rate": 0.21599999999999997,
+    "adaptation_speed": 0.9335175994207056
+  },
+  {
+    "episode": 37,
+    "reward": 59.58993908954643,
+    "cut_size": 495,
+    "balance": 0.817297763203089,
+    "conductance": 0.31749776320308903,
+    "convergence_rate": 0.22199999999999998,
+    "adaptation_speed": 1.088994163263129
+  },
+  {
+    "episode": 38,
+    "reward": 64.86207233350467,
+    "cut_size": 449,
+    "balance": 0.8132093405329399,
+    "conductance": 0.30800934053293993,
+    "convergence_rate": 0.22799999999999998,
+    "adaptation_speed": 1.1185307140286909
+  },
+  {
+    "episode": 39,
+    "reward": 68.82182890597576,
+    "cut_size": 416,
+    "balance": 0.8111750369291347,
+    "conductance": 0.3005750369291348,
+    "convergence_rate": 0.23399999999999999,
+    "adaptation_speed": 1.1770169215163986
+  },
+  {
+    "episode": 40,
+    "reward": 67.18129266880312,
+    "cut_size": 435,
+    "balance": 0.8179062565834979,
+    "conductance": 0.30190625658349807,
+    "convergence_rate": 0.24,
+    "adaptation_speed": 0.956419112555708
+  },
+  {
+    "episode": 41,
+    "reward": 63.48728974366885,
+    "cut_size": 472,
+    "balance": 0.827851542113525,
+    "conductance": 0.30645154211352504,
+    "convergence_rate": 0.246,
+    "adaptation_speed": 0.9846159529308224
+  },
+  {
+    "episode": 42,
+    "reward": 66.69629555606765,
+    "cut_size": 446,
+    "balance": 0.8269923062199598,
+    "conductance": 0.30019230621995985,
+    "convergence_rate": 0.252,
+    "adaptation_speed": 1.0176947670149066
+  },
+  {
+    "episode": 43,
+    "reward": 60.10516593438688,
+    "cut_size": 510,
+    "balance": 0.8414721459784209,
+    "conductance": 0.3092721459784209,
+    "convergence_rate": 0.258,
+    "adaptation_speed": 0.8146829168414775
+  },
+  {
+    "episode": 44,
+    "reward": 68.02993813409253,
+    "cut_size": 440,
+    "balance": 0.8332318388885701,
+    "conductance": 0.29563183888857014,
+    "convergence_rate": 0.264,
+    "adaptation_speed": 0.994906874665997
+  },
+  {
+    "episode": 45,
+    "reward": 67.21016576714511,
+    "cut_size": 451,
+    "balance": 0.8386784070008685,
+    "conductance": 0.2956784070008685,
+    "convergence_rate": 0.27,
+    "adaptation_speed": 1.0505372859449884
+  },
+  {
+    "episode": 46,
+    "reward": 71.17345756688809,
+    "cut_size": 418,
+    "balance": 0.8366385700940865,
+    "conductance": 0.2882385700940866,
+    "convergence_rate": 0.276,
+    "adaptation_speed": 1.0300895165994097
+  },
+  {
+    "episode": 47,
+    "reward": 75.91578359289693,
+    "cut_size": 377,
+    "balance": 0.8333793964737879,
+    "conductance": 0.2795793964737879,
+    "convergence_rate": 0.28200000000000003,
+    "adaptation_speed": 0.833222486950187
+  },
+  {
+    "episode": 48,
+    "reward": 73.33901101284418,
+    "cut_size": 405,
+    "balance": 0.8415760040493908,
+    "conductance": 0.28237600404939084,
+    "convergence_rate": 0.28800000000000003,
+    "adaptation_speed": 1.023284520535102
+  },
+  {
+    "episode": 49,
+    "reward": 71.45927206122667,
+    "cut_size": 425,
+    "balance": 0.8486816214411853,
+    "conductance": 0.2840816214411854,
+    "convergence_rate": 0.29400000000000004,
+    "adaptation_speed": 0.845983387868478
+  },
+  {
+    "episode": 50,
+    "reward": 76.39132248329031,
+    "cut_size": 383,
+    "balance": 0.8451254930610576,
+    "conductance": 0.27512549306105755,
+    "convergence_rate": 0.30000000000000004,
+    "adaptation_speed": 0.9456923266845595
+  },
+  {
+    "episode": 51,
+    "reward": 69.12092661244296,
+    "cut_size": 453,
+    "balance": 0.8606685136759384,
+    "conductance": 0.2852685136759384,
+    "convergence_rate": 0.30600000000000005,
+    "adaptation_speed": 1.1411181045264824
+  },
+  {
+    "episode": 52,
+    "reward": 73.19891256171853,
+    "cut_size": 419,
+    "balance": 0.8584491586136821,
+    "conductance": 0.27764915861368206,
+    "convergence_rate": 0.31200000000000006,
+    "adaptation_speed": 1.1493847880099881
+  },
+  {
+    "episode": 53,
+    "reward": 75.51282412387806,
+    "cut_size": 401,
+    "balance": 0.8589909154423571,
+    "conductance": 0.27279091544235706,
+    "convergence_rate": 0.31800000000000006,
+    "adaptation_speed": 0.8531401950384819
+  },
+  {
+    "episode": 54,
+    "reward": 70.9348285075072,
+    "cut_size": 447,
+    "balance": 0.8703198176435949,
+    "conductance": 0.2787198176435949,
+    "convergence_rate": 0.32400000000000007,
+    "adaptation_speed": 0.8667950308564131
+  },
+  {
+    "episode": 55,
+    "reward": 76.665003820427,
+    "cut_size": 397,
+    "balance": 0.8655144720293833,
+    "conductance": 0.2685144720293833,
+    "convergence_rate": 0.33000000000000007,
+    "adaptation_speed": 0.8026021008120563
+  },
+  {
+    "episode": 56,
+    "reward": 75.74360117168398,
+    "cut_size": 409,
+    "balance": 0.871120110859784,
+    "conductance": 0.26872011085978403,
+    "convergence_rate": 0.3360000000000001,
+    "adaptation_speed": 1.1122232699874017
+  },
+  {
+    "episode": 57,
+    "reward": 78.70861035589455,
+    "cut_size": 385,
+    "balance": 0.87064277609032,
+    "conductance": 0.26284277609032003,
+    "convergence_rate": 0.34199999999999997,
+    "adaptation_speed": 1.0532235288972622
+  },
+  {
+    "episode": 58,
+    "reward": 78.40503225170798,
+    "cut_size": 391,
+    "balance": 0.875281402016422,
+    "conductance": 0.26208140201642205,
+    "convergence_rate": 0.348,
+    "adaptation_speed": 0.8596697753303846
+  },
+  {
+    "episode": 59,
+    "reward": 75.78064328251386,
+    "cut_size": 419,
+    "balance": 0.8835525382962688,
+    "conductance": 0.2649525382962688,
+    "convergence_rate": 0.354,
+    "adaptation_speed": 1.0646609835331173
+  },
+  {
+    "episode": 60,
+    "reward": 82.78892532786051,
+    "cut_size": 357,
+    "balance": 0.8767467125874777,
+    "conductance": 0.25274671258747766,
+    "convergence_rate": 0.36,
+    "adaptation_speed": 1.0433586991270296
+  },
+  {
+    "episode": 61,
+    "reward": 79.60252312570503,
+    "cut_size": 390,
+    "balance": 0.885897506455306,
+    "conductance": 0.25649750645530595,
+    "convergence_rate": 0.366,
+    "adaptation_speed": 1.1550935851686284
+  },
+  {
+    "episode": 62,
+    "reward": 86.14689838335516,
+    "cut_size": 333,
+    "balance": 0.8798177830906947,
+    "conductance": 0.2450177830906947,
+    "convergence_rate": 0.372,
+    "adaptation_speed": 0.9337383134323541
+  },
+  {
+    "episode": 63,
+    "reward": 85.62249461733018,
+    "cut_size": 341,
+    "balance": 0.8848020431721237,
+    "conductance": 0.2446020431721237,
+    "convergence_rate": 0.378,
+    "adaptation_speed": 1.1941568919847403
+  },
+  {
+    "episode": 64,
+    "reward": 81.93931646197998,
+    "cut_size": 378,
+    "balance": 0.8947303858788856,
+    "conductance": 0.2491303858788856,
+    "convergence_rate": 0.384,
+    "adaptation_speed": 1.1959740530276222
+  },
+  {
+    "episode": 65,
+    "reward": 83.08606704510902,
+    "cut_size": 371,
+    "balance": 0.8970989715994537,
+    "conductance": 0.2460989715994537,
+    "convergence_rate": 0.39,
+    "adaptation_speed": 0.9971228063648203
+  },
+  {
+    "episode": 66,
+    "reward": 81.37016011376431,
+    "cut_size": 390,
+    "balance": 0.9039481607234868,
+    "conductance": 0.2475481607234868,
+    "convergence_rate": 0.396,
+    "adaptation_speed": 1.116802125431623
+  },
+  {
+    "episode": 67,
+    "reward": 83.86906606222456,
+    "cut_size": 371,
+    "balance": 0.9042003661571066,
+    "conductance": 0.24240036615710664,
+    "convergence_rate": 0.402,
+    "adaptation_speed": 1.1861326883143883
+  },
+  {
+    "episode": 68,
+    "reward": 90.94418164505697,
+    "cut_size": 309,
+    "balance": 0.897289933252376,
+    "conductance": 0.23008993325237603,
+    "convergence_rate": 0.40800000000000003,
+    "adaptation_speed": 0.9258303895862838
+  },
+  {
+    "episode": 69,
+    "reward": 83.59332877510295,
+    "cut_size": 380,
+    "balance": 0.912958884371415,
+    "conductance": 0.24035888437141506,
+    "convergence_rate": 0.4139999999999999,
+    "adaptation_speed": 1.1363917074024072
+  },
+  {
+    "episode": 70,
+    "reward": 87.3874176048499,
+    "cut_size": 348,
+    "balance": 0.911183882290108,
+    "conductance": 0.23318388229010817,
+    "convergence_rate": 0.41999999999999993,
+    "adaptation_speed": 0.8385072454049394
+  },
+  {
+    "episode": 71,
+    "reward": 92.29539327893633,
+    "cut_size": 306,
+    "balance": 0.9076654354688741,
+    "conductance": 0.22426543546887412,
+    "convergence_rate": 0.42599999999999993,
+    "adaptation_speed": 1.0518586692357244
+  },
+  {
+    "episode": 72,
+    "reward": 93.40694621421933,
+    "cut_size": 299,
+    "balance": 0.9100891122018792,
+    "conductance": 0.2212891122018793,
+    "convergence_rate": 0.43199999999999994,
+    "adaptation_speed": 1.0383313572198967
+  },
+  {
+    "episode": 73,
+    "reward": 88.15986736069736,
+    "cut_size": 351,
+    "balance": 0.9224652569092231,
+    "conductance": 0.2282652569092231,
+    "convergence_rate": 0.43799999999999994,
+    "adaptation_speed": 0.9145825570806378
+  },
+  {
+    "episode": 74,
+    "reward": 94.70046330875184,
+    "cut_size": 294,
+    "balance": 0.9163914488828426,
+    "conductance": 0.21679144888284269,
+    "convergence_rate": 0.44399999999999995,
+    "adaptation_speed": 0.8645599162198203
+  },
+  {
+    "episode": 75,
+    "reward": 91.58164559160662,
+    "cut_size": 326,
+    "balance": 0.9254364601790475,
+    "conductance": 0.22043646017904742,
+    "convergence_rate": 0.44999999999999996,
+    "adaptation_speed": 1.0681099611732323
+  },
+  {
+    "episode": 76,
+    "reward": 96.65159958712043,
+    "cut_size": 283,
+    "balance": 0.921664486481264,
+    "conductance": 0.211264486481264,
+    "convergence_rate": 0.45599999999999996,
+    "adaptation_speed": 1.0964854723390864
+  },
+  {
+    "episode": 77,
+    "reward": 92.93763717247785,
+    "cut_size": 320,
+    "balance": 0.9316410124080797,
+    "conductance": 0.21584101240807976,
+    "convergence_rate": 0.46199999999999997,
+    "adaptation_speed": 1.0025995570625932
+  },
+  {
+    "episode": 78,
+    "reward": 96.4617995835361,
+    "cut_size": 291,
+    "balance": 0.9302884965040912,
+    "conductance": 0.20908849650409123,
+    "convergence_rate": 0.46799999999999997,
+    "adaptation_speed": 0.9313864512651491
+  },
+  {
+    "episode": 79,
+    "reward": 97.4874877071403,
+    "cut_size": 285,
+    "balance": 0.932846567996337,
+    "conductance": 0.20624656799633703,
+    "convergence_rate": 0.474,
+    "adaptation_speed": 1.0948772181731838
+  },
+  {
+    "episode": 80,
+    "reward": 96.69521792703318,
+    "cut_size": 295,
+    "balance": 0.9382500893300466,
+    "conductance": 0.20625008933004668,
+    "convergence_rate": 0.48,
+    "adaptation_speed": 1.1286226357698992
+  },
+  {
+    "episode": 81,
+    "reward": 95.24793767632046,
+    "cut_size": 312,
+    "balance": 0.9446788266139922,
+    "conductance": 0.20727882661399208,
+    "convergence_rate": 0.486,
+    "adaptation_speed": 1.1488041226348877
+  },
+  {
+    "episode": 82,
+    "reward": 96.52042589073862,
+    "cut_size": 304,
+    "balance": 0.9468506090299911,
+    "conductance": 0.2040506090299912,
+    "convergence_rate": 0.492,
+    "adaptation_speed": 1.0489860548463104
+  },
+  {
+    "episode": 83,
+    "reward": 98.78556109383008,
+    "cut_size": 286,
+    "balance": 0.9474687101364374,
+    "conductance": 0.1992687101364375,
+    "convergence_rate": 0.498,
+    "adaptation_speed": 0.9492934473213137
+  },
+  {
+    "episode": 84,
+    "reward": 98.4576893470481,
+    "cut_size": 292,
+    "balance": 0.952145360233138,
+    "conductance": 0.19854536023313804,
+    "convergence_rate": 0.504,
+    "adaptation_speed": 0.8937155450702087
+  },
+  {
+    "episode": 85,
+    "reward": 96.06530156641819,
+    "cut_size": 318,
+    "balance": 0.9600533705330753,
+    "conductance": 0.20105337053307532,
+    "convergence_rate": 0.51,
+    "adaptation_speed": 0.8833927606135586
+  },
+  {
+    "episode": 86,
+    "reward": 101.41125740023894,
+    "cut_size": 272,
+    "balance": 0.9558494014709047,
+    "conductance": 0.19144940147090475,
+    "convergence_rate": 0.516,
+    "adaptation_speed": 1.196698627855549
+  },
+  {
+    "episode": 87,
+    "reward": 97.31378242117083,
+    "cut_size": 313,
+    "balance": 0.9664261974938632,
+    "conductance": 0.19662619749386318,
+    "convergence_rate": 0.522,
+    "adaptation_speed": 0.8323707122911844
+  },
+  {
+    "episode": 88,
+    "reward": 98.49298170416415,
+    "cut_size": 305,
+    "balance": 0.9687439948283547,
+    "conductance": 0.19354399482835477,
+    "convergence_rate": 0.528,
+    "adaptation_speed": 1.1474436265474615
+  },
+  {
+    "episode": 89,
+    "reward": 101.69921144202051,
+    "cut_size": 279,
+    "balance": 0.9678891040193763,
+    "conductance": 0.18728910401937626,
+    "convergence_rate": 0.534,
+    "adaptation_speed": 1.0512395773812087
+  },
+  {
+    "episode": 90,
+    "reward": 109.12425557520478,
+    "cut_size": 214,
+    "balance": 0.9604309663872206,
+    "conductance": 0.17443096638722055,
+    "convergence_rate": 0.54,
+    "adaptation_speed": 1.1060370167875362
+  },
+  {
+    "episode": 91,
+    "reward": 101.09255101492246,
+    "cut_size": 291,
+    "balance": 0.9771655798796018,
+    "conductance": 0.1857655798796017,
+    "convergence_rate": 0.546,
+    "adaptation_speed": 0.863798831046362
+  },
+  {
+    "episode": 92,
+    "reward": 102.7843672659873,
+    "cut_size": 279,
+    "balance": 0.978681034174382,
+    "conductance": 0.18188103417438206,
+    "convergence_rate": 0.552,
+    "adaptation_speed": 0.9572102609156783
+  },
+  {
+    "episode": 93,
+    "reward": 102.2610434611771,
+    "cut_size": 287,
+    "balance": 0.9836636039111332,
+    "conductance": 0.18146360391113303,
+    "convergence_rate": 0.558,
+    "adaptation_speed": 1.1729415519382784
+  },
+  {
+    "episode": 94,
+    "reward": 103.36878107950074,
+    "cut_size": 280,
+    "balance": 0.9860932523407407,
+    "conductance": 0.17849325234074076,
+    "convergence_rate": 0.564,
+    "adaptation_speed": 0.8232343766041946
+  },
+  {
+    "episode": 95,
+    "reward": 110.70134450870674,
+    "cut_size": 216,
+    "balance": 0.9787798645974225,
+    "conductance": 0.16577986459742255,
+    "convergence_rate": 0.57,
+    "adaptation_speed": 1.0519122753552557
+  },
+  {
+    "episode": 96,
+    "reward": 104.25418960828827,
+    "cut_size": 279,
+    "balance": 0.9930343565373482,
+    "conductance": 0.17463435653734818,
+    "convergence_rate": 0.576,
+    "adaptation_speed": 0.8657014575087671
+  },
+  {
+    "episode": 97,
+    "reward": 107.4802287850355,
+    "cut_size": 252,
+    "balance": 0.9921484601893324,
+    "conductance": 0.16834846018933247,
+    "convergence_rate": 0.582,
+    "adaptation_speed": 0.8151294728487523
+  },
+  {
+    "episode": 98,
+    "reward": 112.85644345282542,
+    "cut_size": 206,
+    "balance": 0.9878971302976594,
+    "conductance": 0.15869713029765942,
+    "convergence_rate": 0.588,
+    "adaptation_speed": 1.0613030987005558
+  },
+  {
+    "episode": 99,
+    "reward": 108.16302922334864,
+    "cut_size": 253,
+    "balance": 0.9994066845776355,
+    "conductance": 0.16480668457763556,
+    "convergence_rate": 0.594,
+    "adaptation_speed": 1.031213243587426
+  }
+]

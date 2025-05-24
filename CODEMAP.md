@@ -1,9 +1,9 @@
-# CODEMAP.md
+# CODEMAProposed_Method
 [Go to TODO.md](./TODO.md) | [Go to INDEX.md](./src/INDEX.md)
 
 ## Project Structure Overview
 
-**See also:** [P.md](./docs/P.md), [outline.md](./docs/outline.md)
+**See also:** [Proposed_Method](./docs/Proposed_Method), [outline.md](./docs/outline.md)
 
 ### Core Components
 - **src/core/graph.py**: Core `Graph` and `Partition` classes
@@ -135,7 +135,7 @@
 - [ ] Is this logic already implemented in a utility (e.g., `graph_metrics.py`)?
 - [ ] Are you reusing shared utilities instead of duplicating code?
 - [ ] Are new utilities tested in isolation (`tests/`)?
-- [ ] Have you updated this CODEMAP.md if you add new core modules?
+- [ ] Have you updated this CODEMAProposed_Method if you add new core modules?
 - [ ] Are visualizations updated for new metrics?
 - [ ] Are TensorBoard integrations added for tracking?
 

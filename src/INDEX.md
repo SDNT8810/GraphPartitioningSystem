@@ -1,9 +1,9 @@
 # Distributed Graph Partitioning System
-[Go to TODO.md](../TODO.md) | [Go to CODEMAP.md](../CODEMAP.md)
+[Go to TODO.md](../TODO.md) | [Go to CODEMAProposed_Method](../CODEMAProposed_Method)
 
 ## Project Structure
 
-See also: [TODO.md](../TODO.md), [CODEMAP.md](../CODEMAP.md)
+See also: [TODO.md](../TODO.md), [CODEMAProposed_Method](../CODEMAProposed_Method)
 
 ### Core Components
 - `src/core/`

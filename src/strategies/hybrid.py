@@ -25,7 +25,7 @@ Applies robust partition management (        # Convert spectral partitions to gr
         rl_cut_size = compute_cut_size(graph, rl_partitions), splitting) after assignment.
 
 See also:
-- [CODEMAP.md](../../CODEMAP.md)
+- [CODEMAProposed_Method](../../CODEMAProposed_Method)
 - [TODO.md](../../TODO.md)
 - [INDEX.md](../INDEX.md)
 """

@@ -1,0 +1,6 @@
+Method,Execution Time (s),Cut Size,Balance Ratio,Conductance,Quality Score,Throughput (ops/s),Memory Usage (MB)
+Random Partitioning,0.000323,817.2,0.746,0.208,0.774,3097.71,194.7
+Spectral Clustering,0.027723,757.0,1.000,0.193,0.884,36.07,144.0
+Greedy Partitioning,0.000208,840.0,1.000,0.214,0.872,4807.78,57.4
+METIS-like,0.131892,596.0,0.369,0.152,0.657,7.58,97.4
+Proposed_Method Autonomous System,0.002000,253.0,0.999,0.165,1.082,7.90,75.0

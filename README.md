@@ -192,7 +192,7 @@ The system has been tested and is compatible with:
 ## Documentation
 
 ### Project Guides
-- [Code Map](CODEMAP.md): Detailed code structure and architecture
+- [Code Map](CODEMAProposed_Method): Detailed code structure and architecture
 - [Index](src/INDEX.md): Quick reference and API guide
 - [TODO](TODO.md): Development roadmap and progress
 

@@ -1,20 +1,20 @@
 # Graph configuration
 graph:
-  num_nodes: 20
-  edge_probability: 0.2
+  num_nodes: 50
+  edge_probability: 0.4
   weight_range: [0.1, 1.0]
 
 # Partitioning strategy configuration
 partition:
-  num_partitions: 3
-  balance_weight: 0.5
-  cut_size_weight: 0.3
-  conductance_weight: 0.5
+  num_partitions: 4  # Match with action_dim
+  balance_weight: 0.7  # Increased to prioritize balance
+  cut_size_weight: 0.5  # Increased for better cut optimization
+  conductance_weight: 0.3  # Reduced slightly
   use_laplacian: true
-  min_partition_size: 2
-  max_partition_size: 10
-  balance_threshold: 0.8
-  conductance_threshold: 0.3
+  min_partition_size: 10  # Increased for more balanced partitions
+  max_partition_size: 15  # Set reasonable max size for 50 nodes
+  balance_threshold: 0.9  # Increased for better balance
+  conductance_threshold: 0.4  # Adjusted based on observed values
   use_hybrid_strategy: true
   strategy_weights: [0.4, 0.3, 0.3]
   epsilon_decay: 0.995
@@ -22,31 +22,31 @@ partition:
 # Agent configuration
 agent:
   # Training parameters
-  learning_rate: 0.01
+  learning_rate: 0.001  # Reduced for more stable learning
   epsilon: 0.1
   epsilon_start: 1.0
-  epsilon_end: 0.01
-  epsilon_decay: 0.995
-  gamma: 0.99
-  weight_decay: 0.0
-  memory_size: 10000
-  batch_size: 128
+  epsilon_end: 0.05  # Increased to maintain more exploration
+  epsilon_decay: 0.997  # Slower decay for better exploration
+  gamma: 0.95  # Reduced to focus more on immediate rewards
+  weight_decay: 0.001  # Added L2 regularization
+  memory_size: 50000  # Increased for better experience replay
+  batch_size: 64  # Reduced for more frequent updates
   target_update: 100
   local_update_interval: 10
   communication_interval: 50
   max_grad_norm: 1.0
   device: 'cpu'
   # Neural network dimensions
-  feature_dim: 256
-  state_dim: 128
-  hidden_dim: 256
-  action_dim: 64
+  feature_dim: 64  # Increased for richer state representation
+  state_dim: 64  # Increased for better state encoding
+  hidden_dim: 128 # Increased network capacity
+  action_dim: 4   # Matches num_partitions
 
 # GNN configuration
 gnn:
-  hidden_channels: 256
+  hidden_channels: 64
   num_layers: 4
-  num_heads: 10
+  num_heads: 8
   dropout: 0.3 # attention_dropout
   use_attention: true
   quantize: true
@@ -67,7 +67,7 @@ monitoring:
   learning_log_interval: 100
   progress_metrics: ["reward", "cut_size", "balance", "conductance"]
   visualize_progress: true
-  rolling_window_size: 50
+  rolling_window_size: 5
 
 # Recovery configuration
 recovery:
@@ -80,9 +80,9 @@ recovery:
 # System configuration
 system:
   num_episodes: 800
-  max_steps: 20
+  max_steps: 200  # Increased to allow more learning per episode
   log_interval: 10
-  seed: 42
+  seed: 41
   num_workers: 4
   log_level: "INFO"
 

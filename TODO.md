@@ -182,7 +182,7 @@
 - Consider multi-objective optimization in all strategies
 
 ## Research Alignment
-- Ensure all development aligns with the theoretical framework in P.md
+- Ensure all development aligns with the theoretical framework in Proposed_Method
 - Focus on distributed intelligence at node level
 - Prioritize multi-modal strategy framework
 - Build comprehensive resilience mechanisms

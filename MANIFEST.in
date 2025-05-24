@@ -1,7 +1,7 @@
 include LICENSE
 include README.md
 include requirements.txt
-include CODEMAP.md
+include CODEMAProposed_Method
 include TODO.md
 include pyproject.toml
 

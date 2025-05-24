@@ -472,7 +472,9 @@ def run_dynamic_strategy(config: SystemConfig, graph: Graph, run_id: int,
         if 'rewards' in stats:
             episode_rewards = stats['rewards']
         if 'steps' in stats:
-            episode_steps = [stats['steps']] * len(episode_rewards) if episode_rewards else []
+            episode_steps = stats['steps']  # Now a list of steps per episode
+        else:
+            episode_steps = []  # Empty list if no steps recorded
         if 'cut_sizes' in stats:
             episode_cut_sizes = stats['cut_sizes']
         if 'balances' in stats:

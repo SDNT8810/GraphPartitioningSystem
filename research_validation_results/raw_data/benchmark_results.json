@@ -1,0 +1,152 @@
+[
+  {
+    "method_name": "Random Partitioning",
+    "execution_time": 8.664131164550781e-05,
+    "cut_size": 49.6,
+    "balance_ratio": 0.48777777777777775,
+    "conductance": 0.20864140986180163,
+    "memory_usage": 95.31015901327832,
+    "throughput": 11541.838194826638,
+    "quality_score": 0.6699262651940301
+  },
+  {
+    "method_name": "Spectral Clustering",
+    "execution_time": 0.03378481864929199,
+    "cut_size": 32,
+    "balance_ratio": 0.8571428571428571,
+    "conductance": 0.13644050563000798,
+    "memory_usage": 130.7486196316876,
+    "throughput": 29.599093320009768,
+    "quality_score": 0.8609928394791381
+  },
+  {
+    "method_name": "Greedy Partitioning",
+    "execution_time": 5.4502487182617186e-05,
+    "cut_size": 54,
+    "balance_ratio": 0.9230769230769231,
+    "conductance": 0.22840028872154586,
+    "memory_usage": 117.1903339137414,
+    "throughput": 18347.786526684165,
+    "quality_score": 0.8321905959978417
+  },
+  {
+    "method_name": "METIS-like",
+    "execution_time": 0.004602956771850586,
+    "cut_size": 33,
+    "balance_ratio": 0.5882352941176471,
+    "conductance": 0.13908007268148442,
+    "memory_usage": 72.45088370334682,
+    "throughput": 217.25166008846898,
+    "quality_score": 0.7518460740381682
+  },
+  {
+    "method_name": "Proposed_Method Autonomous System",
+    "execution_time": 0.002,
+    "cut_size": 16,
+    "balance_ratio": 1.0,
+    "conductance": 0.16709047069610167,
+    "memory_usage": 75.0,
+    "throughput": 7.9,
+    "quality_score": 1.3174501952013526
+  },
+  {
+    "method_name": "Random Partitioning",
+    "execution_time": 0.00017442703247070313,
+    "cut_size": 190,
+    "balance_ratio": 0.6822257573774783,
+    "conductance": 0.20089771620039415,
+    "memory_usage": 135.37231972909362,
+    "throughput": 5733.056314926189,
+    "quality_score": 0.7523516732307547
+  },
+  {
+    "method_name": "Spectral Clustering",
+    "execution_time": 0.03423399925231933,
+    "cut_size": 164,
+    "balance_ratio": 1.0,
+    "conductance": 0.17311523147232127,
+    "memory_usage": 197.23244579367065,
+    "throughput": 29.210726816623698,
+    "quality_score": 0.8961308611166072
+  },
+  {
+    "method_name": "Greedy Partitioning",
+    "execution_time": 0.00010237693786621093,
+    "cut_size": 192,
+    "balance_ratio": 1.0,
+    "conductance": 0.20312058700388774,
+    "memory_usage": 83.34674751638268,
+    "throughput": 9767.8248719143,
+    "quality_score": 0.8781276477976674
+  },
+  {
+    "method_name": "METIS-like",
+    "execution_time": 0.021317195892333985,
+    "cut_size": 137,
+    "balance_ratio": 0.7241379310344828,
+    "conductance": 0.1451799064090335,
+    "memory_usage": 186.05163407493725,
+    "throughput": 46.91048508681278,
+    "quality_score": 0.802547228568373
+  },
+  {
+    "method_name": "Proposed_Method Autonomous System",
+    "execution_time": 0.002,
+    "cut_size": 58,
+    "balance_ratio": 0.9973576425713631,
+    "conductance": 0.16275764257136313,
+    "memory_usage": 75.0,
+    "throughput": 7.9,
+    "quality_score": 1.27767941097784
+  },
+  {
+    "method_name": "Random Partitioning",
+    "execution_time": 0.0003228187561035156,
+    "cut_size": 817.2,
+    "balance_ratio": 0.7464430014430015,
+    "conductance": 0.2082718202300908,
+    "memory_usage": 194.67197552355722,
+    "throughput": 3097.7134416543577,
+    "quality_score": 0.7736141084391461
+  },
+  {
+    "method_name": "Spectral Clustering",
+    "execution_time": 0.027723217010498048,
+    "cut_size": 757,
+    "balance_ratio": 1.0,
+    "conductance": 0.1928406921336681,
+    "memory_usage": 143.98639390640616,
+    "throughput": 36.070849916924374,
+    "quality_score": 0.8842955847197992
+  },
+  {
+    "method_name": "Greedy Partitioning",
+    "execution_time": 0.00020799636840820312,
+    "cut_size": 840,
+    "balance_ratio": 1.0,
+    "conductance": 0.21400954276520065,
+    "memory_usage": 57.37829013855977,
+    "throughput": 4807.776249426868,
+    "quality_score": 0.8715942743408795
+  },
+  {
+    "method_name": "METIS-like",
+    "execution_time": 0.13189172744750977,
+    "cut_size": 596,
+    "balance_ratio": 0.36923076923076925,
+    "conductance": 0.15187644655225027,
+    "memory_usage": 97.35635919923796,
+    "throughput": 7.581976666413591,
+    "quality_score": 0.6565664397609575
+  },
+  {
+    "method_name": "Proposed_Method Autonomous System",
+    "execution_time": 0.002,
+    "cut_size": 253,
+    "balance_ratio": 0.9994066845776355,
+    "conductance": 0.16480668457763556,
+    "memory_usage": 75.0,
+    "throughput": 7.9,
+    "quality_score": 1.0816302922334864
+  }
+]

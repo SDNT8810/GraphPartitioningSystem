@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
@@ -8,7 +9,6 @@ from .base_agent import BaseAgent, AgentState
 from ..core.graph import Graph
 from ..config.system_config import AgentConfig
 import torch.nn.functional as F
-import torch
 
 class AttentionQNetwork(nn.Module):
     """Enhanced Q-network with attention mechanism for better node relationship modeling."""
@@ -174,6 +174,29 @@ class LocalAgent(BaseAgent):
         self.patience_counter = 0
         self.early_stopping_patience = 20
         
+        # Initialize Q-network and optimizer
+        self.q_network = AttentionQNetwork(
+            input_dim=config.state_dim,
+            hidden_dim=config.hidden_dim,
+            output_dim=config.action_dim,
+            num_heads=config.num_heads,
+            dropout=config.dropout
+        )
+        self.target_network = AttentionQNetwork(
+            input_dim=config.state_dim,
+            hidden_dim=config.hidden_dim,
+            output_dim=config.action_dim,
+            num_heads=config.num_heads,
+            dropout=config.dropout
+        )
+        self.target_network.load_state_dict(self.q_network.state_dict())
+        self.optimizer = optim.Adam(self.q_network.parameters(), lr=config.learning_rate)
+        
+        # Learning rate scheduler
+        self.scheduler = optim.lr_scheduler.StepLR(
+            self.optimizer, step_size=config.lr_step_size, gamma=config.lr_gamma
+        )
+        
     def select_partition(self, state: AgentState) -> Tuple[int, float]:
         """Select a partition to join based on current state"""
         action, value = self.select_action(state, self.epsilon)
@@ -188,7 +211,7 @@ class LocalAgent(BaseAgent):
         num_partitions = len(state.partition_sizes)
         partition_idx = action % num_partitions
         
-        return partition_idx, value.item() if hasattr(value, 'item') else float(value)
+        return partition_idx, value.item()
     
     def store_transition(
         self,
@@ -203,130 +226,23 @@ class LocalAgent(BaseAgent):
         if len(self.memory) > self.config.memory_size:
             self.memory.pop(0)
     
-    def _state_to_tensor(self, state: AgentState) -> torch.Tensor:
-        """Convert AgentState to tensor for neural network input."""
-        # Handle node features - flatten if 2D
-        node_features = state.node_features
-        if node_features.dim() > 1:
-            node_features = node_features.flatten()
-        
-        # Create a compact state representation
-        graph_metrics = torch.tensor([
-            state.graph_metrics.get('cut_size', 0.0),
-            state.graph_metrics.get('balance', 0.0),
-            state.graph_metrics.get('conductance', 0.0)
-        ], dtype=torch.float32)
-        
-        # Concatenate partition sizes and densities (pad/truncate if needed)
-        partition_info = torch.cat([
-            state.partition_sizes[:4] if len(state.partition_sizes) >= 4 else torch.cat([
-                state.partition_sizes, 
-                torch.zeros(4 - len(state.partition_sizes))
-            ]),
-            state.partition_densities[:4] if len(state.partition_densities) >= 4 else torch.cat([
-                state.partition_densities, 
-                torch.zeros(4 - len(state.partition_densities))
-            ])
-        ])
-        
-        # Combine all features (ensure all are 1D)
-        combined_features = torch.cat([
-            node_features.flatten(),
-            graph_metrics.flatten(),
-            partition_info.flatten()
-        ])
-        
-        # Ensure correct dimension
-        expected_dim = self.config.feature_dim + self.config.state_dim
-        if len(combined_features) < expected_dim:
-            # Pad with zeros
-            padding = torch.zeros(expected_dim - len(combined_features))
-            combined_features = torch.cat([combined_features, padding])
-        elif len(combined_features) > expected_dim:
-            # Truncate
-            combined_features = combined_features[:expected_dim]
-        
-        return combined_features
-    
     def train_step(self) -> Dict[str, float]:
-        """Perform a single training step with enhanced learning"""
+        """Perform a single training step"""
         if len(self.memory) < self.config.batch_size:
-            return {'loss': 0.0, 'avg_reward': 0.0, 'learning_rate': self.optimizer.param_groups[0]['lr']}
+            return {'loss': 0.0, 'avg_reward': 0.0}
         
         # Sample batch
-        batch = random.sample(self.memory, self.config.batch_size)
+        batch = self.memory[-self.config.batch_size:]
         states, actions, rewards, next_states, dones = zip(*batch)
         
-        # Convert states to tensors
-        state_tensors = torch.stack([self._state_to_tensor(s) for s in states])
-        next_state_tensors = torch.stack([self._state_to_tensor(s) for s in next_states])
+        # Compute loss and update
+        loss, metrics = self.compute_loss(states, actions, rewards, next_states, dones)
+        super().update(loss)  # Call the parent class update method
         
-        # Convert to tensors
-        actions_tensor = torch.tensor(actions, dtype=torch.long)
-        rewards_tensor = torch.tensor(rewards, dtype=torch.float32)
-        dones_tensor = torch.tensor(dones, dtype=torch.bool)
+        # Step the learning rate scheduler
+        self.scheduler.step()
         
-        # Compute current Q-values
-        current_q_values = self.q_network(state_tensors)
-        current_q_values = current_q_values.gather(1, actions_tensor.unsqueeze(1)).squeeze(1)
-        
-        # Compute target Q-values
-        with torch.no_grad():
-            next_q_values = self.target_network(next_state_tensors)
-            max_next_q_values = next_q_values.max(1)[0]
-            target_q_values = rewards_tensor + (1 - dones_tensor.float()) * self.config.gamma * max_next_q_values
-        
-        # Compute loss
-        loss = F.mse_loss(current_q_values, target_q_values)
-        
-        # Optimize
-        self.optimizer.zero_grad()
-        loss.backward()
-        
-        # Gradient clipping
-        torch.nn.utils.clip_grad_norm_(self.q_network.parameters(), self.config.max_grad_norm)
-        
-        self.optimizer.step()
-        self.training_step += 1
-        
-        # Update learning rate
-        if self.training_step % getattr(self.config, 'lr_step_size', 100) == 0:
-            self.scheduler.step()
-        
-        # Update target network
-        if self.training_step % self.config.target_update == 0:
-            self.target_network.load_state_dict(self.q_network.state_dict())
-        
-        # Validation and early stopping check
-        validation_score = self._compute_validation_score()
-        self.validation_scores.append(validation_score)
-        
-        if validation_score > self.best_validation_score:
-            self.best_validation_score = validation_score
-            self.patience_counter = 0
-        else:
-            self.patience_counter += 1
-        
-        return {
-            'loss': loss.item(),
-            'avg_reward': rewards_tensor.mean().item(),
-            'learning_rate': self.optimizer.param_groups[0]['lr'],
-            'validation_score': validation_score,
-            'early_stopping_patience': self.patience_counter
-        }
-    
-    def _compute_validation_score(self) -> float:
-        """Compute validation score for early stopping."""
-        if len(self.memory) < 100:
-            return 0.0
-        
-        # Use recent rewards as validation metric
-        recent_rewards = [t[2] for t in self.memory[-100:]]
-        return float(np.mean(recent_rewards))
-    
-    def should_stop_early(self) -> bool:
-        """Check if training should stop early."""
-        return self.patience_counter >= self.early_stopping_patience
+        return metrics
     
     def get_neighbor_info(self) -> Dict[str, torch.Tensor]:
         """Get information about neighboring nodes"""
@@ -341,15 +257,12 @@ class LocalAgent(BaseAgent):
             else:
                 neighbor_features.append(torch.zeros(self.config.state_dim))
             
-            # Get neighbor partition (simple heuristic - find which partition contains the neighbor)
-            partition_id = -1
-            if hasattr(self.graph, 'partitions'):
-                for pid, partition in self.graph.partitions.items():
-                    if hasattr(partition, 'nodes') and neighbor in partition.nodes:
-                        partition_id = pid
-                        break
-            
-            neighbor_partitions.append(partition_id)
+            # Get neighbor partition
+            partition = self.graph.get_node_partition(neighbor)
+            if partition is not None:
+                neighbor_partitions.append(partition)
+            else:
+                neighbor_partitions.append(-1)  # No partition
         
         return {
             'features': torch.stack(neighbor_features) if neighbor_features else torch.tensor([]),
@@ -358,40 +271,48 @@ class LocalAgent(BaseAgent):
     
     def evaluate_partition(self, partition_idx: int) -> float:
         """Evaluate the quality of a partition for the current node"""
-        if partition_idx < 0 or not hasattr(self.graph, 'partitions'):
+        if partition_idx < 0 or partition_idx >= len(self.graph.partitions):
             return float('-inf')
         
-        partitions = list(self.graph.partitions.keys())
-        if partition_idx >= len(partitions):
-            return float('-inf')
+        # Get current metrics
+        current_metrics = self.graph.get_partition_metrics()
+        current_density = current_metrics.get('density', 0.0)
+        current_balance = current_metrics.get('balance', 0.0)
         
-        # Simple heuristic: prefer partitions with more neighbors
-        target_partition_id = partitions[partition_idx]
+        # Simulate moving to new partition
+        self.graph.move_node(self.node_id, partition_idx)
+        new_metrics = self.graph.get_partition_metrics()
+        new_density = new_metrics.get('density', 0.0)
+        new_balance = new_metrics.get('balance', 0.0)
         
-        if hasattr(self.graph, 'partitions') and target_partition_id in self.graph.partitions:
-            target_partition = self.graph.partitions[target_partition_id]
-            if hasattr(target_partition, 'nodes'):
-                # Count neighbors in target partition
-                neighbor_count = sum(1 for neighbor in self.neighbors 
-                                   if neighbor in target_partition.nodes)
-                
-                # Prefer partitions with more neighbors (local connectivity)
-                partition_size = len(target_partition.nodes)
-                balance_score = 1.0 / (1.0 + abs(partition_size - self.graph.num_nodes / len(self.graph.partitions)))
-                
-                return neighbor_count * 0.7 + balance_score * 0.3
+        # Calculate score based on improvement
+        density_improvement = new_density - current_density
+        balance_improvement = new_balance - current_balance
         
-        return 0.0
+        # Weight the improvements based on config
+        score = (
+            self.config.density_weight * density_improvement +
+            self.config.balance_weight * balance_improvement
+        )
+        
+        # Revert the simulation
+        self.graph.revert_last_move()
+        
+        return score
+    
+    def update_partition(self, new_partition: int) -> None:
+        """Update the agent's current partition"""
+        if new_partition != self.current_partition:
+            self.current_partition = new_partition
+            self.graph.move_node(self.node_id, new_partition)
         
     def act(self, state: torch.Tensor, graph: Graph) -> Tuple[int, float]:
         """Choose an action using epsilon-greedy policy."""
         if random.random() < self.epsilon:
             # Explore: choose random partition
-            available_partitions = list(range(self.config.action_dim))
+            available_partitions = list(graph.partitions.keys())
             action = random.choice(available_partitions)
-            with torch.no_grad():
-                q_values = self.q_network(state)
-                q_value = q_values[action].item()
+            q_value = self.q_network(state)[action].item()
         else:
             # Exploit: choose best partition
             with torch.no_grad():
@@ -401,20 +322,45 @@ class LocalAgent(BaseAgent):
                 
         return action, q_value
         
+    def store_experience(self, reward: float, next_state: torch.Tensor, done: bool) -> None:
+        """Store experience in the agent's memory."""
+        # Store experience in memory
+        self.memory.append((self.local_state, reward, next_state, done))
+        
+        # Update epsilon
+        self.epsilon = max(self.config.epsilon_end, self.epsilon * self.config.epsilon_decay)
+        states, rewards, next_states, dones = zip(*batch)
+        
+        # Convert to tensors
+        states = torch.stack(states)
+        rewards = torch.tensor(rewards)
+        next_states = torch.stack(next_states)
+        dones = torch.tensor(dones)
+        
+        # Compute Q-values
+        current_q_values = self.q_network(states)
+        next_q_values = self.target_network(next_states)
+        max_next_q_values = next_q_values.max(1)[0]
+        
+        # Compute target Q-values
+        target_q_values = rewards + (1 - dones) * self.config.gamma * max_next_q_values
+        
+        # Compute loss and update
+        loss = nn.MSELoss()(current_q_values, target_q_values)
+        self.optimizer.zero_grad()
+        loss.backward()
+        self.optimizer.step()
+        
+        # Update target network
+        if len(self.memory) % self.config.target_update == 0:
+            self.target_network.load_state_dict(self.q_network.state_dict())
+            
     def get_partition_preference(self, graph: Graph) -> Dict[int, float]:
         """Get Q-values for each partition as preference scores."""
-        # Create a simple state representation
-        node_features = graph.get_node_features()[self.node_id] if hasattr(graph, 'get_node_features') else torch.zeros(self.config.feature_dim)
-        
-        # Simple state for preference computation
-        simple_state = torch.cat([
-            node_features,
-            torch.zeros(self.config.state_dim)  # Placeholder for state features
-        ])
-        
+        state = self.observe(graph)
         with torch.no_grad():
-            q_values = self.q_network(simple_state)
-            preferences = {i: q_values[i].item() for i in range(min(len(q_values), self.config.action_dim))}
+            q_values = self.q_network(state)
+            preferences = {i: q_values[i].item() for i in range(self.output_dim)}
         return preferences
         
     def save_checkpoint(self, path: str) -> None:
@@ -423,11 +369,7 @@ class LocalAgent(BaseAgent):
             'q_network_state': self.q_network.state_dict(),
             'target_network_state': self.target_network.state_dict(),
             'optimizer_state': self.optimizer.state_dict(),
-            'scheduler_state': self.scheduler.state_dict(),
-            'epsilon': self.epsilon,
-            'training_step': self.training_step,
-            'best_validation_score': self.best_validation_score,
-            'patience_counter': self.patience_counter
+            'epsilon': self.epsilon
         }, path)
         
     def load_checkpoint(self, path: str) -> None:
@@ -436,9 +378,4 @@ class LocalAgent(BaseAgent):
         self.q_network.load_state_dict(checkpoint['q_network_state'])
         self.target_network.load_state_dict(checkpoint['target_network_state'])
         self.optimizer.load_state_dict(checkpoint['optimizer_state'])
-        if 'scheduler_state' in checkpoint:
-            self.scheduler.load_state_dict(checkpoint['scheduler_state'])
         self.epsilon = checkpoint['epsilon']
-        self.training_step = checkpoint.get('training_step', 0)
-        self.best_validation_score = checkpoint.get('best_validation_score', float('-inf'))
-        self.patience_counter = checkpoint.get('patience_counter', 0)

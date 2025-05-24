@@ -47,6 +47,22 @@ class AgentConfig:
     local_update_interval: int = 10
     communication_interval: int = 50
     max_grad_norm: float = 1.0
+    # Enhanced architecture parameters
+    num_heads: int = 4
+    dropout: float = 0.1
+    use_attention: bool = True
+    # Learning rate scheduling
+    lr_step_size: int = 100
+    lr_gamma: float = 0.95
+    # Partition preferences
+    balance_weight: float = 0.5
+    density_weight: float = 0.3
+    # Curriculum learning
+    curriculum_phases: List[str] = field(default_factory=lambda: ['Foundation', 'Development', 'Refinement', 'Optimization'])
+    phase_duration: int = 50
+    # Early stopping
+    early_stopping_patience: int = 30
+    validation_frequency: int = 10
 
     @classmethod
     def from_dict(cls, config: dict):

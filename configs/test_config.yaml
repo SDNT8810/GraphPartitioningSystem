@@ -73,15 +73,15 @@ monitoring:
 # Recovery configuration - minimal for testing
 recovery:
   checkpoint_interval: 100
-  max_checkpoints: 2
+  max_checkpoints: 5
   failure_detection_interval: 50
   recovery_timeout: 500
   replication_factor: 1  # Minimal replication
 
 # System configuration - minimal episodes and steps for fast testing
 system:
-  num_episodes: 200  # Very few episodes for quick testing
-  max_steps: 50  # Few steps per episode
+  num_episodes: 600  # Very few episodes for quick testing
+  max_steps: 100  # Few steps per episode
   log_interval: 5  # Frequent logging
   seed: 42
   num_workers: 1  # Single worker for simpler debugging

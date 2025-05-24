@@ -6,7 +6,8 @@ import os
 import time
 import logging
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from src.agents.local_agent import *
+from src.agents.local_agent import LocalAgent
+from src.agents.base_agent import AgentState
 from src.config.system_config import *
 from src.core.graph import *
 from pathlib import Path
@@ -83,17 +84,7 @@ class DynamicPartitioning:
 
     def train(self, continue_iterations=False, max_additional_iterations=10):
         """
-        RL training loop: each agent selects a partition, environment updates, reward assigned.
-        Agents learn from their experiences through memory replay.
-        Returns stats for integration/testing.
-        
-        Parameters:
-        -----------
-        continue_iterations: bool
-            If True, after completing the configured number of episodes, will prompt 
-            the user to continue with more iterations.
-        max_additional_iterations: int
-            Maximum number of additional iterations beyond the configured episodes
+        Enhanced RL training loop with validation-based early stopping and advanced curriculum learning.
         """
         if self.graph is None or not self.local_agents:
             # Dummy call for integration
@@ -112,25 +103,38 @@ class DynamicPartitioning:
                 'final_balance': 0.0,
                 'final_conductance': 0.0,
             }
+        
+        # Enhanced training tracking
         rewards = []
         cut_sizes = []
         balances = []
         conductances = []
         epsilons = []
+        steps_per_episode = []
         episode_metrics = []
+        validation_scores = []
+        learning_rates = []
+        
+        # Validation-based early stopping
+        validation_patience = 30
+        validation_counter = 0
+        best_validation_score = float('-inf')
+        validation_threshold = 0.01  # Minimum improvement threshold
         
         # Initialize visualizer
-        tb_dir = Path('runs').joinpath(f'{self.experiment_name}')
-
-        visualizer = TrainingVisualizer(tb_dir)
+        tb_dir = Path('runs') / f'{self.experiment_name}'
+        visualizer = TrainingVisualizer(str(tb_dir))
         
         # Calculate total episodes (configured + potential additional)
         base_episodes = self.config.num_episodes
         total_episodes = base_episodes
         additional_iterations = 0
         
+        # Get max_steps from config
+        max_steps = getattr(self.config, 'max_steps', 100)
+        
         # Set up progress logging
-        logging.info(f"Starting training with {total_episodes} episodes")
+        logging.info(f"Starting enhanced training with {total_episodes} episodes")
         start_time = time.time()
         
         # Get initial partition state
@@ -146,12 +150,62 @@ class DynamicPartitioning:
         # Save initial partition state to ensure we can properly track progress
         best_partitions = self.get_partitions()
         best_cut_size = initial_cut_size
+        best_validation_episode = 0
+        
+        # Initialize tracking variables
+        episode_timeouts = 0
+        
+        # Advanced curriculum learning phases
+        curriculum_phases = [
+            {
+                'name': 'Foundation',
+                'episodes': int(total_episodes * 0.2),
+                'balance_weight': 80.0,
+                'cut_weight': 10.0,
+                'conductance_weight': 5.0,
+                'exploration_bonus': 2.0
+            },
+            {
+                'name': 'Development', 
+                'episodes': int(total_episodes * 0.3),
+                'balance_weight': 60.0,
+                'cut_weight': 30.0,
+                'conductance_weight': 15.0,
+                'exploration_bonus': 1.0
+            },
+            {
+                'name': 'Refinement',
+                'episodes': int(total_episodes * 0.3),
+                'balance_weight': 40.0,
+                'cut_weight': 45.0,
+                'conductance_weight': 25.0,
+                'exploration_bonus': 0.5
+            },
+            {
+                'name': 'Optimization',
+                'episodes': total_episodes,  # Rest of episodes
+                'balance_weight': 25.0,
+                'cut_weight': 55.0,
+                'conductance_weight': 35.0,
+                'exploration_bonus': 0.0
+            }
+        ]
+        
+        current_phase = 0
         
         # Training loop
         for episode in range(total_episodes):
             episode_start_time = time.time()
             total_reward = 0.0
             steps = 0
+            
+            # Determine current curriculum phase
+            while (current_phase < len(curriculum_phases) - 1 and 
+                   episode >= curriculum_phases[current_phase]['episodes']):
+                current_phase += 1
+                logging.info(f"Advancing to curriculum phase: {curriculum_phases[current_phase]['name']}")
+            
+            phase = curriculum_phases[current_phase]
             
             # Store agent states for each node before actions
             previous_states = {}
@@ -181,12 +235,12 @@ class DynamicPartitioning:
                             logging.debug(f"Truncating node features from {actual_dim} to {expected_dim} dimensions")
                             node_features = node_features[:expected_dim]
                     
-                    partition_sizes = np.array([len(p.nodes) for p in self.partitions])
-                    partition_densities = np.array([getattr(p, 'density', 0.0) for p in self.partitions])
+                    partition_sizes = torch.tensor([len(p.nodes) for p in self.partitions], dtype=torch.float32)
+                    partition_densities = torch.tensor([getattr(p, 'density', 0.0) for p in self.partitions], dtype=torch.float32)
                     metrics_dict = {
-                        'cut_size': compute_cut_size(self.graph, self.partitions),
-                        'balance': compute_balance(self.partitions),
-                        'conductance': compute_conductance(self.graph, self.partitions)
+                        'cut_size': float(compute_cut_size(self.graph, self.partitions)),
+                        'balance': float(compute_balance(self.partitions)),
+                        'conductance': float(compute_conductance(self.graph, self.partitions))
                     }
                     state = AgentState(
                         node_features=node_features,
@@ -198,8 +252,13 @@ class DynamicPartitioning:
                 # Store the current state
                 previous_states[agent.node_id] = state
                 
-                # Select action
-                action, _ = agent.select_partition(state) if hasattr(agent, 'select_partition') else agent.select_action(state, agent.epsilon)[0]
+                # Select action with enhanced exploration in early phases
+                if hasattr(agent, 'select_partition'):
+                    action, _ = agent.select_partition(state)
+                else:
+                    # Enhanced epsilon for exploration bonus
+                    enhanced_epsilon = min(1.0, agent.epsilon + phase['exploration_bonus'] * (1.0 - episode / total_episodes))
+                    action, _ = agent.select_action(state, enhanced_epsilon)
                 
                 # Find current partition of the node
                 current_partition = None
@@ -224,21 +283,55 @@ class DynamicPartitioning:
             balance = compute_balance(self.partitions)
             conductance = compute_conductance(self.graph, self.partitions)
             
-            # Calculate improvements from previous state (negative value is better for cut size and conductance)
-            cut_improvement = prev_cut_size - cut_size  
-            balance_improvement = balance - prev_balance  # positive value is better for balance
-            conductance_improvement = prev_conductance - conductance
+            # Track steps per episode properly
+            steps_per_episode.append(steps)
             
-            # Create a reward that emphasizes improvement rather than absolute values
-            # This is critical for learning - reward improvements, penalize degradation
-            reward = 10.0 * cut_improvement + 20.0 * balance_improvement + 5.0 * conductance_improvement
+            # Calculate target partition size
+            target_size = self.graph.num_nodes / len(self.partitions)
+            
+            # Enhanced reward calculation with curriculum phase weights
+            cut_improvement = (prev_cut_size - cut_size) / (prev_cut_size + 1e-8)
+            balance_improvement = balance - prev_balance
+            conductance_improvement = (prev_conductance - conductance) / (prev_conductance + 1e-8)
+            
+            # Get curriculum weights
+            balance_weight = phase['balance_weight']
+            cut_weight = phase['cut_weight']
+            conductance_weight = phase['conductance_weight']
+            
+            # Normalize the improvements to prevent large value swings
+            norm_cut_imp = cut_improvement / (prev_cut_size + 1e-8)
+            norm_balance_imp = balance_improvement
+            norm_cond_imp = conductance_improvement / (prev_conductance + 1e-8)
+            
+            # Calculate enhanced penalties
+            target_size = self.graph.num_nodes / len(self.partitions)
+            max_size_diff = max(abs(len(p.nodes) - target_size) for p in self.partitions)
+            size_variance_penalty = max_size_diff / target_size
+            
+            # Adaptive penalty scaling based on phase
+            penalty_scale = 1.0 + (current_phase * 0.5)  # Increase penalties as training progresses
+            
+            # Enhanced reward function with curriculum learning weights and adaptive penalties
+            reward = (
+                cut_weight * norm_cut_imp +                           # Dynamic cut weight
+                balance_weight * norm_balance_imp +                   # Dynamic balance weight  
+                conductance_weight * norm_cond_imp +                  # Dynamic conductance weight
+                -30.0 * penalty_scale * (1 - balance) +              # Adaptive imbalance penalty
+                -15.0 * penalty_scale * size_variance_penalty +      # Adaptive size variance penalty
+                -5.0 * (cut_size / (self.graph.num_nodes * 2)) +     # Normalized absolute cut penalty
+                phase['exploration_bonus'] * 0.1                      # Small exploration bonus
+            )
+            
+            # Clip reward to prevent extreme values
+            reward = np.clip(reward, -15.0, 15.0)  # Slightly wider range for enhanced rewards
             
             # Store this episode's metrics to compare with next episode
             prev_cut_size = cut_size
             prev_balance = balance
             prev_conductance = conductance
             
-            # Get the new state for each agent after all moves have been made
+            # Enhanced state calculation and agent training
             for agent in self.local_agents:
                 # Get new state after all actions
                 if hasattr(agent, 'get_state'):
@@ -257,12 +350,12 @@ class DynamicPartitioning:
                         else:
                             node_features = node_features[:expected_dim]
                     
-                    partition_sizes = np.array([len(p.nodes) for p in self.partitions])
-                    partition_densities = np.array([getattr(p, 'density', 0.0) for p in self.partitions])
+                    partition_sizes = torch.tensor([len(p.nodes) for p in self.partitions], dtype=torch.float32)
+                    partition_densities = torch.tensor([getattr(p, 'density', 0.0) for p in self.partitions], dtype=torch.float32)
                     metrics_dict = {
-                        'cut_size': cut_size,
-                        'balance': balance,
-                        'conductance': conductance
+                        'cut_size': float(cut_size),
+                        'balance': float(balance),
+                        'conductance': float(conductance)
                     }
                     next_state = AgentState(
                         node_features=node_features,
@@ -271,137 +364,179 @@ class DynamicPartitioning:
                         graph_metrics=metrics_dict
                     )
                 
-                # Store transition in agent's memory with correct action and INDIVIDUAL reward
-                # Find which partition the agent is in now
+                # Store transition with enhanced individual reward calculation
                 current_p = None
                 for pid, p in self.graph.partitions.items():
                     if agent.node_id in p.nodes:
                         current_p = pid
                         break
                 
-                # Get the index of the action that was taken
                 action_idx = list(self.graph.partitions.keys()).index(current_p)
                 
-                # Calculate individual reward based on how this node's neighbors are distributed
-                individual_reward = reward
-                # Add extra reward if node is in a balanced partition
+                # Enhanced individual reward calculation
+                partition = next(p for p in self.partitions if agent.node_id in p.nodes)
+                local_balance = len(partition.nodes) / target_size
+                neighbor_cut = sum(1 for neighbor in self.graph.get_neighbors(agent.node_id)
+                                if neighbor not in partition.nodes)
+                neighbor_count = len(self.graph.get_neighbors(agent.node_id))
+                
+                # Enhanced individual reward with phase-specific bonuses
+                individual_reward = (
+                    reward +  # Global component
+                    -5.0 * penalty_scale * abs(1 - local_balance) +  # Adaptive local balance penalty
+                    -2.0 * (neighbor_cut / max(neighbor_count, 1)) +  # Local cut penalty (avoid division by zero)
+                    phase['exploration_bonus'] * 0.05  # Small individual exploration bonus
+                ) / 2.0  # Scale down combined reward
+                
+                # Clip individual reward
+                individual_reward = np.clip(individual_reward, -15.0, 15.0)
+                
                 if hasattr(agent, 'store_transition'):
                     # Store the transition in the agent's memory
                     agent.store_transition(
                         previous_states[agent.node_id],  # Previous state
                         action_idx,                      # Action taken
-                        individual_reward,               # Reward
+                        individual_reward,               # Enhanced reward
                         next_state,                      # New state
                         False                            # Not terminal state
                     )
             
-            # Perform learning step after all agents have stored their transitions
-            # This ensures we have enough data for effective batch learning
-            if episode > 10 and episode % 5 == 0:  # Train every 5 episodes after warmup
+            # Enhanced training with validation monitoring
+            if episode > 20 and episode % 3 == 0:  # Train every 3 episodes after longer warmup
+                training_metrics = []
                 for agent in self.local_agents:
                     if hasattr(agent, 'train_step'):
-                        agent.train_step()
+                        metrics = agent.train_step()
+                        training_metrics.append(metrics)
+                
+                # Aggregate training metrics
+                if training_metrics:
+                    avg_loss = np.mean([m.get('loss', 0) for m in training_metrics])
+                    avg_lr = np.mean([m.get('learning_rate', 0) for m in training_metrics])
+                    avg_validation = np.mean([m.get('validation_score', 0) for m in training_metrics])
+                    
+                    learning_rates.append(avg_lr)
+                    validation_scores.append(avg_validation)
+                    
+                    # Check for validation-based early stopping
+                    if avg_validation > best_validation_score + validation_threshold:
+                        best_validation_score = avg_validation
+                        best_validation_episode = episode
+                        validation_counter = 0
+                        # Save best model state
+                        best_partitions = self.get_partitions()
+                        best_cut_size = cut_size
+                    else:
+                        validation_counter += 1
+                
+                    # Log enhanced training metrics
+                    visualizer.log_metrics({
+                        'training_loss': avg_loss,
+                        'learning_rate': avg_lr,
+                        'validation_score': avg_validation,
+                        'curriculum_phase': current_phase
+                    }, episode)
             
             total_reward += reward
             rewards.append(total_reward)
             
-            # --- Partition balancing/merging/splitting logic ---
-            # This section remains mostly unchanged but could be improved
+            # Enhanced partition management logic
             current_balance = compute_balance(self.partitions)
-            if current_balance < 0.7:
-                # Use graph's is_balanced method to check if balancing is needed
+            if current_balance < 0.6:  # More aggressive threshold in later phases
+                # Use graph's balancing methods if available
                 if hasattr(self.graph, 'is_balanced') and hasattr(self.graph, 'balance_partitions'):
                     if not self.graph.is_balanced():
                         self.graph.balance_partitions()
-                        # Update self.partitions reference if needed
                         if hasattr(self.graph, 'partitions'):
-                            # Convert dict to list if needed
                             if isinstance(self.graph.partitions, dict):
                                 self.partitions = list(self.graph.partitions.values())
                             else:
                                 self.partitions = self.graph.partitions
-                
-                # Only perform partition merging if there are extremely small partitions
-                min_size = min(len(p.nodes) for p in self.partitions)
-                if min_size < 2 and len(self.partitions) > 1:
-                    # Merge the smallest partition with the next
-                    small_partition = [p for p in self.partitions if len(p.nodes) == min_size][0]
-                    other_partition = [p for p in self.partitions if p.id != small_partition.id][0]
-                    # Move nodes from small partition to other partition
-                    for node in list(small_partition.nodes):  # Create a copy of nodes to avoid modification during iteration
-                        small_partition.remove_node(node)
-                        other_partition.add_node(node)
-                    # Remove small partition from list
-                    self.partitions.remove(small_partition)
-                
-                # Only perform partition splitting if there are extremely large partitions
-                max_size = max(len(p.nodes) for p in self.partitions)
-                target_size = self.graph.num_nodes // len(self.partitions)
-                if max_size > 2 * target_size:
-                    # Find the largest partition
-                    large_partition = [p for p in self.partitions if len(p.nodes) == max_size][0]
-                    # Create a new partition
-                    new_partition = Partition(id=max(p.id for p in self.partitions) + 1)
-                    # Move half the nodes to the new partition
-                    nodes_to_move = list(large_partition.nodes)[:len(large_partition.nodes)//2]
-                    for node in nodes_to_move:
-                        large_partition.remove_node(node)
-                        new_partition.add_node(node)
-                    # Add new partition to list
-                    self.partitions.append(new_partition)
-            # --- End partition management logic ---
-            
-            # Compute final metrics for this episode
-            cut_size = compute_cut_size(self.graph, self.partitions)
-            balance = compute_balance(self.partitions)
-            conductance = compute_conductance(self.graph, self.partitions)
-            
-            # Track best partitioning solution
-            if cut_size < best_cut_size and balance >= 0.7:
-                best_cut_size = cut_size
-                best_partitions = self.get_partitions()
             
             # Store metrics in their respective lists for tracking over time
             cut_sizes.append(cut_size)
             balances.append(balance)
             conductances.append(conductance)
-            current_epsilon = getattr(self.local_agents[0], 'epsilon', 1.0) if self.local_agents else 1.0
+            current_epsilon = self.local_agents[0].epsilon if self.local_agents else 1.0
             epsilons.append(current_epsilon)
             
-            # Store episode metrics
+            # Store enhanced episode metrics
             episode_metrics.append({
                 'reward': total_reward,
                 'cut_size': cut_size,
                 'balance': balance,
                 'conductance': conductance,
-                'epsilon': current_epsilon
+                'epsilon': current_epsilon,
+                'curriculum_phase': current_phase,
+                'phase_name': phase['name']
             })
             
-            # Log metrics to TensorBoard
+            # Enhanced early stopping logic
+            if episode >= 60:  # Longer initial learning period
+                lookback_window = 40  # Larger window for stability
+                recent_cut_sizes_es = cut_sizes[-lookback_window:]
+                recent_rewards_es = rewards[-lookback_window:]
+                
+                # Calculate coefficient of variation for stability check
+                cut_cv = np.std(recent_cut_sizes_es) / (np.mean(recent_cut_sizes_es) + 1e-8)
+                reward_cv = np.std(recent_rewards_es) / (abs(np.mean(recent_rewards_es)) + 1e-8)
+                
+                # Check improvement rate
+                if len(cut_sizes) >= 80:
+                    first_half = np.mean(cut_sizes[-80:-40])
+                    second_half = np.mean(recent_cut_sizes_es)
+                    cut_improvement_rate = abs(first_half - second_half) / (first_half + 1e-8)
+                    
+                    # Enhanced early stopping criteria
+                    convergence_criteria = (
+                        cut_cv < 0.015 and          # Cut size very stable (< 1.5% variation)
+                        reward_cv < 0.08 and        # Rewards very stable (< 8% variation)
+                        cut_improvement_rate < 0.003 and  # Very small improvement (< 0.3%)
+                        balance >= 0.75             # Good balance achieved
+                    )
+                    
+                    validation_criteria = (
+                        validation_counter >= validation_patience and
+                        episode - best_validation_episode > validation_patience
+                    )
+                    
+                    if convergence_criteria or validation_criteria:
+                        stop_reason = "convergence" if convergence_criteria else "validation plateau"
+                        logging.info(f"Enhanced early stopping at episode {episode+1} due to {stop_reason}: "
+                                   f"Cut CV: {cut_cv:.4f}, Reward CV: {reward_cv:.4f}, "
+                                   f"Improvement: {cut_improvement_rate:.4f}, Validation counter: {validation_counter}")
+                        break
+                        
+            # Check for episode timeout
+            if steps >= max_steps:
+                episode_timeouts += 1
+                if episode_timeouts > total_episodes * 0.7:  # Lower threshold for timeout warning
+                    logging.warning(f"High timeout rate detected ({episode_timeouts}/{episode+1}). "
+                                  f"Consider increasing max_steps or improving reward function.")
+            
+            # Enhanced logging to TensorBoard
             visualizer.log_metrics({
-                'reward': total_reward,
-                'cut_size': cut_size,
-                'balance': balance,
-                'conductance': conductance,
-                'epsilon': current_epsilon
+                'reward': float(total_reward),
+                'cut_size': float(cut_size),
+                'balance': float(balance),
+                'conductance': float(conductance),
+                'epsilon': float(current_epsilon),
+                'curriculum_phase': current_phase,
+                'steps_per_episode': steps
             }, episode)
             
-            # Rest of the training loop remains mostly unchanged
-            # Log progress at intervals
+            # Enhanced progress logging
             if self.track_learning and (episode + 1) % self.log_interval == 0:
-                # Calculate rolling averages for smoother trend reporting
                 window = min(self.window_size, episode + 1)
                 recent_cut_sizes = cut_sizes[-window:]
                 recent_balances = balances[-window:]
                 recent_conductances = conductances[-window:]
                 
-                # Calculate improvements from start (if we have enough episodes)
-                if episode >= 20:
-                    first_20_cut = np.mean(cut_sizes[:20])
+                if episode >= 30:
+                    first_30_cut = np.mean(cut_sizes[:30])
                     recent_cut = np.mean(recent_cut_sizes)
-                    cut_improvement = ((first_20_cut - recent_cut) / first_20_cut) * 100
+                    cut_improvement = ((first_30_cut - recent_cut) / first_30_cut) * 100
                     
-                    # Determine arrow direction based on whether improvement is positive or negative
                     cut_arrow = "↓" if cut_improvement > 0 else "↑"
                     cut_improvement_abs = abs(cut_improvement)
                     
@@ -409,43 +544,57 @@ class DynamicPartitioning:
                     elapsed_time = time.time() - start_time
                     estimated_remaining = (elapsed_time / (episode + 1)) * (total_episodes - episode - 1)
                     
+                    current_lr = learning_rates[-1] if learning_rates else self.local_agents[0].optimizer.param_groups[0]['lr'] if self.local_agents else 0.001
+                    
                     logging.info(f"Episode {episode+1}/{total_episodes} "
                                f"[{elapsed_time:.1f}s elapsed, ~{estimated_remaining:.1f}s remaining] - "
+                               f"Phase: {phase['name']}, "
                                f"Cut: {np.mean(recent_cut_sizes):.2f} "
                                f"({cut_arrow}{cut_improvement_abs:.1f}%), "
                                f"Balance: {np.mean(recent_balances):.4f}, "
                                f"Conductance: {np.mean(recent_conductances):.4f}, "
-                               f"ε: {current_epsilon:.4f}")
+                               f"ε: {current_epsilon:.4f}, LR: {current_lr:.6f}")
                 else:
                     logging.info(f"Episode {episode+1}/{total_episodes} - "
-                                f"Cut: {np.mean(recent_cut_sizes):.2f}, "
-                                f"Balance: {np.mean(recent_balances):.4f}, "
-                                f"Conductance: {np.mean(recent_conductances):.4f}, "
-                                f"ε: {current_epsilon:.4f}")
-            
-        # Log final time
-        elapsed_time = time.time() - start_time
-        logging.info(f"Training completed in {elapsed_time:.2f}s")
+                               f"Phase: {phase['name']}, "
+                               f"Cut: {np.mean(recent_cut_sizes):.2f}, "
+                               f"Balance: {np.mean(recent_balances):.4f}, "
+                               f"Conductance: {np.mean(recent_conductances):.4f}, "
+                               f"ε: {current_epsilon:.4f}")
         
-        # Ensure visualizer is properly closed to prevent hanging on program exit
+        # Log final time and results
+        elapsed_time = time.time() - start_time
+        logging.info(f"Enhanced training completed in {elapsed_time:.2f}s")
+        logging.info(f"Final curriculum phase: {curriculum_phases[current_phase]['name']}")
+        if validation_scores:
+            logging.info(f"Best validation score: {best_validation_score:.4f} at episode {best_validation_episode}")
+        
+        # Ensure visualizer is properly closed
         try:
             if 'visualizer' in locals() and visualizer:
                 visualizer.close()
-                logging.debug(f"Training visualizer for {self.experiment_name} closed successfully")
+                logging.debug(f"Enhanced training visualizer for {self.experiment_name} closed successfully")
         except Exception as e:
-            logging.warning(f"Error closing visualizer: {e}")
+            logging.warning(f"Error closing enhanced visualizer: {e}")
         
-        # Return training statistics
+        # Return enhanced training statistics
         return {
             'rewards': rewards,
             'cut_sizes': cut_sizes,
             'balances': balances,
             'conductances': conductances,
             'epsilons': epsilons,
+            'steps': steps_per_episode,
             'episode_metrics': episode_metrics,
+            'validation_scores': validation_scores,
+            'learning_rates': learning_rates,
             'best_cut_size': best_cut_size,
             'best_partitions': best_partitions,
-            'training_time': elapsed_time
+            'training_time': elapsed_time,
+            'curriculum_phases': [p['name'] for p in curriculum_phases],
+            'final_phase': curriculum_phases[current_phase]['name'],
+            'best_validation_score': best_validation_score,
+            'best_validation_episode': best_validation_episode
         }
 
     def get_partitions(self):

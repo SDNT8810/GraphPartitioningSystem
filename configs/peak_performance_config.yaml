@@ -1,0 +1,58 @@
+# Peak Performance Configuration for Enhanced RL System
+# Optimized for maximum quality and efficiency on large graphs
+graph:
+  num_nodes: 150  # Larger graph for challenging optimization
+  edge_probability: 0.2  # Complex but manageable density
+  weight_range: [0.1, 1.0]
+
+# Partitioning strategy configuration - quality-focused
+partition:
+  num_partitions: 4  # Balanced complexity
+  balance_weight: 0.5
+  cut_size_weight: 0.4
+  conductance_weight: 0.1
+  use_laplacian: true
+  min_partition_size: 20
+  max_partition_size: 50
+  balance_threshold: 0.75  # Relaxed for complex graphs
+  conductance_threshold: 0.35  # Achievable target
+  use_hybrid_strategy: false
+  strategy_weights: [0.4, 0.3, 0.3]
+  epsilon_decay: 0.99  # Faster exploration decay
+
+# Agent configuration - peak performance settings
+agent:
+  # Training parameters - optimized for best results
+  learning_rate: 0.01  # Higher LR for faster convergence
+  epsilon: 0.1
+  epsilon_start: 1.0
+  epsilon_end: 0.005  # Lower end for better exploitation
+  epsilon_decay: 0.98  # Faster decay for focused learning
+  gamma: 0.99  # Standard discount factor
+  memory_size: 75000  # Larger memory for complex patterns
+  batch_size: 128  # Larger batches for stability
+  target_update: 25  # Frequent updates for responsive learning
+  # Enhanced features - maximum performance
+  use_attention: true  # Enable attention mechanisms
+  num_heads: 8  # More attention heads for complex patterns
+  dropout: 0.15  # Higher dropout for better generalization
+  lr_step_size: 25  # Frequent LR scheduling
+  lr_gamma: 0.9  # Moderate LR decay
+  balance_weight: 0.5  # Balanced reward weighting
+  density_weight: 0.5  # Balanced reward weighting
+  # Neural network dimensions - enhanced capacity
+  feature_dim: 256  # Larger feature dimensions
+  state_dim: 128  # Enhanced state representation
+  hidden_layers: [512, 512, 256, 128]  # Deeper architecture
+
+# System configuration - comprehensive training
+system:
+  num_episodes: 300  # Focused training episodes
+  max_steps: 50  # Sufficient exploration per episode
+  log_interval: 15  # Frequent logging for monitoring
+  seed: 42
+  log_level: "INFO"
+
+# Testing configuration
+test:
+  num_runs: 1  # Single run for demonstration
